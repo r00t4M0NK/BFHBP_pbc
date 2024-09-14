@@ -67,6 +67,14 @@ Read Feedbacks and grow up with advices from others. Don't learn courses. Unders
 
 
 #####################################################################################################
+#####                                    TODO                                                   #####
+#####################################################################################################
+- Add a licence, as Open Common Licence (Creative Common Licences)
+- Finish to test the package: actually 2 services are validated on a total of 3
+- Prepare the Package and depose it in Github: it will be the main file & Tips files (I said: I wanted something easy!)
+
+
+#####################################################################################################
 #####                                    Bonus                                                  #####
 #####################################################################################################
 Find Me.
