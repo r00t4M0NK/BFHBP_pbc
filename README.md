@@ -10,6 +10,7 @@ You find here:
 - tools: some files to helps you with some issues I was facing!
    - bin: scripts I have used. You can download them if you need a ready-file but you can create your own with informations from Tips-Files
    - bintmp: it's the target for the main using from me in order to swap files from a machine to another (goal: validation)
+
  
-  [eof]
-  eof
+[eof]
+eof
