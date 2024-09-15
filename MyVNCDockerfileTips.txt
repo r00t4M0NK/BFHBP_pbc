@@ -24,6 +24,19 @@
 #Where <storage_driver> is the name of your driver (aufs, overlay, btrfs, or devicemapper).
 #src=stackoverflow.com/questions/30794108/docker-cannot-remove-dead-container
 
+######################################################
+#DOCKER: Build
+######################################################
+#--------------------
+#  13 |     ##########################################################################
+#  14 |
+#  15 | >>> FROM debian:12
+#  16 |
+#--------------------
+#ERROR: failed to solve: debian:12: failed to resolve source metadata for docker.io/library/debian:12: failed to authorize: failed to fetch anonymous token: Get #"https://auth.docker.io/token?scope=repository%3Alibrary%2Fdebian%3Apull&service=registry.docker.io": dial tcp: lookup auth.docker.io on 172.23.xx.xx:53: read udp 172.23.xx.xx:43947->172.23.xx.xx:53: i/o timeout
+#
+#Solution: add 1.1.1.1 inside resolv.conf
+#https://stackoverflow.com/questions/65601592/building-docker-image-fails-with-failed-to-fetch-anonymous-token-tls-handshake
 
 ######################################################
 #PODMAN
