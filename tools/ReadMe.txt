@@ -99,5 +99,9 @@ R00t4m0nk
 
 
 
+Comet © 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
+[eof]
+
+
 Comet © 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 
 [eof]
