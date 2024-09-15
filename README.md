@@ -17,5 +17,5 @@ You find here:
 
 
 
- Comet © 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 
+Comet © 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
 [eof]
