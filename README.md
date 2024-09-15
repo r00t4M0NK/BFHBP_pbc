@@ -20,6 +20,7 @@ You find here:
    - bin: scripts I have used. You can download them if you need a ready-file but you can create your own with informations from Tips-Files
    - bintmp: it's the target for the main using from me in order to swap files from a machine to another (goal: validation)
 
+
 COMET, an easy-software
 - easy-to-use, not need a project with a structure including many files...
 - 3 ways to access:
