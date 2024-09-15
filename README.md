@@ -5,7 +5,9 @@
 WELCOME TO THE CARIBBEANS !
 
 Here it's my Project, and inside this Project, you can find this Software: COMET
+
 COMET is a debian-based environment inside a container.
+
 It will be used for ethical hacking, but also for so many ways: why not build a stream-container? Or a Musical server, with tools dedicated? Graphical server? Gaming server as a Minecraft server? And so on...!
 
 You find here:
