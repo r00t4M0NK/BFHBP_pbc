@@ -18,7 +18,12 @@ You find here:
    - bin: scripts I have used. You can download them if you need a ready-file but you can create your own with informations from Tips-Files
    - bintmp: it's the target for the main using from me in order to swap files from a machine to another (goal: validation)
 
+COMET, 3 ways to access:
+- VNC throught a VNC Client
+- noVNC throught a browser
+- RDP throught a Windows Computer
 
+The Tool can be used in RDP (for easiest way) to use on hack-boxes (next update will be to add a VPN feature).
 
 
 Comet © 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
