@@ -7,7 +7,7 @@ CREATOR 				it's the term which labels the author, as R00t4m0nk.
 USER 					it's the term which labels the user of this software, as You, The End User.
 SOFTWARE 				it's the term which labels the software shared by The Creator.
 APPLICATION				it's the term which labels the software shared by The Creator.
-LICENCED APPLICATION 	it's the term which labels the Software under this Licence.
+LICENCED APPLICATION 			it's the term which labels the Software under this Licence.
 
 The Licence is under these terms:
 
