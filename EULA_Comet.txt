@@ -1,0 +1,50 @@
+
+September 15th 2024,
+
+As defined for this document:
+
+CREATOR 				it's the term which labels the author, as R00t4m0nk.
+USER 					it's the term which labels the user of this software, as You, The End User.
+SOFTWARE 				it's the term which labels the software shared by The Creator.
+APPLICATION				it's the term which labels the software shared by The Creator.
+LICENCED APPLICATION 	it's the term which labels the Software under this Licence.
+
+The Licence is under these terms:
+
+1. Acknowledgement: The Creator and The User must acknowledge that the EULA is concluded between The Creator and The User only, and not with a third party. The User is solely responsible for the Licensed Application and the content thereof.
+
+2. Scope of License: The license granted to the User for the Licensed Application must be limited to a non-transferable license to use the Licensed Application on any material (hardware & software) own by The User.
+
+3. Maintenance and Support: The User must be solely responsible for providing any maintenance and support services with respect to the Licensed Application, as specified in the EULA, or as required under applicable law. This Software is provided "as it is" and The User accepts this condition. It includes the download by The User's network (network is not The Creator's property): The User has to check any part of his personnal chain with the help of any third party with limitations from other licences, contracts or other legal documents. No Support will be provided by The Creator to The User. Even if no support will be provided, The User can use the Github platform to raise any issue-ticket (or any ticket without expectations). The Creator will have no warranty to manage these tickets. The Creator not have to provide an answer or feedback on each ticket raised and could provide any answer or feedback only when The Creator wants.
+
+4. Warranty: The User must be solely responsible for any product warranties, whether express or implied by law, to the extent not effectively disclaimed. In the event of any failure of the Licensed Application to conform to any applicable warranty, The User may notify The Creator. Because of the Licence choosen (i.e. CC BY-SA 4.0), no refund will be availablle because no payment is required. Any consequence, direct or not, could be summoned in any case to The Creator. And that, to the maximum extent permitted by applicable law, The Creator will have no other warranty obligation whatsoever with respect to the Licensed Application, and any other claims, losses, liabilities, damages, costs or expenses attributable to any failure to conform to any warranty will be sole The User's responsibility.
+
+5. Product Claims: The Creator and The User must acknowledge that The User, not The Creator, are responsible for addressing any claims of any third party relating to the Licensed Application or The User’s possession and/or use of that Licensed Application, including, but not limited to: (i) product liability claims; (ii) any claim that the Licensed Application fails to conform to any applicable legal or regulatory requirement; and (iii) claims arising under consumer protection, privacy, or similar legislation. The EULA may not limit The Creator's liability to The User beyond what is permitted by applicable law.
+
+6. Intellectual Property Rights: The Creator and The User must acknowledge that, in the event of any third party claim that the Licensed Application or The User’s possession and use of that Licensed Application infringes that third party’s intellectual property rights, The User will be solely responsible for the investigation, defense, settlement and discharge of any such intellectual property infringement claim.
+
+7. Legal Compliance: The User must represent and warrant that (i) he/she is not located in a country that is subject to a U.S. Government embargo, or that has been designated by the U.S. Government as a “terrorist supporting” country; and (ii) he/she is not listed on any U.S. Government list of prohibited or restricted parties.
+
+8. Contact: To any complaint, please leave a notification in the Github Project page: https://github.com/r00t4M0NK/BFHBP_pbc 
+
+9. Third Party Terms of Agreement: The User must comply with applicable third party terms of agreement when using The Creator's Application, e.g., if The User have a VoIP application, then The User must not be in violation of their wireless data service agreement when using The Creator's Application. 
+
+10. Fair Use and Law: The User is engaged to respect any law. The User is sole responsible to any consequence if The User uses the Software in illegal terms.
+
+11. Licence "CC BY-SA 4.0". This Software is under this licence in order to share the Application without removing The Creator. This EULA manages contractual terms and The "CC BY-SA 4.0" manages the using terms and additional terms. Each one completes the other.
+
+12. Applicability: The User is engaged to read all these terms and accept fully each of these rules. If The User is not agree, The User cannot use the Software. When The User downloads, installs or uses the Software in any way, any of these actions is as The User has accepted these terms of Licence. The User cannot claim anything to The Creator if a third party has been involved with The User in this case of agreement. The Creator is allowed to update this licence in case of The Creator receives any legal feedback or have managed any case reported to The Creator as described in point 3.
+
+
+HISTORY
+
+Version	1.0			September 15th 2024	
+
+
+
+
+
+
+
+THE CREATOR
+R00t4m0nk
