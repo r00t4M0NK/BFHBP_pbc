@@ -1,0 +1,329 @@
+##########################################################################
+## NOTICE AND LICENCE
+##########################################################################
+
+# This file is provided "as is".
+# No support is provided: you try, you learn, you test but only under your own responsability.
+# More information, Read the full Licence:
+# https://github.com/r00t4M0NK/BFHBP_pbc/blob/main/EULA_Comet.txt
+
+
+######################################################
+#TIPS SHEET
+######################################################
+
+#CHECK OS what is it (same view, same GUI but system in back is different)
+# cat /etc/os-release
+# cat /etc/apt/sources.list
+
+#CLEAN TIPS: the goal is to uninstall Docker properly
+#docker rm $(docker ps --all -q -f status=dead)
+#docker image rm -f $(docker image ls -q)
+#docker buildx prune
+#$ sudo rm -rf /var/lib/docker/<storage_driver>/11667ef16239.../
+#Where <storage_driver> is the name of your driver (aufs, overlay, btrfs, or devicemapper).
+#src=stackoverflow.com/questions/30794108/docker-cannot-remove-dead-container
+
+
+######################################################
+#PODMAN
+######################################################
+
+#At first step, I learn with Docker. I switch to use Podman, an open-source software.
+#First level, I have started to do a backup for some files used with Docker.
+#After cleaning, removing and deleting every element in Docker, I uninstall the app.
+
+###############
+#PODMAN: TIPS
+###############
+#1. If you use a WSL distro (Debian for me), if you install podman (apt-get install podman), you don't need a machine. It will use the machine itself (WSL-Debian for me).
+#2. If you want a Podman Machine, you have informations in the Sheet below (Machine Init: install qemu-system-x86 gvproxy).
+#3. Check Connections from unix environment (WSL) same as PowerShell. You don't need SSH Key.
+#4. Don't forget to use --remote when you want use the "Windows Env" (with Desktop View) instead the "local env": docker --remote pull php:apache
+
+###############
+#PODMAN: INSTALL
+###############
+#1. Podman-desktop (ex: under Win)
+#2. Podman CLI (ex: under Win)
+#3. Podman CLI: use PowerShell (default client) or use a WSL existing (apt-get install podman) and set settings for remote connection.
+# Inside each Clients, set aliases in .bashrc (/root/) as "alias docker=podman" (PS> Set-Alias -Name docker -Value podman )
+#4. Error message: WARN[0000] "/" is not a shared mount, this could cause issues or missing mounts with rootless containers
+# Install: (optionnal) buildah, "mount --make-rshared /"
+# echo "sudo mount --make-rshared /" >> ~/.bashrc
+#Search other command below (message start connection)
+#5. Correct errors from your own settings/setup until this command works without errors: "docker image ls"
+# Output: REPOSITORY  TAG         IMAGE ID    CREATED     SIZE
+#TIP: For WSL with connection to Windows Desktop (see connections, below), use:
+#docker --remote image ls
+#6. Create DockerFile or Containerfiles and work as usual
+
+###############
+# CONNECTIONS
+###############
+#Copy what you see from PS to WSL:
+#podman system connection add podman-sun --identity "/mnt/c/users/<user_win>/.local/share/containers/podman/machine/machine" ssh://user@127.0.0.1:58715/run/user/1000/podman/podman.sock
+#podman system connection add --default podman-sun-root --identity "/mnt/c/users/<user_win>/.local/share/containers/podman/machine/machine" ssh://root@127.0.0.1:58715/run/podman/podman.sock
+#1. Test to know the connection:
+#podman --remote image ls
+#
+#2. Set image "hashicorp/http-echo" with pulling it from GUI in Desktop Windows
+#Check with the command if you see it in the list
+#
+#3. Confirm all actions:
+#podman --remote pull quay.io/podman/hello:latest
+#podman --remote run --name world --rm hello
+
+##############################
+#MESSAGE START CONNECTION
+##############################
+
+###############
+#CGROUP_NO_V1
+###############
+#Since Linux v5.0, kernel boot option cgroup_no_v1=<list_of_controllers_to_disable> can be used to disable cgroup v1 hierarchies. As a result, your machine should start as cgroup v2 only.
+#By following WSL documentation, we have to append %UserProfile%\.wslconfig file with:
+#[wsl2]
+#kernelCommandLine = cgroup_no_v1=all
+# +++
+#echo export PODMAN_IGNORE_CGROUPSV1_WARNING=false >> ~/.bashrc
+# + mount /
+#echo export PODMAN_IGNORE_CGROUPSV1_WARNING=false >> ~/.bashrc && echo "sudo mount --make-rshared /" >> ~/.bashrc
+# + touch
+#echo export PODMAN_IGNORE_CGROUPSV1_WARNING=false >> ~/.bashrc && echo "sudo mount --make-rshared /" >> ~/.bashrc && sudo touch /etc/containers/nodocker
+
+###############
+#CGROUPV2
+###############
+#WARN[0000] The cgroupv2 manager is set to systemd but there is no systemd user session available
+#WARN[0000] For using systemd, you may need to login using an user session
+#WARN[0000] Alternatively, you can enable lingering with: `loginctl enable-linger 1000` (possibly as root)
+#WARN[0000] Falling back to --cgroup-manager=cgroupfs
+#sudo loginctl enable-linger $USER
+#cp ${HOME}/.config/containers/containers.conf ${HOME}/.config/containers/containers.conf.sav && echo > ${HOME}/.config/containers/containers.conf
+
+##############################
+#ISSUE WITH A BAD INSTALL
+##############################
+#I did one install in a podman inside WSL. After connexion, I loose my first podman container. Don't do same issue: be sure of the connexion before doing any action.
+#In order to retrieve the list, please follow these steps:
+#1. In PowerShell, connect to WSL then switch to root.
+#2. Remove podman and use these commands in order to check every step:
+#$apt-get remove podman
+#$podman ps -a (expected output: "-bash: podman: command not found")
+#$apt-get install podman
+#$podman ps -a (expected output: the list and the container you have installed)
+#
+#Just clean all these elements (container, image) and then proceed to connect as described above.
+
+##############################
+#INSTALL AGAIN PODMAN
+##############################
+uninstall podman
+rm -rf ~/.config/containers/
+rm -rf ~/.local/share/containers
+install podman
+
+##############################
+#ISSUE WITH MACHINE INIT
+##############################
+#WSL, user
+#sudo apt-get install qemu-system-x86 gvproxy
+#sudo systemctl enable podman.socket
+#sudo systemctl status podman.socket
+#sudo loginctl enable-linger $USER => sudo loginctl enable-linger $USER
+#sudo systemctl enable --now sshd
+#ssh-keygen
+# /home/<user>/.ssh/podman_rsa
+#podman machine init podman-sun
+#
+#CMD>podman machine init podman-sun
+#Downloading VM image: fedora-coreos-40.20240825.2.0-qemu.x86_64.qcow2.xz: done
+#Extracting compressed file
+#Error: cannot overwrite connection
+#
+#Answer: do it again, force it
+
+##############################
+#ISSUE WITH MACHINE START (WSL)
+##############################
+#This way described above means had installed podman full in WSL Unix.
+#It can be a way if you validate it.
+#But perhaps you prefer to connect to the Visual Desktop.
+#src1=https://github.com/containers/podman/issues/16861
+#src2=https://github.com/containers/podman/issues/15190
+#To check informations: podman info
+#Instructions to connect: see src2 or these actions described below:
+#(PS is to write as PowerShell)
+#wsl -l (list all machines linked with WSL)
+#In Desktop App, I create a "Podman machine" and I set the name as "podman-sun". I find this machine in WSL list.
+#PS> podman machine start podman-sun
+#PS> Error: machine podman-sun: VM already running or starting (2nd option: machine will start as described below)
+#PS> podman machine ssh podman-sun
+#PS> podman system connection list
+
+##############################
+#ISSUE WITH IMAGE TO PULL
+##############################
+#Error while pulling image from podman-sun: access to image "quay.io/podman/hello" is denied (500 error).
+#reason: check your network connection
+
+##############################
+#PODMAN: NETWORK
+##############################
+1. Have only a connexion for "ethernet" (host) => not need more (no Hyper-V and so on)
+2. You can download a firewall (ofw) and disable it (ofw disable)
+3. Podman connexion ls => only podman (you add container to it)
+4. Set correct informations in files:
+
+ADD TO ~/.bashrc (WSL\root)
+echo "echo 'sudo tee /etc/wsl.conf << EOF' > /etc/wsl.conf" >> ~/.bashrc
+echo "echo '[network]' >> /etc/wsl.conf && echo 'generateResolvConf = false' >> /etc/wsl.conf" >> ~/.bashrc
+echo "echo 'EOF' >> /etc/wsl.conf" >> ~/.bashrc
+echo "echo 'nameserver 8.8.8.8' > /etc/resolv.conf" >> ~/.bashrc
+echo "echo 'nameserver 1.1.1.1' >> /etc/resolv.conf" >> ~/.bashrc
+
+A script to use, if need (port forwarding):
+PS> powershell -executionpolicy bypass -f issue_wsl2_network.ps1
+Inside this file, src=https://stackoverflow.com/questions/61002681/connecting-to-wsl2-server-via-local-network
+
+##############################
+#PODMAN: WORK WITHOUT RESULT
+##############################
+#Here some tests if you need informations for debugging
+
+#$ touch /mnt/wsl/podman.sock
+#$ sudo mount --bind /var/run/user/1000/podman/podman.sock /mnt/wsl/podman.sock
+#$ sudo mount --bind /var/run/user/1000/podman/podman.sock /mnt/wsl/podman.sock
+#$ exit
+#WSL(custom)> podman --remote --url unix:///mnt/wsl/podman.sock ps -a
+#WSL(custom)> podman system connection add --default podman-sun ssh://user@127.0.0.1:59130/run/user/1000/podman/podman.sock
+#WSL(custom)> podman system connection add --default podman-sun \\.\pipe\podman-sun
+#WSL(custom)> podman system connection list
+#WSL(custom)> podman system connection remove podman-machine-default-user
+
+#KEEP
+#WSL(custom)> podman system connection add --default podman-sun unix:///mnt/wsl/podman.sock
+#WSL(custom)> podman system connection add --default podman-sun-root unix:///mnt/wsl/podman-sockets/podman-sun/podman-user.sock
+
+#[If machine starts, here a view as a sample:]
+#Starting machine "podman-sun"
+#API forwarding listening on: npipe:////./pipe/docker_engine
+
+#Docker API clients default to this address. You do not need to set DOCKER_HOST.
+#Machine "podman-sun" started successfully
+#[End of sample]
+#
+#PS>podman machine ls
+#PS>podman system connection list
+# I see 2 entries:
+#podman-sun
+#podman-sun-root
+
+#To test if the install has succeed, just pull a light image as "php:apache".
+#podman image ls
+#podman pull php:apache
+#podman image ls
+
+#Use also a pull in podman-desktop as the hello app then check it if it's available with WSL command: podman image ls
+
+#Check if you see the image in the list in podman-desktop.
+#If yes, it's validated. If no, delete the image (start of the ID as xxx), connect podman and retry these steps.
+#podman image rm xxx
+
+#Try (WSL, root)
+#src=https://podman-desktop.io/docs/podman/accessing-podman-from-another-wsl-instance
+#wget https://github.com/containers/podman/releases/download/v4.9.1/podman-remote-static-linux_amd64.tar.gz
+#tar -C /usr/local -xzf podman-remote-static-linux_amd64.tar.gz
+#echo export PATH\=\"\$PATH\:\/usr\/local\/bin\" >> /root/.bashrc
+#echo export PATH\=\"\$PATH\:\/usr\/local\/bin\" >> $home/.bashrc
+#echo alias podman\=\'podman\-remote\-static\-linux\_amd64\' >> /root/.bashrc
+#echo alias podman\=\'podman\-remote\-static\-linux\_amd64\' >> $home/.bashrc
+#podman system connection add --default podman-sun unix:///mnt/wsl/podman-sockets/podman-sun/podman-root.sock
+#podman system connection add --default podman-machine-default-root unix:///mnt/wsl/podman-sockets/podman-sun/podman-root.sock
+#podman system connection add --default podman-machine-default-user unix:///mnt/wsl/podman-sockets/podman-sun/podman-user.sock
+
+#PS> podman machine list
+# If not a default machine, try to install (init) then remove the default):
+#PS> podman machine init
+#PS> podman machine list
+#PS> podman machine set defaut
+#Normally the result expected is a machine set as default (podman-sun*)
+#Restart computer
+
+#SSH machine from WSL (client, Debian) to Desktop (server, Windows)
+#Deb> cd /home/<user>/.ssh>
+#Deb> ssh-keygen
+#Deb> podman system connection add <user> --identity /home/<user>/.ssh/podman_sun_rsa ssh://<user><ip>/run/user/1000/podman/podman.sock
+#PS> podman system connection list
+#Check connection and use same port:
+#Deb> podman system connection add <user> --identity /home/<user>/.ssh/podman_sun_rsa ssh://<user>127.0.0.1:58715/run/user/1000/podman/podman.sock
+#Deb> podman system connection add <user_wsl_win> --identity /home/<user_wsl_win>/.ssh/podman_sun_rsa ssh://<user_wsl_win>@127.0.0.1/run/user/1000/podman/podman.sock
+#Deb> podman info
+#info:: podman system connection default podman-sun
+#a ssh tip:
+#ssh -o StrictHostKeyChecking=no <user_wsl_win>@127.0.0.1
+
+######################################################
+#PODMAN: STORAGE FULL
+######################################################
+file created when a machine is created: ext4.vhdx
+By default, it's on C but I had a partition with D (and more space)
+/mnt/c/Users/<user>/.local/share/containers/podman/machine/wsl/wsldist/podman-<machine>
+/mnt/d/podman/machine/podman-<machine>
+
+Move the machine:
+cd d:/srv/wsl
+mkdir podman-machine-default
+wsl --shutdown
+wsl --export podman-machine-default podman.tar
+wsl --unregister podman-machine-default
+wsl --import podman-machine-default podman-machine-default/ podman.tar --version 2
+del podman.tar
+src=https://github.com/containers/podman/issues/13984
+
+For me:
+cd /mnt/d/podman/machine/
+mkdir podman-<machine>
+wsl --shutdown
+wsl --export podman-<machine> podman.tar
+wsl --unregister podman-<machine>
+wsl --import podman-<machine> podman-<machine>/ podman.tar --version 2
+rm podman.tar
+rm /mnt/c/Users/<user>/.local/share/containers/podman/machine/wsl/wsldist/podman-<machine>/ext4.vhdx
+
+=> it's very important because my VG was full and perhaps had disturbed access (issues with network)
+Made changes, and reboot:
+PS> wsl --shutdown
+<reboot machine "computer host">
+
+######################################################
+#CHECKSUM FILE
+######################################################
+#For checking 2 files and be sure it's same:
+WSL> md5sum /mnt/d/podman/machine/podman-<machine>/ext4.vhdx
+
+######################################################
+#SEARCHES
+######################################################
+#C:\Users\<USER>\.config\containers
+#C:\Users\<USER>\.local\share\containers
+#https://docs.podman.io/en/latest/markdown/podman-machine-init.1.html#user-mode-networking
+#https://github.com/containers/podman/blob/main/docs/tutorials/podman-for-windows.md
+#https://debian.pkgs.org/sid/debian-main-amd64/gvproxy_0.7.3+ds1-2_amd64.deb.html
+
+
+######################################################
+#BACKGROUND
+######################################################
+#Why this VNC+RDP version? I wanted to learn an additional feature on an existing image Docker, so it's the name from the picture of Docker's Logo
+#I wanted only a Dockerfile, no src files, and settings generated on the fly.
+#I wanted also a product without licence in order to use everytime everywhere: it's on this mind I decide to switch from Docker to Podman (it's a strike planned during I learn courses).
+#I choose the name for this "Distro" as "Comet".  In order to name your container, you can choose a name from picking one from this list:
+#https://en.wikipedia.org/wiki/List_of_minor_planets_and_comets_visited_by_spacecraft#List_of_comets_visited_by_spacecraft
+
+
+#Thanks for authors from differents sources quoted in this document.
+#by 4M0NK
+
+#Comet © 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
