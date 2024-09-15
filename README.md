@@ -23,10 +23,12 @@ You find here:
 
 COMET, an easy-software
 - easy-to-use, not need a project with a structure including many files...
+- base is a debian headless version
 - 3 ways to access:
    * VNC throught a VNC Client
    * noVNC throught a browser
    * RDP throught a Windows Computer
+- For a compatibility reason, Graphical choosen is: XFCE
 
 The Tool can be used in RDP (for easiest way) to use on hack-boxes (next update will be to add a VPN feature).
 
