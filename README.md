@@ -4,6 +4,10 @@
 
 WELCOME TO THE CARIBBEANS !
 
+Here it's my Project, and inside this Project, you can find this Software: COMET
+COMET is a debian-based environment inside a container.
+It will be used for ethical hacking, but also for so many ways: why not build a stream-container? Or a Musical server, with tools dedicated? Graphical server? Gaming server as a Minecraft server? And so on...!
+
 You find here:
 - a "EULA_Comet.txt" File with the legal warnings as usuel for many softwares (mainly to avoid ugly people who are searching the bad!)
 - a "ReadMe" File is set on "Tools" directory and this document explains what is this project: in a hand, my needs & all the big questions, and in the other hand the solution which is the Answer, with This Project.
