@@ -1,0 +1,48 @@
+################################################################
+#####          Black Flag Human Beard Project              #####
+################################################################
+This Document is my document to install full in a new environment.
+The Goal is to be general but sometimes you need to adapt it for your own settings.
+
+################################################################
+#####          1. EULA / LICENCE                           #####
+################################################################
+Please refer to the following document:
+https://github.com/r00t4M0NK/BFHBP_pbc/blob/main/EULA_Comet.txt
+
+
+################################################################
+#####          2. HARDWARE                                 #####
+################################################################
+I have choosen a tiny computer, but not a Raspi.
+32 GB RAM seems the minimum in my mind. This is my choice.
+For the price, the offer with this filter is mainly coming with Windows OS.
+I have installed with Windows 11.
+
+Perhaps you want to change and reduce one of these details: it's up to you.
+
+################################################################
+#####          3. SOFTWARE                                 #####
+################################################################
+ 1. I have installed Windows 11 after I receive the machine.
+ 2. I have installed a VNC-Server on it. Check your favourite software for this and install it. I have choose TightVNC software.
+ 3. Please note at this step what is the structure of your hard drive: you need less than 230 GB for space and an additionnal space as 120 GB (machine with 500 GB is a minimum).
+ 4. I have installed Podman Desktop for Windows (by his editor: Red Hat, leader in 2024 for the Gartner® Magic Quadrant™).
+ 5. I have activated Linux Subsystems in Windows then I have installed WSL\Debian.
+ 6. Start Podman Desktop, Start PowerShell and start WSL: set the settings is starting now! If you don't have enough space, you can encounter some issues. It is hard to detect them and correct them.
+ 7. When you have set correctly everything, go to WSL.
+ 8. WSL[user_wsl]> sudo su - root
+ 9. If not working, try direct connexion: WSL[user]> su - root
+10. Add this alias (refer to document for more informations) WSL[root]> echo "alias podmanr=podman --remote " >> ~/.bashrc
+11. WSL[root]> podmanr ps -a
+12. WSL[root]> cd /home/[user_wsl]/
+13. WSL[root]> mkdir comet; chown [user_wsl]:[user_wsl] comet; chmod 755 comet
+14. WSL[root]> touch Dockerfile; chown [user_wsl]:[user_wsl] Dockerfile; chmod 755 Dockerfile
+15. (Download and crash the local file with the Dockerfile from this Project) OR (copy paste text from my online file to local file)
+16. Please update informations, set user and passwords as you want inside the file. Recommanded: leave passwords as it is. But once installed, change them.
+17. Start Build & then Run ! (report to the Dockerfile document, with instructions inside)
+18. Start to use Comet, your container ready for so many ways! Let's go for your Journey into the Milkyway Galaxy!
+
+
+
+Comet © 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
