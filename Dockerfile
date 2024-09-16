@@ -126,9 +126,9 @@ RUN wget --timeout=5 --tries=2 -O $STARTUPDIR/wallpapers/bg_custom_wallpaper.png
 ################################
 RUN mkdir -p $INST_FF && chmod 755 $INST_FF
 #Uncomment only one line: here under Firewall:
-#RUN wget --timeout=5 --tries=2 -qO- $FF_URL | tar xvj --strip 1 -C $INST_FF/
+#RUN wget --timeout=5 --tries=2 --no-check-certificate -qO- $FF_URL | tar xvj --strip 1 -C $INST_FF/
 #Uncomment only one line: here without Firewall (more secure to avoid "man in the middle"):
-RUN wget --timeout=5 --tries=2 --no-check-certificate -qO- $FF_URL | tar xvj --strip 1 -C $INST_FF/
+RUN wget --timeout=5 --tries=2 -qO- $FF_URL | tar xvj --strip 1 -C $INST_FF/
 
 #Correct issue "certificate not trust":
 # In client side (as WSL), install: apt-get install ca-certificates
@@ -201,7 +201,7 @@ RUN echo vncserver \:1 \-rfbport $VNC_PORT \-localhost no >> /usr/local/sbin/vnc
 RUN touch $STARTUPDIR/r00t4m0nk.sh
 
 #TO RELOAD WALLPAPER BACKGROUND
-RUN touch $STARTUPDIR/mybackgroundwllpservice.sh && echo rm \-f \/usr\/share\/images\/desktop\-base\/default >> $STARTUPDIR/mybackgroundwllpservice.sh  && echo ln \-s \/startup\/wallpapers\/bg_custom_wallpaper\.png \/usr\/share\/images\/desktop\-base\/default >> $STARTUPDIR/mybackgroundwllpservice.sh && chmod 755 $STARTUPDIR/mybackgroundwllpservice.sh
+RUN touch $STARTUPDIR/mybackgroundwllpservice.sh && echo rm \-f \/usr\/share\/images\/desktop\-base\/default >> $STARTUPDIR/mybackgroundwllpservice.sh  && echo ln \-s \/startup\/wallpapers\/bg_custom_wallpaper\.png \/usr\/share\/images\/desktop\-base\/default >> $STARTUPDIR/mybackgroundwllpservice.sh && chmod 755 $STARTUPDIR/mybackgroundwllpservice.sh && $STARTUPDIR/mybackgroundwllpservice.sh
 
 #FIREFOX PANEL
 RUN touch $STARTUPDIR/myfirefoxservice.sh && echo sleep 0 >> $STARTUPDIR/myfirefoxservice.sh
@@ -217,7 +217,7 @@ RUN echo ls /home/$USERVNC\/\.config\/xfce4\/panel\/launcher\-19\/ 1\> $HOME\/tm
 RUN echo rm \-f $HOME\/tmp\.txt 2\>\/dev\/null >> $STARTUPDIR/myfirefoxservice.sh && echo rm \-f $HOME\/tmp2\.txt 2\>\/dev\/null >> $STARTUPDIR/myfirefoxservice.sh
 RUN echo update\-desktop\-database \-q >> $STARTUPDIR/myfirefoxservice.sh
 RUN echo pkill xfce4-panel 2\>\/dev\/null ; xfce4-panel & >>  $STARTUPDIR/myfirefoxservice.sh
-RUN echo $STARTUPDIR\/myfirefoxservice\.sh >> /home/$USERVNC/.bashrc && echo $STARTUPDIR\/myfirefoxservice\.sh >> /root/.bashrc
+RUN echo $STARTUPDIR\/myfirefoxservice\.sh >> /home/$USERVNC/.bashrc && echo $STARTUPDIR\/myscreenstreched\.sh >> /home/$USERVNC/.bashrc && echo $STARTUPDIR\/myfirefoxservice\.sh >> /root/.bashrc
 
 #FIREFOX ASSOCIATION
 RUN echo \[Added Associations\] > $STARTUPDIR/mymimeapps.list && chmod 755 $STARTUPDIR/mymimeapps.list && echo application\/xhtml\_xml\=firefox\.desktop\; >> $STARTUPDIR/mymimeapps.list && echo text\/html\=firefox\.desktop\; >> $STARTUPDIR/mymimeapps.list && echo text\/xml\=firefox\.desktop\; >> $STARTUPDIR/mymimeapps.list
@@ -245,14 +245,17 @@ RUN echo fi >> $STARTUPDIR/myvncservice.sh
 RUN echo     " " >>  $STARTUPDIR/myvncservice.sh
 #MYNOVNCSERVICE
 RUN echo     \/usr\/share\/novnc\/utils\/novnc_proxy \-\-vnc localhost\:$VNC_PORT \-\-listen $NO_VNC_PORT \& >  $STARTUPDIR/mynovncservice.sh
+#Screen Stretched
+RUN echo sed -i \'s\+\"image\-style\" type\=\"int\" value\=\"5\"\+\"image\-style\" type\=\"int\" value\=\"3\"\+g\' \/home\/$USERVNC\/\.config\/xfce4\/xfconf\/xfce\-perchannel\-xml\/xfce4\-desktop\.xml > $STARTUPDIR/myscreenstreched.sh && echo sed -i \'s\+\"image\-style\" type\=\"int\" value\=\"5\"\+\"image\-style\" type\=\"int\" value\=\"3\"\+g\' \/universe\/\.config\/xfce4\/xfconf\/xfce\-perchannel\-xml\/xfce4\-desktop\.xml 2>/dev/null 1>> $STARTUPDIR/myscreenstreched.sh 
 #MYENTRYPOINTSERVICE - THE START WHEN CONTAINER STARTS (with user rights not root)
 RUN echo     \#\!\/usr\/bin\/env bash >  $STARTUPDIR/myentrypoint.sh
-RUN echo $STARTUPDIR\/myvncservice\.sh >> $STARTUPDIR/myentrypoint.sh && echo $STARTUPDIR\/mynovncservice\.sh >> $STARTUPDIR/myentrypoint.sh && echo $STARTUPDIR\/myfirefoxservice\.sh >> $STARTUPDIR/myentrypoint.sh && echo $STARTUPDIR\/mypsswdservice\.sh >> $STARTUPDIR/myentrypoint.sh && echo $STARTUPDIR\/myrdpservice\.sh >> $STARTUPDIR/myentrypoint.sh && echo $STARTUPDIR\/mybackgroundwllpservice\.sh >> $STARTUPDIR/myentrypoint.sh
+#An issue is on a Refresh during a RDP session, so it's need to relaunch twice:
+RUN echo $STARTUPDIR\/myvncservice\.sh >> $STARTUPDIR/myentrypoint.sh && echo $STARTUPDIR\/mynovncservice\.sh >> $STARTUPDIR/myentrypoint.sh && echo $STARTUPDIR\/myfirefoxservice\.sh >> $STARTUPDIR/myentrypoint.sh && echo $STARTUPDIR\/mypsswdservice\.sh >> $STARTUPDIR/myentrypoint.sh && echo $STARTUPDIR\/myscreenstreched\.sh >> $STARTUPDIR/myentrypoint.sh && echo $STARTUPDIR\/myrdpservice\.sh >> $STARTUPDIR/myentrypoint.sh
 RUN echo $STARTUPDIR\/r00t4m0nk\.sh >> $STARTUPDIR/myentrypoint.sh
 RUN echo $STARTUPDIR\/myfirefoxservice\.sh > $STARTUPDIR/mydesk.sh && echo $STARTUPDIR\/myrdpservice\.sh >> $STARTUPDIR/mydesk.sh && chmod 755 $STARTUPDIR/mydesk.sh
 
 RUN echo     exec \"\$\@\" >>  $STARTUPDIR/myentrypoint.sh
-RUN chmod 755 $STARTUPDIR/myvncservice.sh && chmod 755 $STARTUPDIR/mynovncservice.sh && chmod 755 $STARTUPDIR/myfirefoxservice.sh && chmod 755 $STARTUPDIR/mypsswdservice.sh && chmod 755 $STARTUPDIR/myrdpservice.sh && chmod 755 $STARTUPDIR/r00t4m0nk.sh && chmod 755 $STARTUPDIR/myentrypoint.sh
+RUN chmod 755 $STARTUPDIR/myvncservice.sh && chmod 755 $STARTUPDIR/mynovncservice.sh && chmod 755 $STARTUPDIR/myfirefoxservice.sh && chmod 755 $STARTUPDIR/mypsswdservice.sh && chmod 755 $STARTUPDIR/myrdpservice.sh && chmod 755 $STARTUPDIR/r00t4m0nk.sh && chmod 755 $STARTUPDIR/myscreenstreched.sh && chmod 755 $STARTUPDIR/myentrypoint.sh && chown $USERVNC:$USERVNC $STARTUPDIR/myscreenstreched.sh
 
 #UPDATE ROOT USER: SET THE PASSWORD
 #Alias ll is on part 2
@@ -325,6 +328,7 @@ RUN chown -R $USERVNC:$USERVNC $HOME/Desktop/firefox.desktop && chown -R $USERVN
 RUN cd $HOME/Desktop/ && dbus-launch gio set firefox.desktop "metadata::trusted" yes
 RUN sed -i 's+OnlyShowIn=XFCE;+OnlyShowIn=+g' $HOME/Desktop/firefox.desktop
 RUN echo sudo \-u $USERVNC $STARTUPDIR\/myrdpstartservice\.sh > /root/userstartxrdp.sh && chmod 755 /root/userstartxrdp.sh && . /root/userstartxrdp.sh &
+RUN echo "alias ll='ls -artl'" >> /home/$USERVNC/.bashrc
 
 
 ##########################################################################
@@ -385,7 +389,35 @@ CMD ["sleep", "infinity"]
 # /[HOME]/.local/share/gvfs-metadata/home
 #src=forum.xfce.org/viewtopic.php?id=16883
 #
-# TRUST FILES: XFCE4, THUNAR
+#XFCE:Styles
+#src=https://superuser.com/questions/1506179/where-does-xfce-store-the-setting-for-the-selected-desktop-wallpaper-file
+#~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
+#src=https://forum.xfce.org/viewtopic.php?id=8198
+#src=https://forum.xfce.org/viewtopic.php?id=9046
+#xfconf-query -c xfce4-desktop -p /backdrop -lv
+#xfconf-query -c xfce4-desktop -p /backdrop/<SCREEN>/<MONITOR>/WORKSPACE>/image-style -s <IMAGE_STYLE_VALUE>
+#image-style (Auto=0, Centered=1, Tiled=2, Stretched=3, Scaled=4, Zoomed=5)
+#xfconf-query -c xfce4-desktop -p /backdrop/<SCREEN>/<MONITOR>/WORKSPACE>/image-style -s <IMAGE_STYLE_VALUE>
+#xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVGA-0/workspace0/image-style -s 5
+#xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/image-style -s 3
+#xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor1/image-style -s 3
+#xfconf-query -c xfce4-desktop -v --create -p /backdrop/screen0/monitor0/image-style -t int -s 3
+#xfconf-query -c xfce4-desktop -v --create -p /backdrop/screen0/monitor1/image-style -t int -s 3
+#
+#dbus-launch
+#export DISPLAY=:0.0
+#export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$UID/bus
+#pkill xfdesktop; dbus-launch; export DISPLAY=:0.0; export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$UID/bus; xfdesktop &
+#
+#For any visual test: xeyes
+#src=https://linuxconfig.org/fixing-the-cannot-open-display-error-on-linux
+#
+#Issue+Refresh+RDP
+#src=https://askubuntu.com/questions/1523503/x2go-remote-desktop-with-xfce-doesnt-refresh-the-screen
+#export DISPLAY=:0.0; touch /etc/X11/Xsession.d/98xfwm4-no_compositing; /usr/bin/xfconf-query -c xfwm4 -p /general/use_compositing -s false
+
+#
+#TRUST FILES: XFCE4, THUNAR
 #cmd1=GIOFILE=/[HOME]/Desktop/firefox.desktop; sha256sum $GIOFILE  | cut -d' ' -f 1
 #cmd2=for f in ~/Desktop/*.desktop; do chmod +x "$f"; gio set -t string "$f" metadata::xfce-exe-checksum "$(sha256sum "$f" | cut -d' ' -f 1)"; done
 #src=forum.manjaro.org/t/desktop-files-showing-as-untrusted/133871/5
@@ -425,7 +457,6 @@ CMD ["sleep", "infinity"]
 #docker build --rm -t comet .
 #/!\ Clean images: docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
 #docker run --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp comet bash
-#After the run, please do immediatly stop with ID given then start again (for the firefox.desktop auth)
 #
 #CHECK AFTER THE START
 #docker ps -a
