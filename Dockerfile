@@ -29,6 +29,8 @@ ENV DISPLAY=:1 \
     RDP_PORT=3389
 EXPOSE $VNC_PORT $NO_VNC_PORT $RDP_PORT
 
+#This line could test but we keep in mind it's not same scope inside the container than here in the build file
+#echo DISPLAY: $DISPLAY VNC: $VNC_PORT NONC: $NO_VNC_PORT RDP: $RDP_PORT
 
 ##########################################################################
 ## VAR PART: SETTINGS
@@ -49,7 +51,9 @@ ENV HOME=/universe \
     FF_URL=https://ftp.mozilla.org/pub/firefox/releases/102.3.0esr/linux-x86_64/en-US/firefox-102.3.0esr.tar.bz2 \
     NO_VNC_HOME=/universe/noVNC \
     DEBIAN_FRONTEND=noninteractive \
-    BG_WLLP=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/main/wallpapers/wllpp_comet_milkyway_1280_850.jpg\
+    BG_WLLP=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/wallpapers/wllpp_comet_milkyway_1280_720.jpg\
+    RDP_WLLP=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/wallpapers/stars-dark-1654074_1280.bmp\
+    RDP_LOGO=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/main/tools/img/CometLogoWin_64.bmp\
     VNC_COL_DEPTH=24 \
     VNC_RESOLUTION=1280x720\
     ROOT_PW=MilkyWay2024\
@@ -59,6 +63,8 @@ ENV HOME=/universe \
     VNC_VIEW_ONLY=false
 WORKDIR $HOME
 
+#This line could test but we keep in mind it's not same scope inside the container than here in the build file
+#echo HOME: $HOME STARTUPDIR: $STARTUPDIR NO_VNC_HOME: $NO_VNC_HOME VNC_RESOLUTION: $VNC_RESOLUTION USERVNC: $USERVNC USER_PW: $USER_PW ROOT_PW: $ROOT_PW
 
 ##########################################################################
 ## PART PREREQUISITE: INSTALL
@@ -138,6 +144,15 @@ RUN wget --timeout=5 --tries=2 -qO- $FF_URL | tar xvj --strip 1 -C $INST_FF/
 # wget --timeout=5 --tries=2 --no-check-certificate -O /home/<user>/<path>/bg_custom_wallpaper.png -c https://hereitsanurltoreach.com/download/bgwallpaper.jpg
 # [See part "Issue WGET" for explanations]
 
+################################
+# C. RDP: PICS
+################################
+#Uncomment only one line: here under Firewall:
+#RUN wget --timeout=5 --tries=2 --no-check-certificate -O /home/$USERVNC/login-user.bmp -c $RDP_LOGO && sleep 5 && chmod 755 /usr/share/xrdp/login-user.bmp && wget --timeout=5 --tries=2 --no-check-certificate -O $STARTUPDIR/wallpapers/stars-dark-1654074_1280.bmp -c $RDP_WLLP && sleep 5 && chmod 755 $STARTUPDIR/wallpapers/stars-dark-1654074_1280.bmp
+#Uncomment only one line: here without Firewall (more secure to avoid "man in the middle"):
+RUN wget --timeout=5 --tries=2 -O /usr/share/xrdp/login-user.bmp -c $RDP_LOGO && sleep 5 && chmod 755 /usr/share/xrdp/login-user.bmp && wget --timeout=5 --tries=2 --no-check-certificate -O $STARTUPDIR/wallpapers/stars-dark-1654074_1280.bmp -c $RDP_WLLP && sleep 5 && chmod 755 $STARTUPDIR/wallpapers/stars-dark-1654074_1280.bmp
+
+
 ##########################################################################
 ## PART 2: DIRS HERE
 ##########################################################################
@@ -158,8 +173,7 @@ RUN echo vncserver -kill :1 > /home/$USERVNC/.stop
 RUN echo ps -aux \| grep vnc > /home/$USERVNC/.status
 RUN echo netstat -a \| grep : >> /home/$USERVNC/.status
 RUN echo \#!\/bin\/sh > /home/$USERVNC/.vncserverstart
-RUN echo rm -Rf /tmp/.X1-lock >> /home/$USERVNC/.vncserverstart
-RUN echo rm -Rf /tmp/.X11-unix/X1 >> /home/$USERVNC/.vncserverstart
+RUN echo rm -Rf /tmp/.X1-lock >> /home/$USERVNC/.vncserverstart && echo rm -Rf /tmp/.X11-unix/X1 >> /home/$USERVNC/.vncserverstart
 RUN echo vncserver :1 -rfbport $VNC_PORT -localhost no >> /home/$USERVNC/.vncserverstart
 RUN chmod 755 /home/$USERVNC/.start /home/$USERVNC/.stop /home/$USERVNC/.status /home/$USERVNC/.vncserverstart
 RUN chown $USERVNC:$USERVNC /home/$USERVNC/.vnc/
@@ -309,10 +323,11 @@ RUN echo '<html><head></head><body><a href="https://testmypage.com">My URL</a></
 ##########################################################################
 ## PART 6: RDP
 ##########################################################################
-RUN sed -i 's+port=3389+port= tcp: //:3389+g' /etc/xrdp/xrdp.ini
+#To know version: xrdp -v | grep "xrdp " | head -n 1 | cut -d' ' -f2
+#Set Port and Graphic RDP
+RUN sed -i 's+port=3389+port= tcp: //:'$RDP_PORT'+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_title=My Login Title+ls_title=WELCOME IN UNIVERSE OF COMET+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_height=430+ls_height=240+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_bg_color=dedede+ls_bg_color=e8e8e8+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_logo_filename=+ls_logo_filename=/usr/share/xrdp/login-user.bmp+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_logo_transform=none+ls_logo_transform=scale+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_logo_width=240+ls_logo_width=64+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_logo_height=140+ls_logo_height=64+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_logo_x_pos=55+ls_logo_x_pos=150+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_logo_y_pos=50+ls_logo_y_pos=25+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_label_x_pos=30+ls_label_x_pos=20+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_input_x_pos=110+ls_input_x_pos=150+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_input_width=210+ls_input_width=170+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_input_y_pos=220+ls_input_y_pos=100+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_ok_x_pos=142+ls_btn_ok_x_pos=80+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_ok_y_pos=370+ls_btn_ok_y_pos=200+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_cancel_x_pos=237+ls_btn_cancel_x_pos=180+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_cancel_y_pos=370+ls_btn_cancel_y_pos=200+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_top_window_bg_color=009cb5+ls_top_window_bg_color=000000+g' /etc/xrdp/xrdp.ini && sed -i 's+blue=009cb5+#blue=009cb5+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_background_image=+ls_background_image='$STARTUPDIR'/wallpapers/stars-dark-1654074_1280.bmp+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_background_transform=none+ls_background_transform=scale+g' /etc/xrdp/xrdp.ini
 RUN echo \[Unit\] > /etc/systemd/system/xrdp.service && echo Description\=RDP >> /etc/systemd/system/xrdp.service && echo "" >> /etc/systemd/system/xrdp.service && echo \[Service\] >> /etc/systemd/system/xrdp.service && echo User\=root >> /etc/systemd/system/xrdp.service && echo WorkingDirectory\=\/root >> /etc/systemd/system/xrdp.service && echo ExecStart=service xrdp restart >> /etc/systemd/system/xrdp.service && echo "" >>  /etc/systemd/system/xrdp.service && echo \[Install\] >> /etc/systemd/system/xrdp.service && echo WantedBy\=multi\-user\.target >> /etc/systemd/system/xrdp.service && chmod 755 /etc/systemd/system/xrdp.service
 RUN echo \[program\:restart\-xrdp\] > /etc/supervisor/conf.d/xrdp.conf && echo command\=$STARTUPDIR\/myrdpservice\.sh >> /etc/supervisor/conf.d/xrdp.conf && chmod 755 /etc/supervisor/conf.d/xrdp.conf && touch /var/run/supervisor.sock && chmod 777 /var/run/supervisor.sock && service supervisor restart && echo service --user enable httpd.service > /etc/systemd/user/xrdp.service /etc/systemd/user && echo >> /etc/systemd/user/xrdp.service
-
 
 ##########################################################################
 ## PART 7: SPECIAL DEBIAN - DEACTIVATE POWER MANAGEMENT
@@ -456,7 +471,10 @@ CMD ["sleep", "infinity"]
 #
 #docker build --rm -t comet .
 #/!\ Clean images: docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
+#This line could test but we keep in mind it's not same scope inside the container than here in the build file: Here it's mainly to set manually what port are needed (labels in comment should help).
+#docker run --name halley -h=halley -it -d -p $RDP_PORT:$RDP_PORT/tcp -p $VNC_PORT:$VNC_PORT/tcp -p $NO_VNC_PORT:$NO_VNC_PORT/tcp comet bash
 #docker run --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp comet bash
+#Wait one minut and connect. Main functions will be all in an available state.
 #
 #CHECK AFTER THE START
 #docker ps -a
