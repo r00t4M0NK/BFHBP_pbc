@@ -15,7 +15,8 @@
 # [Reverse point] You can apply point 2, then you launch the script in an admin PowerShell (B), then do the reverse which applies again restrictions:
 #PS> set-executionpolicy restricted
 #
-# C/ Reboot the machine (where you used PowerShell).
+# C/ Check rules in Firewall included in Windows. Analyse> Rules> WSL 2 (set in part "Firewall - Inbound Rules")
+# D/ [Optional] Reboot the machine (where you used PowerShell). Not so need, but up to you.
 #
 #src=https://superuser.com/questions/106360/how-to-enable-execution-of-powershell-scripts
 
