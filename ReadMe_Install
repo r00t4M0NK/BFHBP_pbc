@@ -4,11 +4,13 @@
 This Document is my document to install full in a new environment.
 The Goal is to be general but sometimes you need to adapt it for your own settings.
 
-################################################################
-#####          1. EULA / LICENCE                           #####
-################################################################
-Please refer to the following document:
-https://github.com/r00t4M0NK/BFHBP_pbc/blob/main/EULA_Comet.txt
+##########################################################################
+#####          1. NOTICE AND LICENCE                                 #####
+##########################################################################
+# This file is provided "as is".
+# No support is provided: you try, you learn, you test but only under your own responsability.
+# More information, Read the full Licence:
+# https://github.com/r00t4M0NK/BFHBP_pbc/blob/main/EULA_Comet.txt
 
 
 ################################################################
