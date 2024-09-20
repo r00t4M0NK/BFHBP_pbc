@@ -189,3 +189,5 @@ apt-get install -y hydra --fix-missing
 wget --no-check-certificate https://launchpad.net/dibuja/trunk/0.24.0/+download/dibuja_0.24.0-1_amd64.deb
 # Install deb
 sudo dpkg -i dibuja_0.24.0-1_amd64.deb
+
+#Comet © 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
