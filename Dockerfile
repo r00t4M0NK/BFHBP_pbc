@@ -72,7 +72,7 @@ WORKDIR $HOME
 
 RUN apt-get update
 RUN apt-get -y upgrade
-RUN apt-get -y install vim
+RUN apt-get -y install vim dos2unix
 RUN apt-get -y install wget net-tools iproute2
 RUN apt-get -y install sudo procps
 RUN apt-get -y install bzip2 apt-utils coreutils
@@ -88,6 +88,7 @@ RUN apt-get clean -y
 
 # INFOS PACKAGINGS INSTALL
 # vim for editor when to use in terminal
+# dos2unix for change file with an unix format
 # wget for downloading from terminal
 # net-tools for tools to management network (as ping)
 # iproute2 for completing net-tools
