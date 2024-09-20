@@ -18,7 +18,7 @@ You find here:
 - wallpapers: to use easily customised pictures as personnal backgrounds: I pick free pictures, and add on one the Debian Logo and I create a Comet Logo for the second, from free pictures too (use COPY if you want your own file or change URL: you catch project and change for your own usage)
 - tools: some files to helps you with some issues I was facing!
    - bin: scripts I have used. You can download them if you need a ready-file but you can create your own with informations from Tips-Files
-   - bin_prv: it's the target for the main using from me in order to swap files from a machine to another (goal: validation)
+   - bin_prv (when dir is activated): it's the target for the main using from me in order to swap files from a machine to another (goal: validation)
    - img: here you find pictures as logos for RDP or anything to be displayed for a "better" graphical interface (more for graphism than for hardware power)
 
 
