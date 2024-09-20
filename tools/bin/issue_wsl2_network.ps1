@@ -24,7 +24,7 @@
 #PODMAN: NETWORK, WSL, FIREWALL
 ##############################
 #1. Have only a connexion for "ethernet" (host) => not need more (no Hyper-V and so on)
-#2. You can download a firewall (apt-get install ufw) and disable it (ufw disable)
+#2. You can download a firewall tool manager (apt-get install ufw) and disable it (ufw disable): you have a clear status
 #3. Podman connexion ls => only podman (you add container to it)
 #4. Set correct informations in files:
 #
