@@ -19,7 +19,26 @@
 #
 #src=https://superuser.com/questions/106360/how-to-enable-execution-of-powershell-scripts
 
+##############################
+#PODMAN: NETWORK, WSL, FIREWALL
+##############################
+#1. Have only a connexion for "ethernet" (host) => not need more (no Hyper-V and so on)
+#2. You can download a firewall (apt-get install ufw) and disable it (ufw disable)
+#3. Podman connexion ls => only podman (you add container to it)
+#4. Set correct informations in files:
+#
+#ADD TO ~/.bashrc (WSL\root)
+#echo "echo 'sudo tee /etc/wsl.conf << EOF' > /etc/wsl.conf" >> ~/.bashrc
+#echo "echo '[network]' >> /etc/wsl.conf && echo 'generateResolvConf = false' >> /etc/wsl.conf" >> ~/.bashrc
+#echo "echo 'EOF' >> /etc/wsl.conf" >> ~/.bashrc
+#echo "echo 'nameserver 8.8.8.8' > /etc/resolv.conf" >> ~/.bashrc
+#echo "echo 'nameserver 1.1.1.1' >> /etc/resolv.conf" >> ~/.bashrc
 
+
+
+##################################################################################################################################################################
+# SCRIPT POWERSHELL
+##################################################################################################################################################################
 
 #B/ In order to open ports in Windows (link Windows-Podman), Run this with PowerShell as ADMIN /!\ (with rights given as described in part A)
 
