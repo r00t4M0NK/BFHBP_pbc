@@ -1,52 +1,83 @@
 #!/bin/sh
-
 ##########################################################################
 ## NOTICE AND LICENCE
 ##########################################################################
-
+#
 # This file is provided "as is".
 # No support is provided: you try, you learn, you test but only under your own responsability.
 # More information, Read the full Licence:
 # https://github.com/r00t4M0NK/BFHBP_pbc/blob/main/EULA_Comet.txt
-
-
+#
+################################################################
+# Check sources
+################################################################
+# cat /etc/apt/sources.list
+# cat /etc/apt/sources.list.d/debian.sources
+#
+#If missing and you don't see any kali repo:
+#echo "deb http://deb.debian.org/debian bookworm main" > /etc/apt/sources.list
+#echo "deb http://deb.debian.org/debian bookworm-updates main" >> /etc/apt/sources.list
+#echo "deb http://security.debian.org/debian-security bookworm-security main" >> /etc/apt/sources.list
+#echo "deb http://ftp.debian.org/debian bookworm-backports main" >> /etc/apt/sources.list
+#
+#echo "deb http://http.kali.org/kali kali-rolling main contrib non-free non-free-firmware" >> /etc/apt/sources.list.d/debian.sources
+#echo "deb http://http.kali.org/kali kali-rolling main contrib non-free non-free-firmware" >> /etc/apt/sources.list
+#
+#Check repo in the official website
+#If any issue during update:
+#<<Yes, there appears to be issues with Kali Linux WSL (not downloaded from Microsoft Store)>>
+#src=https://superuser.com/questions/1644520/apt-get-update-issue-in-kali
+#code:
+# download
+#COMET-BASH-root> wget http://http.kali.org/kali/pool/main/k/kali-archive-keyring/kali-archive-keyring_2024.1_all.deb
+# install
+#COMET-BASH-root> dpkg -i kali-archive-keyring_2024.1_all.deb
+# remove downloaded file again
+#COMET-BASH-root> rm kali-archive-keyring_2024.1_all.deb
+# update
+#COMET-BASH-root> apt-get update
+#echo deb http://http.kali.org/kali kali-rolling main contrib non-free >> /etc/apt/sources.list && apt-get update -y && apt-get upgrade -y && apt-get dist-upgrade -y
+#
+#
 ################################################################
 # For Downloading parts: choice to store in a dedicated dir
 ################################################################
 # You need to run these commands in order to download this script in the target machine for adding these tools
-# COMET-BASH> mkdir -p $HOME/internetdl; cd $HOME/internetdl;
+# COMET-BASH-user> mkdir -p $HOME/internetdl; export HTOOLLOGS=$HOME/internetdl/htools.log; touch $HOME/internetdl/htools.log; echo " " >> $HTOOLLOGS; cd $HOME/internetdl;
 #
 # Then, switch into root: su - root
 # To solve an issue:
-# apt-get update; apt-get install curl; export USERCOMET=comet; export INSTALL_SH_MYTOOLS=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/tools/bin/cyberhacktoolsinstall.sh; cd /home/$USERCOMET/internetdl; curl $INSTALL_SH_MYTOOLS > cyberhacktoolsinstall.sh; chown $USERCOMET:$USERCOMET cyberhacktoolsinstall.sh; chmod 755 cyberhacktoolsinstall.sh
-#./cyberhacktoolsinstall.sh
-
+# apt-get update; apt-get install -y curl; export USERCOMET=comet; export INSTALL_SH_MYTOOLS=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/tools/bin/cyberhacktoolsinstall.sh; cd /home/$USERCOMET/internetdl; curl $INSTALL_SH_MYTOOLS > cyberhacktoolsinstall.sh; dos2unix cyberhacktoolsinstall.sh; chown $USERCOMET:$USERCOMET cyberhacktoolsinstall.sh; chmod 755 cyberhacktoolsinstall.sh
+# sh cyberhacktoolsinstall.sh 2> errlist.log
+#
 ################################################################
 # Analyse each script from KALI
 ################################################################
 #src=https://www.kali.org/tools/
-
+#
 ################################################################
-# Part for Install: packages
+# Part for install -y: packages
 ################################################################
 apt-get update -y
 apt-get install -y mypaint
-apt-get install -y nmap wireshark netdiscover ettercap-common amass rkhunter cisco-torch lynis above masscan firewalk fierce
-apt-get install -y netmask hping3 netcat ffuf tcpdump nbtscan
+apt-get install -y nmap netdiscover ettercap-common amass rkhunter cisco-torch lynis above masscan firewalk fierce
+apt-get install -y netmask hping3 netcat-openbsd ffuf tcpdump nbtscan
 apt-get install -y hashcat mimikatz john ophcrack fcrackzip
 apt-get install -y hydra gobuster
 apt-get install -y bloodhound crackmapexec evil-winrm enum4linux shellter smbmap
 apt-get install -y wpscan dirbuster cewl dnsrecon dnsenum whatweb parsero lbd dirsearch subfinder httrack dmitry wfuzz sublist3r skipfish nikto
 apt-get install -y crunch theharvester powershell responder snort macchanger impacket-scripts chntpw wordlists eyewitness trufflehog chisel ncat openssh-client
 apt-get install -y yersinia havoc
-apt-get install -y veil msfvenom
+apt-get install -y veil metasploit-framework
 apt-get install -y ldap-utils
 apt-get install -y burpsuite msfrpcd
 #case of some issues on these 2 packages
 apt-get install -y hashcat --fix-missing
 apt-get install -y hydra --fix-missing
-
-
+#wireshark is requesting to capture y/n for non-superuser
+#apt-get install -y wireshark | echo yes
+#
+#
 ################################################################
 # Part for Explanations: packages
 ################################################################
@@ -115,14 +146,14 @@ apt-get install -y hydra --fix-missing
 # [Framework] yersinia> framework for attack
 # [Framework] havoc> framework for controlling
 # [PayLoads] veil> framework for attack
-# [PayLoads] msfvenom> to replace metasploit
+# [PayLoads] msfvenom> to replace metasploit (but inside package "metasploit-framework")
 # [LDAP] ldapsearch> classical for LDAP, in addition of all other scripts listed here
 # [Special] burpsuite> framework to use only for 1 scan / 1 action and NOT automatic
 # [Special] msfrpcd> framework Metasploit (only in 1 machine)
-# [Special] winpeas> windows priv escal => not installed as other, it's from git
-# [Special] linpeas> linux priv escal => not installed as other, it's from git
+# [Special] winpeas> windows priv escal => not install -yed as other, it's from git
+# [Special] linpeas> linux priv escal => not install -yed as other, it's from git
 #src=101labs.net/comptia-security/lab-86-how-to-enumerate-for-privilege-escalation-on-a-linux-target-with-linpeas/
-
+#
 ################################################################
 # TOOLS FORGOTTEN
 ################################################################
@@ -158,7 +189,7 @@ apt-get install -y hydra --fix-missing
 #wifipumpkin3> wifi rogue access point attack
 #wafw00f> automatic versus wen app firewall, forbidden for OSCP Test
 #socat> bidirectionnal byte streams data
-
+#
 ################################################################
 # ALLOW TOOLS
 ################################################################
@@ -180,20 +211,35 @@ apt-get install -y hydra --fix-missing
 #    PrintSpoofer
 #
 #List to check, src=https://www.quantmleak.com/posts/list-of-offensive-tools/
-
+#
 ################################################################
 #Tools to use carefully
 ################################################################
 #Burpsuite> https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Command%20Injection
 #src=https://liodeus.github.io/2020/09/18/OSCP-personal-cheatsheet.html
-
-
+#
+#
 ################################################################
 # Launchpad, package deb
 ################################################################
 # DL Launchpad
-wget --no-check-certificate https://launchpad.net/dibuja/trunk/0.24.0/+download/dibuja_0.24.0-1_amd64.deb
-# Install deb
-sudo dpkg -i dibuja_0.24.0-1_amd64.deb
-
-#Comet © 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
+#wget --no-check-certificate https://launchpad.net/dibuja/trunk/0.24.0/+download/dibuja_0.24.0-1_amd64.deb
+# install -y deb
+#sudo dpkg -i dibuja_0.24.0-1_amd64.deb
+#
+#
+################################################################
+# CHECK ALL PACKAGES
+################################################################
+#export $USERCOMET=
+export $USERCOMET=$1; export HTOOLLOGS=/home/$USERCOMET/internetdl/htools.log; export USRBINLOGS=/home/$USERCOMET/internetdl/usrbin.log;
+ls -artl /usr/bin > $USRBINLOGS
+echo "mypaint nmap wireshark netdiscover ettercap-common amass rkhunter cisco-torch lynis above masscan firewalk fierce netmask hping3 netcat ffuf tcpdump nbtscan hashcat john ophcrack fcrackzip hydra gobuster bloodhound crackmapexec evil-winrm enum4linux shellter smbmap wpscan dirbuster cewl dnsrecon dnsenum whatweb parsero lbd dirsearch subfinder httrack dmitry wfuzz sublist3r skipfish nikto crunch theharvester powershell responder snort macchanger impacket-scripts chntpw wordlists eyewitness trufflehog chisel ncat openssh-client yersinia havoc veil msfvenom ldap-utils burpsuite msfrpcd" > /home/$USERCOMET/internetdl/pgms.lst
+sed -i 's+ +\r\n+g' /home/$USERCOMET/internetdl/pgms.lst
+while read p; do
+  grep $p $USRBINLOGS >> $HTOOLLOGS
+done </home/$USERCOMET/internetdl/pgms.lst
+mypaint -v > $HTOOLLOGS; echo " " >> $HTOOLLOGS; nmap -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; wireshark -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; netdiscover -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; ettercap-common -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; amass -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; rkhunter -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; cisco-torch -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; lynis -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; above -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; masscan -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; firewalk -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; fierce -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; netmask -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; hping3 -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; netcat -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; ffuf -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; tcpdump -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; nbtscan -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; hashcat -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; ls -artl /usr/bin/mimikatz >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; john -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; ophcrack -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; fcrackzip -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; hydra -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; gobuster -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; bloodhound -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; crackmapexec -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; evil-winrm -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; enum4linux -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; shellter -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; smbmap -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; wpscan -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; dirbuster -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; cewl -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; dnsrecon -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; dnsenum -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; whatweb -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; parsero -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; lbd -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; dirsearch -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; subfinder -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; httrack -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; dmitry -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; wfuzz -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; sublist3r -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; skipfish -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; nikto -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; crunch -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; theharvester -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; powershell -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; responder -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; snort -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; macchanger -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; impacket-scripts -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; chntpw -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; wordlists -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; eyewitness -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; trufflehog -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; chisel -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; ncat -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; openssh-client -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; yersinia -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; havoc -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; veil -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; msfvenom -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; ldap-utils -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; burpsuite -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; msfrpcd -v >> $HTOOLLOGS
+#
+#
+#Comet (c) 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
