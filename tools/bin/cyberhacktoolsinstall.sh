@@ -9,11 +9,17 @@
 # More information, Read the full Licence:
 # https://github.com/r00t4M0NK/BFHBP_pbc/blob/main/EULA_Comet.txt
 
+
 ################################################################
 # For Downloading parts: choice to store in a dedicated dir
 ################################################################
-mkdir -p $HOME/internetdl
-cd $HOME/internetdl
+# You need to run these commands in order to download this script in the target machine for adding these tools
+# WSL> export INSTALL_SH_MYTOOLS=https://github.com/r00t4M0NK/BFHBP_pbc/blob/main/tools/bin/cyberhacktoolsinstall.sh
+# WSL> mkdir -p $HOME/internetdl; cd $HOME/internetdl
+#Copy and run in WSL only one line: here part if you have issue under a Firewall:
+# WSL> wget --timeout=5 --tries=2 --no-check-certificate -O cyberhacktoolsinstall.sh -c $INSTALL_SH_MYTOOLS
+#Copy and run in WSL only one line: here usual part without Firewall (more secure to avoid "man in the middle"):
+# WSL> wget --timeout=5 --tries=2 -O cyberhacktoolsinstall.sh -c $INSTALL_SH_MYTOOLS
 
 ################################################################
 # Analyse each script from KALI
