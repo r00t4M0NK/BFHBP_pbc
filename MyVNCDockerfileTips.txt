@@ -130,7 +130,7 @@
 #Just clean all these elements (container, image) and then proceed to connect as described above.
 
 ##############################
-#INSTALL AGAIN PODMAN
+#INSTALL AGAIN PODMAN (WSL)
 ##############################
 uninstall podman
 rm -rf ~/.config/containers/
@@ -184,7 +184,6 @@ install podman
 ##############################
 #PODMAN: NETWORK
 ##############################
-#Not need try to install if disbale?!
 1. Have only a connexion for "ethernet" (host) => not need more (no Hyper-V and so on)
 2. You can download a firewall (ufw) and disable it (ufw disable)
 3. Podman connexion ls => only podman (you add container to it)
@@ -197,10 +196,9 @@ echo "echo 'EOF' >> /etc/wsl.conf" >> ~/.bashrc
 echo "echo 'nameserver 8.8.8.8' > /etc/resolv.conf" >> ~/.bashrc
 echo "echo 'nameserver 1.1.1.1' >> /etc/resolv.conf" >> ~/.bashrc
 
-A script to use, if need (port forwarding):
-PS> powershell -executionpolicy bypass -f issue_wsl2_network.ps1
-Inside this file, src=https://stackoverflow.com/questions/61002681/connecting-to-wsl2-server-via-local-network
-File is available here: https://github.com/r00t4M0NK/BFHBP_pbc/blob/main/tools/bin/issue_wsl2_network.ps1
+#OPEN PORTS TO ACCESS CONTAINERS !
+#src=https://stackoverflow.com/questions/61002681/connecting-to-wsl2-server-via-local-network
+#File and details are available here: https://github.com/r00t4M0NK/BFHBP_pbc/blob/main/tools/bin/issue_wsl2_network.ps1
 
 ##############################
 #PODMAN: WORK WITHOUT RESULT
