@@ -14,14 +14,12 @@
 # For Downloading parts: choice to store in a dedicated dir
 ################################################################
 # You need to run these commands in order to download this script in the target machine for adding these tools
-# COMET-BASH> export INSTALL_SH_MYTOOLS=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/tools/bin/cyberhacktoolsinstall.sh
-# COMET-BASH> mkdir -p $HOME/internetdl; cd $HOME/internetdl; chmod 755 cyberhacktoolsinstall.sh
-#Copy and run in COMET env only one line: here part if you have issue under a Firewall:
-# COMET-BASH> wget --timeout=5 --tries=2 --no-check-certificate -O cyberhacktoolsinstall.sh -c $INSTALL_SH_MYTOOLS
-#Copy and run in COMET env only one line: here usual part without Firewall (more secure to avoid "man in the middle"):
-# COMET-BASH> wget --timeout=5 --tries=2 -O cyberhacktoolsinstall.sh -c $INSTALL_SH_MYTOOLS
+# COMET-BASH> mkdir -p $HOME/internetdl; cd $HOME/internetdl;
 #
 # Then, switch into root: su - root
+# To solve an issue:
+# apt-get update; apt-get install curl; export USERCOMET=comet; export INSTALL_SH_MYTOOLS=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/tools/bin/cyberhacktoolsinstall.sh; cd /home/$USERCOMET/internetdl; curl $INSTALL_SH_MYTOOLS > cyberhacktoolsinstall.sh; chown $USERCOMET:$USERCOMET cyberhacktoolsinstall.sh; chmod 755 cyberhacktoolsinstall.sh
+#./cyberhacktoolsinstall.sh
 
 ################################################################
 # Analyse each script from KALI
