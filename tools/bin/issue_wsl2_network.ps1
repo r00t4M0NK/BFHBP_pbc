@@ -1,3 +1,12 @@
+##########################################################################
+## NOTICE AND LICENCE
+##########################################################################
+
+# This file is provided "as is".
+# No support is provided: you try, you learn, you test but only under your own responsability.
+# More information, Read the full Licence:
+# https://github.com/r00t4M0NK/BFHBP_pbc/blob/main/EULA_Comet.txt
+
 ##################################################################################################################################################################
 # MANAGEMENT OF PORTS INSIDE WINDOWS FOR LINKS TO PODMAN
 ##################################################################################################################################################################
@@ -20,21 +29,21 @@
 #
 #src=https://superuser.com/questions/106360/how-to-enable-execution-of-powershell-scripts
 
-##############################
-#PODMAN: NETWORK, WSL, FIREWALL
-##############################
+############################################################
+# [HELP] [TIPS] PODMAN: NETWORK, WSL, FIREWALL
+############################################################
 #1. Have only a connexion for "ethernet" (host) => not need more (no Hyper-V and so on)
-#2. You can download a firewall tool manager (apt-get install ufw) and disable it (ufw disable): you have an unequivocal status
-#3. Podman connexion ls => only podman (you add container to it)
-#4. Set correct informations in files:
+#2. You can download in WSL a firewall tool manager (apt-get install ufw) and disable it (ufw disable): you have an unequivocal status
+#3. You see the only one connection (podman/bridge, subnet 10.88.0.0)  with: WSL> podman system connection ls (--remote is useless) even if we reach machine as 192.168.x.x (forwarding each port)
+#4. Try check containers through connections: WSL> podman --remote ps -a
 #
-#ADD TO ~/.bashrc (WSL\root)
+#5. Set correct informations in files:
+# Add to ~/.bashrc (commands to execute as WSL\root)
 #echo "echo 'sudo tee /etc/wsl.conf << EOF' > /etc/wsl.conf" >> ~/.bashrc
 #echo "echo '[network]' >> /etc/wsl.conf && echo 'generateResolvConf = false' >> /etc/wsl.conf" >> ~/.bashrc
 #echo "echo 'EOF' >> /etc/wsl.conf" >> ~/.bashrc
 #echo "echo 'nameserver 8.8.8.8' > /etc/resolv.conf" >> ~/.bashrc
 #echo "echo 'nameserver 1.1.1.1' >> /etc/resolv.conf" >> ~/.bashrc
-
 
 
 ##################################################################################################################################################################
