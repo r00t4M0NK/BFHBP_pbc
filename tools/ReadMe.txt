@@ -72,7 +72,7 @@ Read Feedbacks and grow up with advices from others. Don't learn courses. Unders
 - Add a licence, as Open Common Licence (Creative Common Licences) => done (cc by sa)
 - Finish to test the package: actually 2 services are validated on a total of 3 => after an OS update, 3 on 3 are validated and functionnal! => done
 - Prepare the Package and depose it in Github: it will be the main file & Tips files (I said: I wanted something easy!) => done!
-- Add a feature VPN in order to secure VNC/RDP connexion
+- Add a feature VPN/Tunnel in order to secure VNC/RDP connexion
 
 
 #####################################################################################################
@@ -81,6 +81,7 @@ Read Feedbacks and grow up with advices from others. Don't learn courses. Unders
 Find Me.
 If you find me in a social network, say me "Hello, r u the Blue\Lobster ?"
 I will know you come from here.
+OSINT game?
 ;-)
 
 ******************************************************************************
