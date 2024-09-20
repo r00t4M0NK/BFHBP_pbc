@@ -15,7 +15,7 @@
 # [Reverse point] You can apply point 2, then you launch the script in an admin PowerShell (B), then do the reverse which applies again restrictions:
 #PS> set-executionpolicy restricted
 #
-# C/ Reboot the machine.
+# C/ Reboot the machine (where you used PowerShell).
 #
 #src=https://superuser.com/questions/106360/how-to-enable-execution-of-powershell-scripts
 
