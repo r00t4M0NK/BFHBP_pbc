@@ -22,7 +22,7 @@
 #B/ In order to open ports in Windows (link Windows-Podman), Run this with PowerShell as ADMIN /!\ (with rights given as described in part A)
 
 #src=https://stackoverflow.com/questions/61002681/connecting-to-wsl2-server-via-local-network
-
+# You NEED to change the Ports List here in order to update for your own settings when you change the Dockerfile.
 
 $remoteport = bash.exe -c "ifconfig eth0 | grep 'inet '"
 $found = $remoteport -match '\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}';
