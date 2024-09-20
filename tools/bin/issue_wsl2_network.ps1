@@ -89,3 +89,5 @@ for( $i = 0; $i -lt $ports.length; $i++ ){
   iex "netsh interface portproxy delete v4tov4 listenport=$port listenaddress=$addr";
   iex "netsh interface portproxy add v4tov4 listenport=$port listenaddress=$addr connectport=$port connectaddress=$remoteport";
 }
+
+#Comet © 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
