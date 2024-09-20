@@ -1,4 +1,28 @@
+##################################################################################################################################################################
+# MANAGEMENT OF PORTS INSIDE WINDOWS FOR LINKS TO PODMAN
+##################################################################################################################################################################
+
+#This PowerShell Script grants ports to be used in Windows for applications (if you have any issue to access containers through ports)
+
+# A/ Allow script execution:
+#
+#1. Get status of Restriction Policy:
+#PS> get-executionpolicy
+#
+#2. Allow scripts execution (as ADMIN), and confirm (Yes)
+#PS> set-executionpolicy unrestricted
+#
+# [Reverse point] You can apply point 2, then you launch the script in an admin PowerShell, then do the reverse which applies again restrictions:
+#PS> set-executionpolicy restricted
+#
+#src=https://superuser.com/questions/106360/how-to-enable-execution-of-powershell-scripts
+
+
+
+#B/ In order to open ports in Windows (link Windows-Podman), Run this with PowerShell as ADMIN /!\ (with rights given as described in part A)
+
 #src=https://stackoverflow.com/questions/61002681/connecting-to-wsl2-server-via-local-network
+
 
 $remoteport = bash.exe -c "ifconfig eth0 | grep 'inet '"
 $found = $remoteport -match '\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}';
