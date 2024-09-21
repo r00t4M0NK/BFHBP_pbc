@@ -72,7 +72,7 @@ WORKDIR $HOME
 
 RUN apt-get update
 RUN apt-get -y upgrade
-RUN apt-get -y install vim dos2unix
+RUN apt-get -y install vim
 RUN apt-get -y install wget net-tools iproute2
 RUN apt-get -y install sudo procps
 RUN apt-get -y install bzip2 apt-utils coreutils
@@ -88,7 +88,6 @@ RUN apt-get clean -y
 
 # INFOS PACKAGINGS INSTALL
 # vim for editor when to use in terminal
-# dos2unix for change file with an unix format
 # wget for downloading from terminal
 # net-tools for tools to management network (as ping)
 # iproute2 for completing net-tools
@@ -216,7 +215,7 @@ RUN echo vncserver \:1 \-rfbport $VNC_PORT \-localhost no >> /usr/local/sbin/vnc
 RUN touch $STARTUPDIR/r00t4m0nk.sh
 
 #TO RELOAD WALLPAPER BACKGROUND
-RUN touch $STARTUPDIR/mybackgroundwllpservice.sh && echo rm \-f \/usr\/share\/images\/desktop\-base\/default >> $STARTUPDIR/mybackgroundwllpservice.sh  && echo ln \-s $STARTUPDIR\/wallpapers\/bg_custom_wallpaper\.png \/usr\/share\/images\/desktop\-base\/default >> $STARTUPDIR/mybackgroundwllpservice.sh && chmod 755 $STARTUPDIR/mybackgroundwllpservice.sh && $STARTUPDIR/mybackgroundwllpservice.sh
+RUN touch $STARTUPDIR/mybackgroundwllpservice.sh && echo rm \-f \/usr\/share\/images\/desktop\-base\/default >> $STARTUPDIR/mybackgroundwllpservice.sh  && echo ln \-s \/startup\/wallpapers\/bg_custom_wallpaper\.png \/usr\/share\/images\/desktop\-base\/default >> $STARTUPDIR/mybackgroundwllpservice.sh && chmod 755 $STARTUPDIR/mybackgroundwllpservice.sh && $STARTUPDIR/mybackgroundwllpservice.sh
 
 #FIREFOX PANEL
 RUN touch $STARTUPDIR/myfirefoxservice.sh && echo sleep 0 >> $STARTUPDIR/myfirefoxservice.sh
@@ -232,7 +231,7 @@ RUN echo ls /home/$USERVNC\/\.config\/xfce4\/panel\/launcher\-19\/ 1\> $HOME\/tm
 RUN echo rm \-f $HOME\/tmp\.txt 2\>\/dev\/null >> $STARTUPDIR/myfirefoxservice.sh && echo rm \-f $HOME\/tmp2\.txt 2\>\/dev\/null >> $STARTUPDIR/myfirefoxservice.sh
 RUN echo update\-desktop\-database \-q >> $STARTUPDIR/myfirefoxservice.sh
 RUN echo pkill xfce4-panel 2\>\/dev\/null ; xfce4-panel & >>  $STARTUPDIR/myfirefoxservice.sh
-RUN echo $STARTUPDIR\/myfirefoxservice\.sh >> /home/$USERVNC/.bashrc && echo $STARTUPDIR\/myscreenstreched\.sh >> /home/$USERVNC/.bashrc && echo $STARTUPDIR\/myfirefoxservice\.sh >> /root/.bashrc
+RUN echo $STARTUPDIR\/myfirefoxservice\.sh >> /home/$USERVNC/.bashrc && echo $STARTUPDIR\/myscreenstreched\.sh >> /home/$USERVNC/.bashrc && echo $STARTUPDIR\/myfirefoxservice\.sh >> /root/.bashrc && echo 'export USERCOMET=$USERVNC' >> /home/$USERVNC/.bashrc && echo 'export USERCOMET=$USERVNC' >> /root/.bashrc
 
 #FIREFOX ASSOCIATION
 RUN echo \[Added Associations\] > $STARTUPDIR/mymimeapps.list && chmod 755 $STARTUPDIR/mymimeapps.list && echo application\/xhtml\_xml\=firefox\.desktop\; >> $STARTUPDIR/mymimeapps.list && echo text\/html\=firefox\.desktop\; >> $STARTUPDIR/mymimeapps.list && echo text\/xml\=firefox\.desktop\; >> $STARTUPDIR/mymimeapps.list
@@ -326,7 +325,7 @@ RUN echo '<html><head></head><body><a href="https://testmypage.com">My URL</a></
 ##########################################################################
 #To know version: xrdp -v | grep "xrdp " | head -n 1 | cut -d' ' -f2
 #Set Port and Graphic RDP
-RUN sed -i 's+port=3389+port= tcp: //:'$RDP_PORT'+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_title=My Login Title+ls_title=WELCOME IN UNIVERSE OF COMET+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_height=430+ls_height=240+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_bg_color=dedede+ls_bg_color=e8e8e8+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_logo_filename=+ls_logo_filename=/usr/share/xrdp/login-user.bmp+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_logo_transform=none+ls_logo_transform=scale+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_logo_width=240+ls_logo_width=64+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_logo_height=140+ls_logo_height=64+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_logo_x_pos=55+ls_logo_x_pos=150+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_logo_y_pos=50+ls_logo_y_pos=25+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_label_x_pos=30+ls_label_x_pos=20+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_input_x_pos=110+ls_input_x_pos=150+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_input_width=210+ls_input_width=170+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_input_y_pos=220+ls_input_y_pos=100+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_ok_x_pos=142+ls_btn_ok_x_pos=80+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_ok_y_pos=370+ls_btn_ok_y_pos=200+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_cancel_x_pos=237+ls_btn_cancel_x_pos=180+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_cancel_y_pos=370+ls_btn_cancel_y_pos=200+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_top_window_bg_color=009cb5+ls_top_window_bg_color=000000+g' /etc/xrdp/xrdp.ini && sed -i 's+blue=009cb5+#blue=009cb5+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_background_image=+ls_background_image='$STARTUPDIR'/wallpapers/stars-dark-1654074_1280.bmp+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_background_transform=none+ls_background_transform=scale+g' /etc/xrdp/xrdp.ini
+RUN echo "sed -i 's+port=3389+port= tcp: //:'$RDP_PORT'+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_title=My Login Title+ls_title=WELCOME IN UNIVERSE OF COMET+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_height=430+ls_height=240+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_bg_color=dedede+ls_bg_color=e8e8e8+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_logo_filename=+ls_logo_filename=/usr/share/xrdp/login-user.bmp+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_logo_transform=none+ls_logo_transform=scale+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_logo_width=240+ls_logo_width=64+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_logo_height=140+ls_logo_height=64+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_logo_x_pos=55+ls_logo_x_pos=150+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_logo_y_pos=50+ls_logo_y_pos=25+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_label_x_pos=30+ls_label_x_pos=20+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_input_x_pos=110+ls_input_x_pos=150+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_input_width=210+ls_input_width=170+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_input_y_pos=220+ls_input_y_pos=100+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_ok_x_pos=142+ls_btn_ok_x_pos=80+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_ok_y_pos=370+ls_btn_ok_y_pos=200+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_cancel_x_pos=237+ls_btn_cancel_x_pos=180+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_cancel_y_pos=370+ls_btn_cancel_y_pos=200+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_top_window_bg_color=009cb5+ls_top_window_bg_color=000000+g' /etc/xrdp/xrdp.ini && sed -i 's+blue=009cb5+#blue=009cb5+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_background_image=+ls_background_image='$STARTUPDIR'/wallpapers/stars-dark-1654074_1280.bmp+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_background_transform=none+ls_background_transform=scale+g' /etc/xrdp/xrdp.ini" > $STARTUPDIR/mycometdesign.sh
 RUN echo \[Unit\] > /etc/systemd/system/xrdp.service && echo Description\=RDP >> /etc/systemd/system/xrdp.service && echo "" >> /etc/systemd/system/xrdp.service && echo \[Service\] >> /etc/systemd/system/xrdp.service && echo User\=root >> /etc/systemd/system/xrdp.service && echo WorkingDirectory\=\/root >> /etc/systemd/system/xrdp.service && echo ExecStart=service xrdp restart >> /etc/systemd/system/xrdp.service && echo "" >>  /etc/systemd/system/xrdp.service && echo \[Install\] >> /etc/systemd/system/xrdp.service && echo WantedBy\=multi\-user\.target >> /etc/systemd/system/xrdp.service && chmod 755 /etc/systemd/system/xrdp.service
 RUN echo \[program\:restart\-xrdp\] > /etc/supervisor/conf.d/xrdp.conf && echo command\=$STARTUPDIR\/myrdpservice\.sh >> /etc/supervisor/conf.d/xrdp.conf && chmod 755 /etc/supervisor/conf.d/xrdp.conf && touch /var/run/supervisor.sock && chmod 777 /var/run/supervisor.sock && service supervisor restart && echo service --user enable httpd.service > /etc/systemd/user/xrdp.service /etc/systemd/user && echo >> /etc/systemd/user/xrdp.service
 
@@ -344,7 +343,7 @@ RUN chown -R $USERVNC:$USERVNC $HOME/Desktop/firefox.desktop && chown -R $USERVN
 RUN cd $HOME/Desktop/ && dbus-launch gio set firefox.desktop "metadata::trusted" yes
 RUN sed -i 's+OnlyShowIn=XFCE;+OnlyShowIn=+g' $HOME/Desktop/firefox.desktop
 RUN echo sudo \-u $USERVNC $STARTUPDIR\/myrdpstartservice\.sh > /root/userstartxrdp.sh && chmod 755 /root/userstartxrdp.sh && . /root/userstartxrdp.sh &
-RUN echo "alias ll='ls -artl'" >> /home/$USERVNC/.bashrc
+RUN echo "alias ll='ls -artl'" >> /home/$USERVNC/.bashrc && cp /home/$USERVNC/.bashrc /home/$USERVNC/.bashrc_comet && ln -S /home/root /root/ &&  echo "mv /home/$user/.bashrc /home/$user/.bashrc_`date`" >> $STARTUP/mycometdesign.sh && echo "mv /home/$user/bashrc_comet /home/$user/.bashrc" >> $STARTUP/mycometdesign.sh && chmod 755 $STARTUP/mycometdesign.sh
 
 
 ##########################################################################
