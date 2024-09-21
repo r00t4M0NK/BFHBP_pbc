@@ -80,7 +80,7 @@ Read Feedbacks and grow up with advices from others. Don't learn courses. Unders
 #####################################################################################################
 Find Me.
 If you find me in a social network, say me "Hello, r u the Blue\Lobster ?"
-I will know you come from here.
+I will know you come from here. Not need to say more in both side.
 OSINT game?
 ;-)
 
