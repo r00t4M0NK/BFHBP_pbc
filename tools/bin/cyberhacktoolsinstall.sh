@@ -91,18 +91,11 @@ apt-get install -y burpsuite
 apt-get install -y hashcat --fix-missing
 apt-get install -y hydra --fix-missing
 #wireshark is requesting to capture y/n for non-superuser
-cat << EOF | apt-get install -y wireshark
-yes
-yes
-EOF
+echo "wireshark-common wireshark-common/install-setuid boolean true" | sudo debconf-set-selections; apt-get install -y wireshark
 #
 #macchanger is requesting to change automatically MAC @ y/n
 #For this, you need manually :(
-cat << EOF | apt-get install -y macchanger
-yes
-yes
-EOF
-#
+#apt-get install -y macchanger
 #
 ################################################################
 # Part for Explanations: packages
@@ -272,6 +265,7 @@ mypaint -v > $HTOOLLOGS; echo " " >> $HTOOLLOGS; nmap -v >> $HTOOLLOGS; echo " "
 #
 #Cleaning:
 apt-get clean
+echo Thank you to install manually this last package: [[[ apt-get install -y macchanger ]]]
 #
 # ISSUES:
 # 1. RDP Access has been modified as a Kali Linux Access. Run this to set again:
