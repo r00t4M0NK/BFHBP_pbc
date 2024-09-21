@@ -231,7 +231,7 @@ RUN echo ls /home/$USERVNC\/\.config\/xfce4\/panel\/launcher\-19\/ 1\> $HOME\/tm
 RUN echo rm \-f $HOME\/tmp\.txt 2\>\/dev\/null >> $STARTUPDIR/myfirefoxservice.sh && echo rm \-f $HOME\/tmp2\.txt 2\>\/dev\/null >> $STARTUPDIR/myfirefoxservice.sh
 RUN echo update\-desktop\-database \-q >> $STARTUPDIR/myfirefoxservice.sh
 RUN echo pkill xfce4-panel 2\>\/dev\/null ; xfce4-panel & >>  $STARTUPDIR/myfirefoxservice.sh
-RUN echo $STARTUPDIR\/myfirefoxservice\.sh >> /home/$USERVNC/.bashrc && echo $STARTUPDIR\/myscreenstreched\.sh >> /home/$USERVNC/.bashrc && echo $STARTUPDIR\/myfirefoxservice\.sh >> /root/.bashrc && echo 'export USERCOMET=$USERVNC' >> /home/$USERVNC/.bashrc && echo 'export USERCOMET=$USERVNC' >> /root/.bashrc
+RUN echo $STARTUPDIR\/myfirefoxservice\.sh >> /home/$USERVNC/.bashrc && echo $STARTUPDIR\/myscreenstreched\.sh >> /home/$USERVNC/.bashrc && echo $STARTUPDIR\/myfirefoxservice\.sh >> /root/.bashrc && echo 'export USERCOMET='$USERVNC >> /home/$USERVNC/.bashrc && echo 'export USERCOMET='$USERVNC >> /root/.bashrc && echo "alias ll='ls -artl'" >> /home/$USERVNC/.bashrc && echo "alias ll='ls -artl'" >> /root/.bashrc && cp /home/$USERVNC/.bashrc /home/$USERVNC/.bashrc_comet && cp /root/.bashrc /root/.bashrc_comet
 
 #FIREFOX ASSOCIATION
 RUN echo \[Added Associations\] > $STARTUPDIR/mymimeapps.list && chmod 755 $STARTUPDIR/mymimeapps.list && echo application\/xhtml\_xml\=firefox\.desktop\; >> $STARTUPDIR/mymimeapps.list && echo text\/html\=firefox\.desktop\; >> $STARTUPDIR/mymimeapps.list && echo text\/xml\=firefox\.desktop\; >> $STARTUPDIR/mymimeapps.list
@@ -344,7 +344,7 @@ RUN cd $HOME/Desktop/ && dbus-launch gio set firefox.desktop "metadata::trusted"
 RUN sed -i 's+OnlyShowIn=XFCE;+OnlyShowIn=+g' $HOME/Desktop/firefox.desktop
 RUN echo sudo \-u $USERVNC $STARTUPDIR\/myrdpstartservice\.sh > /root/userstartxrdp.sh && chmod 755 /root/userstartxrdp.sh && . /root/userstartxrdp.sh &
 
-RUN echo "alias ll='ls -artl'" >> /home/$USERVNC/.bashrc && cp /home/$USERVNC/.bashrc /home/$USERVNC/.bashrc_comet && cp /root/.bashrc /root/.bashrc_comet && echo "mv /home/$user/.bashrc /home/$user/.bashrc_`date`" >> $STARTUP/mycometdesignUserTerminal.sh && echo "mv /home/$user/bashrc_comet /home/$user/.bashrc" >> $STARTUP/mycometdesignUserTerminal.sh && echo "mv /root/.bashrc /root/.bashrc_`date`" >> $STARTUP/mycometdesignTerminal.sh && echo "mv /root/bashrc_comet /root/.bashrc" >> $STARTUP/mycometdesignTerminal.sh && chmod 755 $STARTUP/mycometdesignTerminal.sh && chmod 755 $STARTUP/mycometdesignUserTerminal.sh
+RUN echo "mv /home/$user/.bashrc /home/$user/.bashrc_`date`" >> $STARTUP/mycometdesignUserTerminal.sh && echo "mv /home/$user/bashrc_comet /home/$user/.bashrc" >> $STARTUP/mycometdesignUserTerminal.sh && echo "mv /root/.bashrc /root/.bashrc_`date`" >> $STARTUP/mycometdesignTerminal.sh && echo "mv /root/bashrc_comet /root/.bashrc" >> $STARTUP/mycometdesignTerminal.sh && chmod 755 $STARTUP/mycometdesignTerminal.sh && chmod 755 $STARTUP/mycometdesignUserTerminal.sh && chmod 755 /home/$USERVNC/.bashrc && chmod 755 /home/$USERVNC/.bashrc_comet && chmod 755 /root/.bashrc && chmod 755 /root/.bashrc_comet && chown $USERVNC:$USERVNC /home/$USERVNC/.bashrc && chown $USERVNC:$USERVNC /home/$USERVNC/.bashrc_comet && touch ~/.hushlogin
 
 ##########################################################################
 ## PART 9: SWITCH USER
