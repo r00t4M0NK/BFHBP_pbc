@@ -52,9 +52,13 @@
 # 8 COMET-BASH-root> apt-get update
 # 9. echo deb http://http.kali.org/kali kali-rolling main contrib non-free >> /etc/apt/sources.list && apt-get update -y && apt-get upgrade -y && apt-get dist-upgrade -y
 # [9] This step should change the wallpaper: if you want to come back to Comet, use <STARTUPDIR>/mybackgroundwllpservice.sh
+# [9] This step is during about 15 minutes on a medium machine & slow internet connection (this measure is not higly defined and is only to be shared to keep in mind)
+# [9] To have a measure in a file "mytracking.log": echo `date` > mytracking.log; [here_script_to_mesure]; echo `date` >> mytracking.log
 # If the step to check validates and need again:
 # 10. COMET-BASH-root> sh cyberhacktoolsinstall.sh $USERCOMET 2> errlist2.log
-#Check this second list: you expect to have only 1 error in this list: msfrpcd
+# This step is about 40 minutes. Check not more, and stop the script if needed.
+#Check this second list: you expect to have no error or at least only 1 error in this list: msfrpcd
+# grep Unable errlist2.log
 #Check again the command: msfrpcd -h (program is inside the package metasploit-framework)
 #
 #About netcat, the question could be what kind of package to use? This is a corrected version. More to know? Check the source.
@@ -87,9 +91,17 @@ apt-get install -y burpsuite
 apt-get install -y hashcat --fix-missing
 apt-get install -y hydra --fix-missing
 #wireshark is requesting to capture y/n for non-superuser
-apt-get install -y wireshark | echo yes
+cat << EOF | apt-get install -y wireshark
+yes
+yes
+EOF
+#
 #macchanger is requesting to change automatically MAC @ y/n
-apt-get install -y macchanger | echo yes
+#For this, you need manually :(
+cat << EOF | apt-get install -y macchanger
+yes
+yes
+EOF
 #
 #
 ################################################################
@@ -263,8 +275,9 @@ apt-get clean
 #
 # ISSUES:
 # 1. RDP Access has been modified as a Kali Linux Access. Run this to set again:
-#$STARTUP/mycometdesign.sh (watch the right value in Dockerfile)
+#$STARTUP/mycometdesignTerminal.sh (watch the right value in Dockerfile)
 # 2. The terminal for root as changed. Run this to correct:
 # [under investigation]
+# List reduced at: john ophcrack fcrackzip hydra gobuster bloodhound
 #
 #Comet (c) 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
