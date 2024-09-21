@@ -38,7 +38,7 @@
 # 1. COMET-BASH-user> mkdir -p $HOME/internetdl; export HTOOLLOGS=$HOME/internetdl/htools.log; touch $HOME/internetdl/htools.log; echo " " >> $HTOOLLOGS; cd $HOME/internetdl;
 # Then, switch into root: su - root
 # To solve an issue:
-# 2. COMET-BASH-root> apt-get update; apt-get install -y curl; export USER__COMET=comet; export INSTALL_SH_MYTOOLS=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/tools/bin/cyberhacktoolsinstall.sh; cd /home/$USER__COMET/internetdl; curl $INSTALL_SH_MYTOOLS > cyberhacktoolsinstall.sh; dos2unix cyberhacktoolsinstall.sh; chown $USER__COMET:$USER__COMET cyberhacktoolsinstall.sh; chmod 755 cyberhacktoolsinstall.sh
+# 2. COMET-BASH-root> apt-get update; apt-get install -y curl; export USER__COMET=$USERCOMET; export INSTALL_SH_MYTOOLS=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/tools/bin/cyberhacktoolsinstall.sh; cd /home/$USER__COMET/internetdl; curl $INSTALL_SH_MYTOOLS > cyberhacktoolsinstall.sh; dos2unix cyberhacktoolsinstall.sh; chown $USER__COMET:$USER__COMET cyberhacktoolsinstall.sh; chmod 755 cyberhacktoolsinstall.sh
 # 3. COMET-BASH-root> sh cyberhacktoolsinstall.sh $USERCOMET 2> errlist.log
 # 4. Check errors in error-list: COMET-BASH-root> grep Unable errlist.log
 # [4] At this step, sources should be not enough. It's mandatory to correct this point.
