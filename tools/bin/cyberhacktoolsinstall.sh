@@ -50,8 +50,8 @@
 # 7. COMET-BASH-root> rm kali-archive-keyring_2024.1_all.deb
 # update
 # 8 COMET-BASH-root> apt-get update
-# 9. echo deb http://http.kali.org/kali kali-rolling main contrib non-free >> /etc/apt/sources.list && apt-get update -y && apt-get upgrade -y && apt-get dist-upgrade -y
-# [9] This step should change the wallpaper: if you want to come back to Comet, use <STARTUPDIR>/mybackgroundwllpservice.sh
+# 9. echo deb http://http.kali.org/kali kali-rolling main contrib non-free >> /etc/apt/sources.list && apt-get update -y && apt-get upgrade -y && apt-get dist-upgrade -y && $STARTUPDIR/mybackgroundwllpservice.sh
+# [9] This step should change the wallpaper: to come back to Comet, it's to use <STARTUPDIR>/mybackgroundwllpservice.sh
 # [9] This step is during about 15 minutes on a medium machine & slow internet connection (this measure is not higly defined and is only to be shared to keep in mind)
 # [9] To have a measure in a file "mytracking.log": echo `date` > mytracking.log; [here_script_to_mesure]; echo `date` >> mytracking.log
 # If the step to check validates and need again:
