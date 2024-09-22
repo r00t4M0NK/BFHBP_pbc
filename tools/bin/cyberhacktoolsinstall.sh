@@ -12,6 +12,9 @@
 ################################################################
 # Check sources
 ################################################################
+#
+#This is information: If you want save time, go directly on process described below and follow each step
+#
 # cat /etc/apt/sources.list
 # cat /etc/apt/sources.list.d/debian.sources
 #
@@ -36,29 +39,42 @@
 ################################################################
 # You need to run these commands in order to download this script in the target machine for adding these tools
 # 1. COMET-BASH-user> mkdir -p $HOME/internetdl; export HTOOLLOGS=$HOME/internetdl/htools.log; touch $HOME/internetdl/htools.log; echo " " >> $HTOOLLOGS; cd $HOME/internetdl;
-# Then, switch into root: su - root
+# Then, switch into root (or open a new terminal): su - root
 # To solve an issue:
-# 2. COMET-BASH-root> apt-get update; apt-get install -y curl; export USER__COMET=$USERCOMET; export INSTALL_SH_MYTOOLS=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/tools/bin/cyberhacktoolsinstall.sh; cd /home/$USER__COMET/internetdl; curl $INSTALL_SH_MYTOOLS > cyberhacktoolsinstall.sh; dos2unix cyberhacktoolsinstall.sh; chown $USER__COMET:$USER__COMET cyberhacktoolsinstall.sh; chmod 755 cyberhacktoolsinstall.sh
-# 3. COMET-BASH-root> sh cyberhacktoolsinstall.sh $USERCOMET 2> errlist.log
-# 4. Check errors in error-list: COMET-BASH-root> grep Unable errlist.log
-# [4] At this step, sources should be not enough. It's mandatory to correct this point.
+# 2. COMET-BASH-root> apt-get update; apt-get install -y curl dos2unix; export USER__COMET=$USERCOMET; export INSTALL_SH_MYTOOLS=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/tools/bin/cyberhacktoolsinstall.sh; cd /home/$USER__COMET/internetdl; curl $INSTALL_SH_MYTOOLS > cyberhacktoolsinstall.sh; dos2unix cyberhacktoolsinstall.sh; chown $USER__COMET:$USER__COMET cyberhacktoolsinstall.sh; chmod 755 cyberhacktoolsinstall.sh
+# 3. COMET-BASH-root> sh cyberhacktoolsinstall.sh $USERCOMET 2> /home/$USER__COMET/internetdl/errlist.log
+# [3] It's a fast run, about 5 minutes.
+# 4. Check errors in error-list: COMET-BASH-root> grep Unable /home/$USER__COMET/internetdl/errlist.log
+# [4] At this step, sources from default image should be not enough. It's mandatory to correct this point.
 # [5] Download part
 # 5. COMET-BASH-root> wget http://http.kali.org/kali/pool/main/k/kali-archive-keyring/kali-archive-keyring_2024.1_all.deb
 # [6] Install this repo for archives
 # 6. COMET-BASH-root> dpkg -i kali-archive-keyring_2024.1_all.deb
 # Remove downloaded file
 # 7. COMET-BASH-root> rm kali-archive-keyring_2024.1_all.deb
-# update
+# [8] Update
 # 8 COMET-BASH-root> apt-get update
-# 9. echo deb http://http.kali.org/kali kali-rolling main contrib non-free >> /etc/apt/sources.list && apt-get update -y && apt-get upgrade -y && apt-get dist-upgrade -y && $STARTUPDIR/mybackgroundwllpservice.sh
+# 9. echo deb http://http.kali.org/kali kali-rolling main contrib non-free >> /etc/apt/sources.list && apt-get update -y && apt-get upgrade -y && apt-get dist-upgrade -y && $STARTUPDIR/mybackgroundwllpservice.sh && $STARTUPDIR/mycometdesignTerminal.sh
 # [9] This step should change the wallpaper: to come back to Comet, it's to use <STARTUPDIR>/mybackgroundwllpservice.sh
-# [9] This step is during about 15 minutes on a medium machine & slow internet connection (this measure is not higly defined and is only to be shared to keep in mind)
+# [9] This step should change the Terminal for the root user: to come back to Comet, it's to use <STARTUPDIR>/mycometdesignTerminal.sh
+# [9] This step is during about 20 minutes on a medium machine & slow internet connection (this measure is not higly defined and is only to be shared to keep in mind)
 # [9] To have a measure in a file "mytracking.log": echo `date` > mytracking.log; [here_script_to_mesure]; echo `date` >> mytracking.log
 # If the step to check validates and need again:
-# 10. COMET-BASH-root> sh cyberhacktoolsinstall.sh $USERCOMET 2> errlist2.log
-# This step is about 40 minutes. Check not more, and stop the script if needed.
+# 10. COMET-BASH-root> sh cyberhacktoolsinstall.sh $USERCOMET 1>/home/$USER__COMET/internetdl/installation.log 2> /home/$USER__COMET/internetdl/errlist2.log &
+# This step is about 60 minutes. Check not more, and stop the script if needed.
+#If script is locked, this end will be displayed:
+#wireshark is already the newest version (4.4.0-1).
+#The following packages were automatically installed and are no longer required:
+#  fdisk gdisk gpg-wks-server libabsl20220623 libargon2-1 libassuan0
+# (...)
+#Use 'apt autoremove' to remove them.
+#0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+#
+#macchanger is requesting to change automatically MAC @ y/n
+#For this, you need manually :(
+#apt-get install -y macchanger
 #Check this second list: you expect to have no error or at least only 1 error in this list: msfrpcd
-# grep Unable errlist2.log
+# grep Unable /home/$USER__COMET/internetdl/errlist2.log
 #Check again the command: msfrpcd -h (program is inside the package metasploit-framework)
 #
 #About netcat, the question could be what kind of package to use? This is a corrected version. More to know? Check the source.
@@ -91,11 +107,7 @@ apt-get install -y burpsuite
 apt-get install -y hashcat --fix-missing
 apt-get install -y hydra --fix-missing
 #wireshark is requesting to capture y/n for non-superuser
-echo "wireshark-common wireshark-common/install-setuid boolean true" | sudo debconf-set-selections; apt-get install -y wireshark
-#
-#macchanger is requesting to change automatically MAC @ y/n
-#For this, you need manually :(
-#apt-get install -y macchanger
+echo "wireshark-common wireshark-common/install-setuid boolean true" | sudo debconf-set-selections; apt-get install -y wireshark &
 #
 ################################################################
 # Part for Explanations: packages
@@ -278,7 +290,7 @@ done
 echo ""
 echo If you don\'t already did it, thank you to install manually this last package: [[[ apt-get install -y macchanger ]]]
 echo Remove these files after been checked if you don\'t need more: /home/$USER__COMET/internetdl/pgms.lst /home/$USER__COMET/internetdl/usrbin.log $HTOOLLOGS /root/.package_list /root/.match_list
-echo COPY/PASTE rm /home/$USER__COMET/internetdl/pgms.lst\; rm /home/$USER__COMET/internetdl/usrbin.log\; rm $HTOOLLOGS /root/.package_list\; rm /root/.match_list
+echo COPY/PASTE rm /home/$USER__COMET/internetdl/pgms.lst\; rm /home/$USER__COMET/internetdl/usrbin.log\; rm $HTOOLLOGS /root/.package_list\; rm /root/.match_list; rm /home/$USER__COMET/internetdl/errlist.log; rm /home/$USER__COMET/internetdl/errlist2.log; rm /home/$USER__COMET/internetdl/installation.log
 echo Here programs from this script which are not listed and require a manual control (check comments in "cyberhacktoolsinstall.sh"):
 grep '|$' /root/.match_list | tr -d '|'
 #
