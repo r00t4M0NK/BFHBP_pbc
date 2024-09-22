@@ -244,7 +244,7 @@ echo "wireshark-common wireshark-common/install-setuid boolean true" | sudo debc
 ################################################################
 # Launchpad, package deb
 ################################################################
-# DL Launchpad
+# DL Launchpad (as an example/sample)
 #wget --no-check-certificate https://launchpad.net/dibuja/trunk/0.24.0/+download/dibuja_0.24.0-1_amd64.deb
 # install -y deb
 #sudo dpkg -i dibuja_0.24.0-1_amd64.deb
@@ -265,7 +265,22 @@ mypaint -v > $HTOOLLOGS; echo " " >> $HTOOLLOGS; nmap -v >> $HTOOLLOGS; echo " "
 #
 #Cleaning:
 apt-get clean
-echo Thank you to install manually this last package: [[[ apt-get install -y macchanger ]]]
+#
+#To check if each package are well install, open a new terminal under root:
+dpkg --get-selections > /root/.package_list
+export caret='\r\n'
+cat "/home/$USER__COMET/internetdl/pgms.lst" | while read line 
+do
+    export p=`echo $line| tr -d $caret`
+    echo $p '|' `grep $p /root/.package_list` >> /root/.match_list
+done
+#
+echo ""
+echo If you don\'t already did it, thank you to install manually this last package: [[[ apt-get install -y macchanger ]]]
+echo Remove these files after been checked if you don\'t need more: /home/$USER__COMET/internetdl/pgms.lst /home/$USER__COMET/internetdl/usrbin.log $HTOOLLOGS /root/.package_list /root/.match_list
+echo COPY/PASTE rm /home/$USER__COMET/internetdl/pgms.lst\; rm /home/$USER__COMET/internetdl/usrbin.log\; rm $HTOOLLOGS /root/.package_list\; rm /root/.match_list
+echo Here programs from this script which are not listed and require a manual control (check comments in "cyberhacktoolsinstall.sh"):
+grep '|$' /root/.match_list | tr -d '|'
 #
 # ISSUES:
 # 1. RDP Access has been modified as a Kali Linux Access. Run this to set again:
