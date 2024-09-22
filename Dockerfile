@@ -246,7 +246,7 @@ RUN touch $STARTUPDIR/r00t4m0nk.sh
 RUN touch $STARTUPDIR/mybackgroundwllpservice.sh && echo rm \-f \/usr\/share\/images\/desktop\-base\/default >> $STARTUPDIR/mybackgroundwllpservice.sh  && echo ln \-s \/startup\/wallpapers\/bg_custom_wallpaper\.png \/usr\/share\/images\/desktop\-base\/default >> $STARTUPDIR/mybackgroundwllpservice.sh && chmod 755 $STARTUPDIR/mybackgroundwllpservice.sh && $STARTUPDIR/mybackgroundwllpservice.sh
 
 #FIREFOX PANEL
-RUN touch $STARTUPDIR/myfirefoxservice.sh && echo sleep 0 >> $STARTUPDIR/myfirefoxservice.sh
+RUN touch $STARTUPDIR/myfirefoxservice.sh && echo sleep 0 >> $STARTUPDIR/myfirefoxservice.sh && echo "if \! \[ \-f "$HOME/.firefox" >> $STARTUPDIR/myfirefoxservice.sh
 RUN echo if \[ \-f "$HOME/Desktop/firefox.desktop" \]\; then >> $STARTUPDIR/myfirefoxservice.sh
 RUN echo ls $HOME\/\.config\/xfce4\/panel\/launcher\-19\/ \> $HOME\/tmp\.txt >> $STARTUPDIR/myfirefoxservice.sh
 RUN echo cp $HOME\/Desktop\/firefox\.desktop $HOME\/\.config\/xfce4\/panel\/launcher\-19\/ >> $STARTUPDIR/myfirefoxservice.sh
@@ -258,7 +258,7 @@ RUN echo cp $STARTUPDIR/mymimeapps.list $HOME/.config/mimeapps.list >> $STARTUPD
 RUN echo ls /home/$USERVNC\/\.config\/xfce4\/panel\/launcher\-19\/ 1\> $HOME\/tmp2\.txt 2\>\/dev\/null >> $STARTUPDIR/myfirefoxservice.sh && echo cp -f $HOME\/\.config\/xfce4\/panel\/launcher\-19\/\`cat $HOME\/tmp\.txt\` /home/$USERVNC\/\.config\/xfce4\/panel\/launcher\-19\/ 2\>\/dev\/null >> $STARTUPDIR/myfirefoxservice.sh && echo rm /home/$USERVNC\/\.config\/xfce4\/panel\/launcher\-19\/\`cat $HOME\/tmp2\.txt\` 2\>\/dev\/null >> $STARTUPDIR/myfirefoxservice.sh && echo mv /home/$USERVNC\/\.config\/xfce4\/panel\/launcher\-19\/\`cat $HOME\/tmp\.txt\` /home/$USERVNC\/\.config\/xfce4\/panel\/launcher\-19\/\`cat $HOME\/tmp2\.txt\` 2\>\/dev\/null >> $STARTUPDIR/myfirefoxservice.sh
 RUN echo rm \-f $HOME\/tmp\.txt 2\>\/dev\/null >> $STARTUPDIR/myfirefoxservice.sh && echo rm \-f $HOME\/tmp2\.txt 2\>\/dev\/null >> $STARTUPDIR/myfirefoxservice.sh
 RUN echo update\-desktop\-database \-q >> $STARTUPDIR/myfirefoxservice.sh
-RUN echo pkill xfce4-panel 2\>\/dev\/null ; xfce4-panel & >>  $STARTUPDIR/myfirefoxservice.sh
+RUN echo "pkill xfce4-panel 2\>\/dev\/null ; xfce4-panel &" >>  $STARTUPDIR/myfirefoxservice.sh && echo "touch $HOME/.firefox" >> $STARTUPDIR/myfirefoxservice.sh && echo "fi" >> $STARTUPDIR/myfirefoxservice.sh
 RUN echo $STARTUPDIR\/myfirefoxservice\.sh >> /home/$USERVNC/.bashrc && echo $STARTUPDIR\/myscreenstreched\.sh >> /home/$USERVNC/.bashrc && echo $STARTUPDIR\/myfirefoxservice\.sh >> /root/.bashrc && echo 'export USERCOMET='$USERVNC >> /home/$USERVNC/.bashrc && echo 'export USERCOMET='$USERVNC >> /root/.bashrc && echo 'export STARTUPDIR='$STARTUPDIR >> /home/$USERVNC/.bashrc && echo 'export STARTUPDIR='$STARTUPDIR >> /root/.bashrc && echo "alias ll='ls -artl'" >> /home/$USERVNC/.bashrc && echo "alias ll='ls -artl'" >> /root/.bashrc && cp /home/$USERVNC/.bashrc /home/$USERVNC/.bashrc_comet && cp /root/.bashrc /root/.bashrc_comet
 
 #FIREFOX ASSOCIATION
