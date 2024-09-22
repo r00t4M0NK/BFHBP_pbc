@@ -380,7 +380,8 @@ RUN touch $STARTUPDIR/mycometdesignTerminal.sh && touch $STARTUPDIR/mycometdesig
 #SWITCH TO USER VNC & SET THE VNC PASSWORD
 USER 1000
 RUN printf "$VNC_PW\n$VNC_PW\n\n" | vncpasswd
-RUN $STARTUPDIR/myrdpservice.sh
+# To avoid a bug with xfce4, Firefox can be added inside the panel only if we refresh twice
+RUN $STARTUPDIR/myrdpservice.sh && $STARTUPDIR/myfirefoxsvc.sh && $STARTUPDIR/myfirefoxsvc.sh
 
 
 ##########################################################################
