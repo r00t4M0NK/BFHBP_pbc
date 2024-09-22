@@ -246,7 +246,7 @@ RUN touch $STARTUPDIR/r00t4m0nk.sh
 RUN touch $STARTUPDIR/mybackgroundwllpservice.sh && echo rm \-f \/usr\/share\/images\/desktop\-base\/default >> $STARTUPDIR/mybackgroundwllpservice.sh  && echo ln \-s \/startup\/wallpapers\/bg_custom_wallpaper\.png \/usr\/share\/images\/desktop\-base\/default >> $STARTUPDIR/mybackgroundwllpservice.sh && chmod 755 $STARTUPDIR/mybackgroundwllpservice.sh && $STARTUPDIR/mybackgroundwllpservice.sh
 
 #FIREFOX PANEL
-RUN touch $STARTUPDIR/myfirefoxservice.sh && echo sleep 0 >> $STARTUPDIR/myfirefoxservice.sh && echo "if \! \[ \-f "$HOME/.firefox" >> $STARTUPDIR/myfirefoxservice.sh
+RUN touch $STARTUPDIR/myfirefoxservice.sh && echo sleep 0 >> $STARTUPDIR/myfirefoxservice.sh && echo if \! \[ \-f "$HOME/.firefox" \]\; then >> $STARTUPDIR/myfirefoxservice.sh
 RUN echo if \[ \-f "$HOME/Desktop/firefox.desktop" \]\; then >> $STARTUPDIR/myfirefoxservice.sh
 RUN echo ls $HOME\/\.config\/xfce4\/panel\/launcher\-19\/ \> $HOME\/tmp\.txt >> $STARTUPDIR/myfirefoxservice.sh
 RUN echo cp $HOME\/Desktop\/firefox\.desktop $HOME\/\.config\/xfce4\/panel\/launcher\-19\/ >> $STARTUPDIR/myfirefoxservice.sh
