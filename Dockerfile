@@ -14,7 +14,7 @@
 #cd <your_dir_in_wsl>
 #curl https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/Dockerfile > Dockerfile
 #dos2unix Dockerfile
-#you can check step by step with a Docker command:
+#you can check step by step with a Docker command (COPY/PASTE):
 #BUILD
 #grep "docker build" Dockerfile
 #Or a podman command:
