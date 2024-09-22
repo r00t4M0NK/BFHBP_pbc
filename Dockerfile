@@ -351,7 +351,7 @@ RUN cd $HOME/Desktop/ && dbus-launch gio set firefox.desktop "metadata::trusted"
 RUN sed -i 's+OnlyShowIn=XFCE;+OnlyShowIn=+g' $HOME/Desktop/firefox.desktop
 RUN echo sudo \-u $USERVNC $STARTUPDIR\/myrdpstartservice\.sh > /root/userstartxrdp.sh && chmod 755 /root/userstartxrdp.sh && . /root/userstartxrdp.sh &
 
-RUN echo "mv /home/$user/.bashrc /home/$user/.bashrc_`date`" >> $STARTUP/mycometdesignUserTerminal.sh && echo "mv /home/$user/bashrc_comet /home/$user/.bashrc" >> $STARTUP/mycometdesignUserTerminal.sh && echo "mv /root/.bashrc /root/.bashrc_$(date '+%Y%m%d_%H_%M_%S')" >> $STARTUP/mycometdesignTerminal.sh && echo "cp /root/.bashrc.original /root/.bashrc" >> $STARTUP/mycometdesignTerminal.sh && touch ~/.hushlogin >> $STARTUP/mycometdesignTerminal.sh && chmod 755 $STARTUP/mycometdesignTerminal.sh && chmod 755 $STARTUP/mycometdesignUserTerminal.sh && chmod 755 /home/$USERVNC/.bashrc && chmod 755 /home/$USERVNC/.bashrc_comet && chmod 755 /root/.bashrc && chmod 755 /root/.bashrc_comet && chown $USERVNC:$USERVNC /home/$USERVNC/.bashrc && chown $USERVNC:$USERVNC /home/$USERVNC/.bashrc_comet && touch ~/.hushlogin
+RUN touch $STARTUPDIR/mycometdesignTerminal.sh && touch $STARTUPDIR/mycometdesignUserTerminal.sh && echo "mv /home/$user/.bashrc /home/$user/.bashrc_`date`" >> $STARTUPDIR/mycometdesignUserTerminal.sh && echo "mv /home/$user/bashrc_comet /home/$user/.bashrc" >> $STARTUPDIR/mycometdesignUserTerminal.sh && echo "mv /root/.bashrc /root/.bashrc_$(date '+%Y%m%d_%H_%M_%S')" >> $STARTUPDIR/mycometdesignTerminal.sh && echo "cp /root/.bashrc.original /root/.bashrc" >> $STARTUPDIR/mycometdesignTerminal.sh && touch ~/.hushlogin >> $STARTUPDIR/mycometdesignTerminal.sh && chmod 755 $STARTUPDIR/mycometdesignTerminal.sh && chmod 755 $STARTUPDIR/mycometdesignUserTerminal.sh && chmod 755 /home/$USERVNC/.bashrc && chmod 755 /home/$USERVNC/.bashrc_comet && chmod 755 /root/.bashrc && chmod 755 /root/.bashrc_comet && chown $USERVNC:$USERVNC /home/$USERVNC/.bashrc && chown $USERVNC:$USERVNC /home/$USERVNC/.bashrc_comet && touch ~/.hushlogin
 
 ##########################################################################
 ## PART 9: SWITCH USER
@@ -479,6 +479,7 @@ CMD ["sleep", "infinity"]
 #Be sure the file is clean, if you copy/paste into it:
 #dos2unix Dockerfile
 #
+#To keep an idea about the time to generate: 5 minutes
 #docker build --rm -t comet .
 #/!\ Clean images: docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
 #This line could test but we keep in mind it's not same scope inside the container than here in the build file: Here it's mainly to set manually what port are needed (labels in comment should help).
