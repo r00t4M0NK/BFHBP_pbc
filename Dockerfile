@@ -14,6 +14,27 @@
 #cd <your_dir_in_wsl>
 #curl https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/Dockerfile > Dockerfile
 #dos2unix Dockerfile
+#you can check step by step with a Docker command:
+#BUILD
+#grep "docker build" Dockerfile
+#Or a podman command:
+#grep "docker build" Dockerfile | sed -e 's/docker/podman/g'
+#CLEAN
+#Docker:
+#grep "docker rmi" Dockerfile
+#Podman:
+#grep "docker rmi" Dockerfile | sed -e 's/docker/podman/g'
+#RUN
+#Docker:
+#grep "docker run" Dockerfile
+#Podman:
+#grep "docker run" Dockerfile | sed -e 's/docker/podman/g'
+#
+#My personnal shotcurts
+#grep "docker build" Dockerfile | sed -e 's/docker/podmanr/g'
+#grep "docker rmi" Dockerfile | sed -e 's/docker/podmanr/g'
+#grep "docker run" Dockerfile | sed -e 's/docker/podmanr/g'
+
 
 ##########################################################################
 ## DOCKER PART: HEAD
