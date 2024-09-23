@@ -512,6 +512,10 @@ CMD ["sleep", "infinity"]
 #CHECK AFTER THE START
 #docker ps -a
 #docker attach xxx
+#
+#In order to add Firefox in the panel on bottom of screen, you need to connect twice in Terminal with the user.
+#In case of issue, you can try "$STARTUPDIR/myfirefoxsvc.sh containered" (to start twice with 2 "Terminal")
+#In case of big issue, use "$STARTUPDIR/mydesk.sh" => it will disconnect you from RDP session /!\ Wait a little then you can connect again
 
 
 ######################################################
