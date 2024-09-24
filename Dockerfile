@@ -288,7 +288,7 @@ RUN echo     " " >>  $STARTUPDIR/myvncservice.sh
 #MYNOVNCSERVICE
 RUN echo     \/usr\/share\/novnc\/utils\/novnc_proxy \-\-vnc localhost\:$VNC_PORT \-\-listen $NO_VNC_PORT \& >  $STARTUPDIR/mynovncservice.sh
 #Screen Stretched
-RUN echo sed -i \'s\+\"image\-style\" type\=\"int\" value\=\"5\"\+\"image\-style\" type\=\"int\" value\=\"3\"\+g\' \/home\/$USERVNC\/\.config\/xfce4\/xfconf\/xfce\-perchannel\-xml\/xfce4\-desktop\.xml > $STARTUPDIR/myscreenstreched.sh && echo sed -i \'s\+\"image\-style\" type\=\"int\" value\=\"5\"\+\"image\-style\" type\=\"int\" value\=\"3\"\+g\' \/universe\/\.config\/xfce4\/xfconf\/xfce\-perchannel\-xml\/xfce4\-desktop\.xml 2>/dev/null 1>> $STARTUPDIR/myscreenstreched.sh 
+RUN echo sed -i \'s\+\"image\-style\" type\=\"int\" value\=\"5\"\+\"image\-style\" type\=\"int\" value\=\"3\"\+g\' \/home\/$USERVNC\/\.config\/xfce4\/xfconf\/xfce\-perchannel\-xml\/xfce4\-desktop\.xml 2\>\/dev\/null > $STARTUPDIR/myscreenstreched.sh && echo sed -i \'s\+\"image\-style\" type\=\"int\" value\=\"5\"\+\"image\-style\" type\=\"int\" value\=\"3\"\+g\' \/universe\/\.config\/xfce4\/xfconf\/xfce\-perchannel\-xml\/xfce4\-desktop\.xml 2\>\/dev\/null >> $STARTUPDIR/myscreenstreched.sh 
 #MYENTRYPOINTSERVICE - THE START WHEN CONTAINER STARTS (with user rights not root)
 RUN echo     \#\!\/usr\/bin\/env bash >  $STARTUPDIR/myentrypoint.sh
 #An issue is on a Refresh during a RDP session, so it's need to relaunch twice:
