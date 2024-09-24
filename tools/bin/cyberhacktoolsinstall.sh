@@ -45,7 +45,7 @@
 # 3. COMET-BASH-root> echo `date` >/home/$USER__COMET/internetdl/installation.log ; sh cyberhacktoolsinstall.sh $USER__COMET 2>>/home/$USER__COMET/internetdl/errlist.log 1>>/home/$USER__COMET/internetdl/installation.log ; echo `date` >>/home/$USER__COMET/internetdl/installation.log
 # [3] It's a fast run, about 5 minutes.
 # [3] You can follow the run:
-# [3] COMET-BASH-user> tail -f /home/$USER__COMET/internetdl/installation.log
+# [3] COMET-BASH-user> tail -f /home/$USERCOMET/internetdl/installation.log
 # 4. Check errors in error-list: COMET-BASH-root> grep Unable /home/$USER__COMET/internetdl/errlist.log
 # [4] At this step, sources from default image should be not enough. That's this error list seems long. It's mandatory to correct this point.
 # [5] Download part
