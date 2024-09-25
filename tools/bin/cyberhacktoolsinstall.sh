@@ -72,6 +72,11 @@
 #Use 'apt autoremove' to remove them.
 #0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
 #
+#If script will be ended normally, this text will be displayed:
+#Setting up policykit-1 (124-2+kali1) ...
+#Processing triggers for initramfs-tools (0.145) ...
+#Processing triggers for libgdk-pixbuf-2.0-0:amd64 (2.42.12+dfsg-1) ...
+#
 #macchanger is requesting to change automatically MAC @ y/n
 #For this, you need manually :(
 #apt-get install -y macchanger
