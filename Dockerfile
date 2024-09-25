@@ -567,6 +567,8 @@ CMD ["sleep", "infinity"]
 #HERE FIND FEW CHARS TO COPY WHEN NEED (some terminals doesn't allow the direct input from keyboard)
 # | \
 
+#v1.0.1
+
 #Thanks for authors from differents sources quoted in this document.
 #by r00t4M0NK
 
