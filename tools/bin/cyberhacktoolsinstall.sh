@@ -12,6 +12,13 @@
 ################################################################
 # Check sources
 ################################################################
+#Logs ($USER and root)
+export HTOOLLOGS=/home/$USERCOMET/internetdl/htools.log
+export TIMETAG=[TIME]
+#
+################################################################
+# Check sources
+################################################################
 #
 #This is information: If you want save time, go directly on process described below and follow each step
 #
@@ -38,15 +45,15 @@
 # For Downloading parts: choice to store in a dedicated dir
 ################################################################
 # You need to run these commands in order to download this script in the target machine for adding these tools
-# 1. COMET-BASH-user> mkdir -p $HOME/internetdl; export HTOOLLOGS=$HOME/internetdl/htools.log; touch $HOME/internetdl/htools.log; echo " " >> $HTOOLLOGS; cd $HOME/internetdl;
+# 1. COMET-BASH-user> touch /home/$USERCOMET/internetdl/htools.log; mkdir -p /home/$USERCOMET/internetdl; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> $HTOOLLOGS; cd /home/$USERCOMET/internetdl;
 # Then, switch into root (or open a new terminal): su - root
 # To solve an issue:
-# 2. COMET-BASH-root> apt-get update; apt-get install -y curl dos2unix; export USER__COMET=$USERCOMET; export INSTALL_SH_MYTOOLS=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/tools/bin/cyberhacktoolsinstall.sh; cd /home/$USER__COMET/internetdl; curl $INSTALL_SH_MYTOOLS > cyberhacktoolsinstall.sh; dos2unix cyberhacktoolsinstall.sh; chown $USER__COMET:$USER__COMET cyberhacktoolsinstall.sh; chmod 755 cyberhacktoolsinstall.sh
-# 3. COMET-BASH-root> echo $(date '+%Y%m%d_%H_%M_%S') >/home/$USER__COMET/internetdl/installation.log ; sh cyberhacktoolsinstall.sh $USER__COMET 2>>/home/$USER__COMET/internetdl/errlist.log 1>>/home/$USER__COMET/internetdl/installation.log ; echo $(date '+%Y%m%d_%H_%M_%S') >>/home/$USER__COMET/internetdl/installation.log
+# 2. COMET-BASH-root> apt-get update; apt-get install -y curl dos2unix; export HTOOLLOGS=/home/$USERCOMET/internetdl/htools.log; export INSTALL_SH_MYTOOLS=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/tools/bin/cyberhacktoolsinstall.sh; cd /home/$USERCOMET/internetdl; curl $INSTALL_SH_MYTOOLS > cyberhacktoolsinstall.sh; dos2unix cyberhacktoolsinstall.sh; chown $USERCOMET:$USERCOMET cyberhacktoolsinstall.sh; chmod 755 cyberhacktoolsinstall.sh
+# 3. COMET-BASH-root> echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >/home/$USERCOMET/internetdl/installation.log ; sh cyberhacktoolsinstall.sh $USERCOMET 2>>/home/$USERCOMET/internetdl/errlist.log 1>>/home/$USERCOMET/internetdl/installation.log ; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/installation.log
 # [3] It's a fast run, about 5 minutes.
 # [3] You can follow the run:
 # [3] COMET-BASH-user> tail -f /home/$USERCOMET/internetdl/installation.log
-# 4. Check errors in error-list: COMET-BASH-root> grep Unable /home/$USER__COMET/internetdl/errlist.log
+# 4. Check errors in error-list: COMET-BASH-root> grep Unable /home/$USERCOMET/internetdl/errlist.log
 # [4] At this step, sources from default image should be not enough. That's this error list seems long. It's mandatory to correct this point.
 # [5] Download part
 # 5. COMET-BASH-root> wget http://http.kali.org/kali/pool/main/k/kali-archive-keyring/kali-archive-keyring_2024.1_all.deb
@@ -60,9 +67,9 @@
 # [9] This step should change the wallpaper: to come back to Comet, it's to use <STARTUPDIR>/mybackgroundwllpservice.sh
 # [9] This step should change the Terminal for the root user: to come back to Comet, it's to use <STARTUPDIR>/mycometdesignTerminal.sh
 # [9] This step is during about 20 minutes on a medium machine & slow internet connection (this measure is not higly defined and is only to be shared to keep in mind)
-# [9] To have a measure in a file "mytracking.log": echo $(date '+%Y%m%d_%H_%M_%S') > mytracking.log; [here_script_to_mesure]; echo $(date '+%Y%m%d_%H_%M_%S') >> mytracking.log
+# [9] To have a measure in a file "mytracking.log": echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') > mytracking.log; [here_script_to_mesure]; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> mytracking.log
 # If the step to check validates and need again:
-# 10. COMET-BASH-root> echo $(date '+%Y%m%d_%H_%M_%S') >/home/$USER__COMET/internetdl/installation2.log ; sh cyberhacktoolsinstall.sh $USER__COMET 2>>/home/$USER__COMET/internetdl/errlist2.log 1>>/home/$USER__COMET/internetdl/installation2.log & ; echo $(date '+%Y%m%d_%H_%M_%S') >/home/$USER__COMET/internetdl/installation2.log
+# 10. COMET-BASH-root> echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >/home/$USERCOMET/internetdl/installation2.log ; sh cyberhacktoolsinstall.sh $USERCOMET 2>>/home/$USERCOMET/internetdl/errlist2.log 1>>/home/$USERCOMET/internetdl/installation2.log & ; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >/home/$USERCOMET/internetdl/installation2.log
 # This step is about 60 minutes. Check not more, and stop the script if needed.
 #If script is locked, this end will be displayed:
 #wireshark is already the newest version (4.4.0-1).
@@ -77,13 +84,13 @@
 #apt-get install -y macchanger
 #
 #Check this second list: you expect to have no error or at least only 1 error in this list: msfrpcd
-# grep Unable /home/$USER__COMET/internetdl/errlist2.log
+# grep Unable /home/$USERCOMET/internetdl/errlist2.log
 #Check again the command: msfrpcd -h (program is inside the package metasploit-framework)
 #
 #About netcat, the question could be what kind of package to use? This is a corrected version. More to know? Check the source.
 # src=https://askubuntu.com/questions/346869/what-are-the-differences-between-netcat-traditional-and-netcat-openbsd
 #
-#If script in STep [9] will be ended normally, this text will be displayed:
+#If script in Step [9] will be ended normally, this text will be displayed:
 #Setting up policykit-1 (124-2+kali1) ...
 #Processing triggers for initramfs-tools (0.145) ...
 #Processing triggers for libgdk-pixbuf-2.0-0:amd64 (2.42.12+dfsg-1) ...
@@ -276,14 +283,14 @@ echo "wireshark-common wireshark-common/install-setuid boolean true" | sudo debc
 ################################################################
 # CHECK ALL PACKAGES
 ################################################################
-#export $USER__COMET=
-export $USER__COMET=$1; export HTOOLLOGS=/home/$USER__COMET/internetdl/htools.log; export USRBINLOGS=/home/$USER__COMET/internetdl/usrbin.log;
+#export $USERCOMET=
+export $USERCOMET=$1; export HTOOLLOGS=/home/$USERCOMET/internetdl/htools.log; export USRBINLOGS=/home/$USERCOMET/internetdl/usrbin.log;
 ls -artl /usr/bin > $USRBINLOGS
-echo "mypaint nmap wireshark netdiscover ettercap-common amass rkhunter cisco-torch lynis above masscan firewalk fierce netmask hping3 netcat ffuf tcpdump nbtscan hashcat john ophcrack fcrackzip hydra gobuster bloodhound crackmapexec evil-winrm enum4linux shellter smbmap wpscan dirbuster cewl dnsrecon dnsenum whatweb parsero lbd dirsearch subfinder httrack dmitry wfuzz sublist3r skipfish nikto crunch theharvester powershell responder snort macchanger impacket-scripts chntpw wordlists eyewitness trufflehog chisel ncat openssh-client yersinia havoc veil msfvenom ldap-utils burpsuite msfrpcd" > /home/$USER__COMET/internetdl/pgms.lst
-sed -i 's+ +\r\n+g' /home/$USER__COMET/internetdl/pgms.lst
+echo "mypaint nmap wireshark netdiscover ettercap-common amass rkhunter cisco-torch lynis above masscan firewalk fierce netmask hping3 netcat ffuf tcpdump nbtscan hashcat john ophcrack fcrackzip hydra gobuster bloodhound crackmapexec evil-winrm enum4linux shellter smbmap wpscan dirbuster cewl dnsrecon dnsenum whatweb parsero lbd dirsearch subfinder httrack dmitry wfuzz sublist3r skipfish nikto crunch theharvester powershell responder snort macchanger impacket-scripts chntpw wordlists eyewitness trufflehog chisel ncat openssh-client yersinia havoc veil msfvenom ldap-utils burpsuite msfrpcd" > /home/$USERCOMET/internetdl/pgms.lst
+sed -i 's+ +\r\n+g' /home/$USERCOMET/internetdl/pgms.lst
 while read p; do
   grep $p $USRBINLOGS >> $HTOOLLOGS
-done </home/$USER__COMET/internetdl/pgms.lst
+done </home/$USERCOMET/internetdl/pgms.lst
 mypaint -v > $HTOOLLOGS; echo " " >> $HTOOLLOGS; nmap -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; wireshark -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; netdiscover -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; ettercap-common -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; amass -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; rkhunter -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; cisco-torch -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; lynis -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; above -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; masscan -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; firewalk -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; fierce -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; netmask -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; hping3 -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; netcat -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; ffuf -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; tcpdump -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; nbtscan -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; hashcat -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; ls -artl /usr/bin/mimikatz >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; john -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; ophcrack -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; fcrackzip -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; hydra -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; gobuster -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; bloodhound -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; crackmapexec -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; evil-winrm -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; enum4linux -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; shellter -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; smbmap -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; wpscan -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; dirbuster -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; cewl -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; dnsrecon -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; dnsenum -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; whatweb -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; parsero -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; lbd -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; dirsearch -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; subfinder -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; httrack -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; dmitry -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; wfuzz -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; sublist3r -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; skipfish -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; nikto -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; crunch -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; theharvester -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; powershell -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; responder -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; snort -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; macchanger -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; impacket-scripts -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; chntpw -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; wordlists -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; eyewitness -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; trufflehog -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; chisel -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; ncat -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; openssh-client -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; yersinia -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; havoc -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; veil -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; msfvenom -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; ldap-utils -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; burpsuite -v >> $HTOOLLOGS; echo " " >> $HTOOLLOGS; msfrpcd -h >> $HTOOLLOGS
 #
 #Cleaning:
@@ -292,7 +299,7 @@ apt-get clean
 #To check if each package are well install, open a new terminal under root:
 dpkg --get-selections > /root/.package_list
 export caret='\r\n'
-cat "/home/$USER__COMET/internetdl/pgms.lst" | while read line 
+cat "/home/$USERCOMET/internetdl/pgms.lst" | while read line 
 do
     export p=`echo $line| tr -d $caret`
     echo $p '|' `grep $p /root/.package_list` >> /root/.match_list
@@ -300,8 +307,8 @@ done
 #
 echo ""
 echo If you don\'t already did it, thank you to install manually this last package: [[[ apt-get install -y macchanger ]]]
-echo Remove these files after been checked if you don\'t need more: /home/$USER__COMET/internetdl/pgms.lst /home/$USER__COMET/internetdl/usrbin.log $HTOOLLOGS /root/.package_list /root/.match_list
-echo COPY/PASTE "rm /home/$USER__COMET/internetdl/pgms.lst\; rm /home/$USER__COMET/internetdl/usrbin.log\; rm $HTOOLLOGS /root/.package_list\; rm /root/.match_list; rm /home/$USER__COMET/internetdl/errlist.log; rm /home/$USER__COMET/internetdl/errlist2.log; rm /home/$USER__COMET/internetdl/installation.log; rm /home/$USER__COMET/internetdl/installation2.log"
+echo Remove these files after been checked if you don\'t need more: /home/$USERCOMET/internetdl/pgms.lst /home/$USERCOMET/internetdl/usrbin.log $HTOOLLOGS /root/.package_list /root/.match_list
+echo COPY/PASTE "rm /home/$USERCOMET/internetdl/pgms.lst\; rm /home/$USERCOMET/internetdl/usrbin.log\; rm $HTOOLLOGS /root/.package_list\; rm /root/.match_list; rm /home/$USERCOMET/internetdl/errlist.log; rm /home/$USERCOMET/internetdl/errlist2.log; rm /home/$USERCOMET/internetdl/installation.log; rm /home/$USERCOMET/internetdl/installation2.log"
 echo Here programs from this script which are not listed and require a manual control \(check comments in \"cyberhacktoolsinstall.sh\"\)\:
 grep '|$' /root/.match_list | tr -d '|'
 #
