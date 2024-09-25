@@ -49,7 +49,7 @@ export TIMETAG=[TIME]
 # Then, switch into root (or open a new terminal): su - root
 # To solve an issue:
 # 2. COMET-BASH-root> apt-get update; apt-get install -y curl dos2unix; export HTOOLLOGS=/home/$USERCOMET/internetdl/htools.log; export INSTALL_SH_MYTOOLS=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/tools/bin/cyberhacktoolsinstall.sh; cd /home/$USERCOMET/internetdl; curl $INSTALL_SH_MYTOOLS > cyberhacktoolsinstall.sh; dos2unix cyberhacktoolsinstall.sh; chown $USERCOMET:$USERCOMET cyberhacktoolsinstall.sh; chmod 755 cyberhacktoolsinstall.sh
-# 3. COMET-BASH-root> echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >/home/$USERCOMET/internetdl/installation.log ; sh cyberhacktoolsinstall.sh $USERCOMET 2>>/home/$USERCOMET/internetdl/errlist.log 1>>/home/$USERCOMET/internetdl/installation.log ; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/installation.log
+# 3. COMET-BASH-root> echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >/home/$USERCOMET/internetdl/installation.log ; sh cyberhacktoolsinstall.sh $USERCOMET 2>>/home/$USERCOMET/internetdl/errlist.log 1>>/home/$USERCOMET/internetdl/installation.log ; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/installation.log; echo END [3]
 # [3] It's a fast run, about 5 minutes.
 # [3] You can follow the run:
 # [3] COMET-BASH-user> tail -f /home/$USERCOMET/internetdl/installation.log
@@ -63,13 +63,14 @@ export TIMETAG=[TIME]
 # 7. COMET-BASH-root> rm kali-archive-keyring_2024.1_all.deb
 # [8] Update
 # 8. COMET-BASH-root> apt-get update
-# 9. COMET-BASH-root> echo deb http://http.kali.org/kali kali-rolling main contrib non-free >> /etc/apt/sources.list && apt-get update -y && apt-get upgrade -y && apt-get dist-upgrade -y && $STARTUPDIR/mybackgroundwllpservice.sh && $STARTUPDIR/mycometdesignTerminal.sh
+# [5-6-7-8] In one line: wget http://http.kali.org/kali/pool/main/k/kali-archive-keyring/kali-archive-keyring_2024.1_all.deb; dpkg -i kali-archive-keyring_2024.1_all.deb; rm kali-archive-keyring_2024.1_all.deb; apt-get update
+# 9. COMET-BASH-root> echo deb http://http.kali.org/kali kali-rolling main contrib non-free >> /etc/apt/sources.list && apt-get update -y && apt-get upgrade -y && apt-get dist-upgrade -y && $STARTUPDIR/mybackgroundwllpservice.sh && $STARTUPDIR/mycometdesignTerminal.sh; echo END [9]
 # [9] This step should change the wallpaper: to come back to Comet, it's to use <STARTUPDIR>/mybackgroundwllpservice.sh
 # [9] This step should change the Terminal for the root user: to come back to Comet, it's to use <STARTUPDIR>/mycometdesignTerminal.sh
 # [9] This step is during about 20 minutes on a medium machine & slow internet connection (this measure is not higly defined and is only to be shared to keep in mind)
 # [9] To have a measure in a file "mytracking.log": echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') > mytracking.log; [here_script_to_mesure]; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> mytracking.log
 # If the step to check validates and need again:
-# 10. COMET-BASH-root> echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >/home/$USERCOMET/internetdl/installation2.log ; sh cyberhacktoolsinstall.sh $USERCOMET 2>>/home/$USERCOMET/internetdl/errlist2.log 1>>/home/$USERCOMET/internetdl/installation2.log & ; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >/home/$USERCOMET/internetdl/installation2.log
+# 10. COMET-BASH-root> echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >/home/$USERCOMET/internetdl/installation2.log ; sh cyberhacktoolsinstall.sh $USERCOMET & 2>>/home/$USERCOMET/internetdl/errlist2.log 1>>/home/$USERCOMET/internetdl/installation2.log ; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >/home/$USERCOMET/internetdl/installation2.log ; echo END [10]
 # This step is about 60 minutes. Check not more, and stop the script if needed.
 #If script is locked, this end will be displayed:
 #wireshark is already the newest version (4.4.0-1).
