@@ -42,7 +42,7 @@
 # Then, switch into root (or open a new terminal): su - root
 # To solve an issue:
 # 2. COMET-BASH-root> apt-get update; apt-get install -y curl dos2unix; export USER__COMET=$USERCOMET; export INSTALL_SH_MYTOOLS=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/tools/bin/cyberhacktoolsinstall.sh; cd /home/$USER__COMET/internetdl; curl $INSTALL_SH_MYTOOLS > cyberhacktoolsinstall.sh; dos2unix cyberhacktoolsinstall.sh; chown $USER__COMET:$USER__COMET cyberhacktoolsinstall.sh; chmod 755 cyberhacktoolsinstall.sh
-# 3. COMET-BASH-root> echo `date` >/home/$USER__COMET/internetdl/installation.log ; sh cyberhacktoolsinstall.sh $USER__COMET 2>>/home/$USER__COMET/internetdl/errlist.log 1>>/home/$USER__COMET/internetdl/installation.log ; echo `date` >>/home/$USER__COMET/internetdl/installation.log
+# 3. COMET-BASH-root> echo $(date '+%Y%m%d_%H_%M_%S') >/home/$USER__COMET/internetdl/installation.log ; sh cyberhacktoolsinstall.sh $USER__COMET 2>>/home/$USER__COMET/internetdl/errlist.log 1>>/home/$USER__COMET/internetdl/installation.log ; echo $(date '+%Y%m%d_%H_%M_%S') >>/home/$USER__COMET/internetdl/installation.log
 # [3] It's a fast run, about 5 minutes.
 # [3] You can follow the run:
 # [3] COMET-BASH-user> tail -f /home/$USERCOMET/internetdl/installation.log
@@ -60,9 +60,9 @@
 # [9] This step should change the wallpaper: to come back to Comet, it's to use <STARTUPDIR>/mybackgroundwllpservice.sh
 # [9] This step should change the Terminal for the root user: to come back to Comet, it's to use <STARTUPDIR>/mycometdesignTerminal.sh
 # [9] This step is during about 20 minutes on a medium machine & slow internet connection (this measure is not higly defined and is only to be shared to keep in mind)
-# [9] To have a measure in a file "mytracking.log": echo `date` > mytracking.log; [here_script_to_mesure]; echo `date` >> mytracking.log
+# [9] To have a measure in a file "mytracking.log": echo $(date '+%Y%m%d_%H_%M_%S') > mytracking.log; [here_script_to_mesure]; echo $(date '+%Y%m%d_%H_%M_%S') >> mytracking.log
 # If the step to check validates and need again:
-# 10. COMET-BASH-root> echo `date` >/home/$USER__COMET/internetdl/installation2.log ; sh cyberhacktoolsinstall.sh $USER__COMET 2>>/home/$USER__COMET/internetdl/errlist2.log 1>>/home/$USER__COMET/internetdl/installation2.log & ; echo `date` >/home/$USER__COMET/internetdl/installation2.log
+# 10. COMET-BASH-root> echo $(date '+%Y%m%d_%H_%M_%S') >/home/$USER__COMET/internetdl/installation2.log ; sh cyberhacktoolsinstall.sh $USER__COMET 2>>/home/$USER__COMET/internetdl/errlist2.log 1>>/home/$USER__COMET/internetdl/installation2.log & ; echo $(date '+%Y%m%d_%H_%M_%S') >/home/$USER__COMET/internetdl/installation2.log
 # This step is about 60 minutes. Check not more, and stop the script if needed.
 #If script is locked, this end will be displayed:
 #wireshark is already the newest version (4.4.0-1).
@@ -72,20 +72,24 @@
 #Use 'apt autoremove' to remove them.
 #0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
 #
-#If script will be ended normally, this text will be displayed:
-#Setting up policykit-1 (124-2+kali1) ...
-#Processing triggers for initramfs-tools (0.145) ...
-#Processing triggers for libgdk-pixbuf-2.0-0:amd64 (2.42.12+dfsg-1) ...
-#
 #macchanger is requesting to change automatically MAC @ y/n
 #For this, you need manually :(
 #apt-get install -y macchanger
+#
 #Check this second list: you expect to have no error or at least only 1 error in this list: msfrpcd
 # grep Unable /home/$USER__COMET/internetdl/errlist2.log
 #Check again the command: msfrpcd -h (program is inside the package metasploit-framework)
 #
 #About netcat, the question could be what kind of package to use? This is a corrected version. More to know? Check the source.
 # src=https://askubuntu.com/questions/346869/what-are-the-differences-between-netcat-traditional-and-netcat-openbsd
+#
+#If script in STep [9] will be ended normally, this text will be displayed:
+#Setting up policykit-1 (124-2+kali1) ...
+#Processing triggers for initramfs-tools (0.145) ...
+#Processing triggers for libgdk-pixbuf-2.0-0:amd64 (2.42.12+dfsg-1) ...
+#
+#To follow the running:
+#[10] COMET-BASH-user> tail -f /home/$USER/internetdl/installation2.log
 #
 #
 ################################################################
