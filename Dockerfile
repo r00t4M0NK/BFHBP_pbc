@@ -507,14 +507,17 @@ CMD ["sleep", "infinity"]
 #This line could test but we keep in mind it's not same scope inside the container than here in the build file: Here it's mainly to set manually what port are needed (labels in comment should help).
 #docker run --name halley -h=halley -it -d -p $RDP_PORT:$RDP_PORT/tcp -p $VNC_PORT:$VNC_PORT/tcp -p $NO_VNC_PORT:$NO_VNC_PORT/tcp comet bash
 #docker run --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp comet bash
-#Wait one minut and connect. Main functions will be all in an available state.
+#Wait at least 20 seconds and connect. Main functions will be all in an available state.
+#
+#Have you deleted the container just created because some work done isn't as you want? And you want another container from the same image wihtout building because it's not need? And you see same ID? Ok. Do this:
+#docker run --name halley --replace -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp comet bash
 #
 #CHECK AFTER THE START
 #docker ps -a
 #docker attach xxx
 #
-#In order to add Firefox in the panel on bottom of screen, you need to connect twice in Terminal with the user.
-#In case of issue, you can try "$STARTUPDIR/myfirefoxsvc.sh containered" (user 'normal', from a "Terminal") => normally, only a new Terminal will do the job itself (silently correction)
+#In order to add Firefox in the panel on bottom of screen, you need to open one Terminal with the user.
+#In case of issue, you can try "$STARTUPDIR/myfirefoxsvc.sh containered" (user 'normal', from a "Terminal") => normally, only a new Terminal will do the job itself (silently correction, sentence above)
 #In case of big issue, use "$STARTUPDIR/mydesk.sh" => it will disconnect you from RDP session /!\ Wait a little then you can connect again
 
 
