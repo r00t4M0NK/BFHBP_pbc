@@ -76,11 +76,11 @@ export TIMETAG=[TIME]
 # [5-6-7-8] In one line: wget http://http.kali.org/kali/pool/main/k/kali-archive-keyring/kali-archive-keyring_2024.1_all.deb; dpkg -i kali-archive-keyring_2024.1_all.deb; rm kali-archive-keyring_2024.1_all.deb; apt-get update
 # (9.) COMET-BASH-root> echo deb http://http.kali.org/kali kali-rolling main contrib non-free >> /etc/apt/sources.list && apt-get update -y && apt-get upgrade -y && apt-get dist-upgrade -y && $STARTUPDIR/mybackgroundwllpservice.sh && $STARTUPDIR/mycometdesignTerminal.sh; echo END [9]
 # [9] This step should change the wallpaper: to come back to Comet, it's to use <STARTUPDIR>/mybackgroundwllpservice.sh
-# [9] This step should change the Terminal for the root user: to come back to Comet, it's to use <STARTUPDIR>/mycometdesignTerminal.sh
+# [9] This step should change the Terminal for the root user: to come back to Comet, it's to use <STARTUPDIR>/mycometdesignTerminal.sh (already done above)
 # [9] This step is during about 20 minutes on a medium machine & slow internet connection (this measure is not higly defined and is only to be shared to keep in mind)
 # [9] To have a measure in a file "mytracking.log": echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') > mytracking.log; [here_script_to_mesure]; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> mytracking.log
 # If the step to check validates and need again:
-# (10.) It's need to check processes (lock by apt-get):
+# (10.) It's need to check processes (lock by apt-get, with a command "sh") and with only the id list:
 # (10.) COMET-BASH-root> ps -aC apt-get
 # (10.) COMET-BASH-root> ps -aC apt-get -o pid=
 # (10.) COMET-BASH-root> echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >/home/$USERCOMET/internetdl/installation2.log ; sh cyberhacktoolsinstall.sh $USERCOMET 2>>/home/$USERCOMET/internetdl/errlist2.log 1>>/home/$USERCOMET/internetdl/installation2.log ; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >/home/$USERCOMET/internetdl/installation2.log ; echo END [10]
@@ -88,6 +88,8 @@ export TIMETAG=[TIME]
 #If script is locked, this end will be displayed:
 #wireshark is already the newest version (4.4.0-1).
 #The following packages were automatically installed and are no longer required:
+# COMET-BASH-user> tail -20 /home/$USERCOMET/internetdl/installation2.log
+#Result expected:
 #  fdisk gdisk gpg-wks-server libabsl20220623 libargon2-1 libassuan0
 # (...)
 #Use 'apt autoremove' to remove them.
@@ -112,6 +114,19 @@ export TIMETAG=[TIME]
 #To follow the running:
 #[10] COMET-BASH-user> tail -f /home/$USER/internetdl/installation2.log
 #
+#
+################################################################
+# VALIDATION
+################################################################
+#When every point is operational and validated by you, the suggestion is to save the container:
+# PS> wsl --shutdown
+# PS> wsl --export podman-<machine> podman.tar
+#For more details, refer to document "MyVNCDockerfileTips" (part "Storage Full")
+#If you have 2 drives, check to go on the right location. If my C:\ is near full, do the change dir:
+# PS> D:
+# PS>(export cmd, see above)
+#An information to keep in mind, my package is near 17 GB, from my side.
+#In any case an issue would appear, you will be able to install it again easily.
 #
 ################################################################
 # Analyse each script from KALI
