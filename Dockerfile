@@ -109,7 +109,7 @@ RUN apt-get -y install xfce4 xfce4-terminal
 RUN apt-get -y install xterm dbus-x11 libdbus-glib-1-2 libgtk2.0-dev
 RUN apt-get -y install xfce4-goodies
 RUN apt-get -y install tigervnc-standalone-server
-RUN apt-get -y install novnc xrdp
+RUN apt-get -y install novnc xrdp openvpn
 RUN apt-get -y install python3-numpy python3-websockify
 RUN apt-get -y install libnss-wrapper gettext
 RUN apt-get clean -y
@@ -345,7 +345,7 @@ RUN sed -i 's/Navigateur Web/Firefox/g' $HOME/Desktop/firefox.desktop && chmod -
 RUN cp -R $HOME/firefox /usr/lib/firefox && chmod -R 755 /usr/lib/firefox && ln -s /usr/lib/firefox/firefox /usr/bin/firefox
 
 #TEST PAGE HTML (to use for checking association files or use as skeleton to download fast a target)
-RUN echo '<html><head></head><body><a href="https://testmypage.com">My URL</a></body></html>' > $HOME/mytestpage.html && chown $USERVNC:$USERVNC $HOME/mytestpage.html
+RUN echo '<html><head></head><body><table><tr><td><a href="https://testmypage.com">My URL</a></td></tr>'' > $HOME/mytestpage.html && echo '<tr><td><a href="https://www.freeopenvpn.org">Free Open VPN Server</a></td></tr>' >> $HOME/mytestpage.html && echo '<tr><td>&nbsp;</td></tr>' >> $HOME/mytestpage.html && echo '</body></html>' >> $HOME/mytestpage.html && chown $USERVNC:$USERVNC $HOME/mytestpage.html
 
 
 ##########################################################################
@@ -505,12 +505,12 @@ CMD ["sleep", "infinity"]
 #docker build --rm -t comet .
 #/!\ Clean images: docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
 #This line could test but we keep in mind it's not same scope inside the container than here in the build file: Here it's mainly to set manually what port are needed (labels in comment should help).
-#docker run --name halley -h=halley -it -d -p $RDP_PORT:$RDP_PORT/tcp -p $VNC_PORT:$VNC_PORT/tcp -p $NO_VNC_PORT:$NO_VNC_PORT/tcp comet bash
-#docker run --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp comet bash
+#docker run --name halley -h=halley -it -d -p $RDP_PORT:$RDP_PORT/tcp -p $VNC_PORT:$VNC_PORT/tcp -p $NO_VNC_PORT:$NO_VNC_PORT/tcp --cap-add SYS_NET_ADMIN comet bash
+#docker run --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add SYS_NET_ADMIN comet bash
 #Wait at least 20 seconds and connect. Main functions will be all in an available state.
 #
 #Have you deleted the container just created because some work done isn't as you want? And you want another container from the same image wihtout building because it's not need? And you see same ID? Ok. Do this:
-#docker run --name halley --replace -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp comet bash
+#docker run --name halley --replace -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add SYS_NET_ADMIN comet bash
 #
 #CHECK AFTER THE START
 #docker ps -a
