@@ -349,7 +349,7 @@ grep '|$' /root/.match_list | tr -d '|'
 #
 #Set the backup
 rm -Rf $STARTUPDIR/*
-tar -xvf /$STARTUPDIR.tar -C $STARTUPDIR/
+tar -xvf /$STARTUPDIR.tar -C /
 #
 # ISSUES:
 # 1. RDP Access has been modified as a Kali Linux Access. Run this to set again:
