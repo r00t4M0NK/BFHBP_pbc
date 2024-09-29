@@ -82,6 +82,8 @@ ENV HOME=/universe \
     BG_WLLP=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/wallpapers/wllpp_comet_milkyway_1280_720.jpg\
     RDP_WLLP=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/wallpapers/stars-dark-1654074_1280.bmp\
     RDP_LOGO=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/main/tools/img/CometLogoWin_64.bmp\
+    RDP_LOCAL_WLLP=/startup/wallpapers/rdpwllpp.bmp\
+    RDP_TITLE="WELCOME IN UNIVERSE OF COMET"\
     VNC_COL_DEPTH=24 \
     VNC_RESOLUTION=1280x720\
     ROOT_PW=MilkyWay2024\
@@ -109,7 +111,7 @@ RUN apt-get -y install xfce4 xfce4-terminal
 RUN apt-get -y install xterm dbus-x11 libdbus-glib-1-2 libgtk2.0-dev
 RUN apt-get -y install xfce4-goodies
 RUN apt-get -y install tigervnc-standalone-server
-RUN apt-get -y install novnc xrdp openvpn
+RUN apt-get -y install novnc xrdp openvpn filezilla
 RUN apt-get -y install python3-numpy python3-websockify
 RUN apt-get -y install libnss-wrapper gettext
 RUN apt-get clean -y
@@ -129,6 +131,10 @@ RUN apt-get clean -y
 # libgtk2.0-dev for GIO
 # tigervnc-standalone-server for server VNC
 # novnc for the wrapper between browser and VNC
+# xrdp for the remote windows access
+# openvpn for the vpn tool
+# filezilla for the GUI ftp tool
+#
 # python3-numpy for websockify (VNC)
 # python3-websockify for Websockify, for VNC
 # libnss-wrapper for daemon management user (legacy from Dockerfile from ConSol)
@@ -176,9 +182,9 @@ RUN wget --timeout=5 --tries=2 -qO- $FF_URL | tar xvj --strip 1 -C $INST_FF/
 # C. RDP: PICS
 ################################
 #Uncomment only one line: here under Firewall:
-#RUN wget --timeout=5 --tries=2 --no-check-certificate -O /home/$USERVNC/login-user.bmp -c $RDP_LOGO && sleep 5 && chmod 755 /usr/share/xrdp/login-user.bmp && wget --timeout=5 --tries=2 --no-check-certificate -O $STARTUPDIR/wallpapers/stars-dark-1654074_1280.bmp -c $RDP_WLLP && sleep 5 && chmod 755 $STARTUPDIR/wallpapers/stars-dark-1654074_1280.bmp
+#RUN wget --timeout=5 --tries=2 --no-check-certificate -O /home/$USERVNC/login-user.bmp -c $RDP_LOGO && sleep 5 && chmod 755 /usr/share/xrdp/login-user.bmp && wget --timeout=5 --tries=2 --no-check-certificate -O $RDP_LOCAL_WLLP -c $RDP_WLLP && sleep 5 && chmod 755 $RDP_LOCAL_WLLP
 #Uncomment only one line: here without Firewall (more secure to avoid "man in the middle"):
-RUN wget --timeout=5 --tries=2 -O /usr/share/xrdp/login-user.bmp -c $RDP_LOGO && sleep 5 && chmod 755 /usr/share/xrdp/login-user.bmp && wget --timeout=5 --tries=2 --no-check-certificate -O $STARTUPDIR/wallpapers/stars-dark-1654074_1280.bmp -c $RDP_WLLP && sleep 5 && chmod 755 $STARTUPDIR/wallpapers/stars-dark-1654074_1280.bmp
+RUN wget --timeout=5 --tries=2 -O /usr/share/xrdp/login-user.bmp -c $RDP_LOGO && sleep 5 && chmod 755 /usr/share/xrdp/login-user.bmp && wget --timeout=5 --tries=2 --no-check-certificate -O $RDP_LOCAL_WLLP -c $RDP_WLLP && sleep 5 && chmod 755 $RDP_LOCAL_WLLP
 
 
 ##########################################################################
@@ -345,7 +351,7 @@ RUN sed -i 's/Navigateur Web/Firefox/g' $HOME/Desktop/firefox.desktop && chmod -
 RUN cp -R $HOME/firefox /usr/lib/firefox && chmod -R 755 /usr/lib/firefox && ln -s /usr/lib/firefox/firefox /usr/bin/firefox
 
 #TEST PAGE HTML (to use for checking association files or use as skeleton to download fast a target)
-RUN echo '<html><head></head><body><table><tr><td><a href="https://testmypage.com">My URL</a></td></tr>'' > $HOME/mytestpage.html && echo '<tr><td><a href="https://www.freeopenvpn.org">Free Open VPN Server</a></td></tr>' >> $HOME/mytestpage.html && echo '<tr><td>&nbsp;</td></tr>' >> $HOME/mytestpage.html && echo '</body></html>' >> $HOME/mytestpage.html && chown $USERVNC:$USERVNC $HOME/mytestpage.html
+RUN echo '<html><head></head><body><table><tr><td><a href="https://testmypage.com">My URL</a></td></tr>' > $HOME/mytestpage.html && echo '<tr><td><a href="https://www.freeopenvpn.org">Free Open VPN Server</a></td></tr>' >> $HOME/mytestpage.html && echo '<tr><td>&nbsp;</td></tr>' >> $HOME/mytestpage.html && echo '</body></html>' >> $HOME/mytestpage.html && chown $USERVNC:$USERVNC $HOME/mytestpage.html
 
 
 ##########################################################################
@@ -353,7 +359,7 @@ RUN echo '<html><head></head><body><table><tr><td><a href="https://testmypage.co
 ##########################################################################
 #To know version: xrdp -v | grep "xrdp " | head -n 1 | cut -d' ' -f2
 #Set Port and Graphic RDP
-RUN echo "sed -i 's+port=3389+port= tcp: //:'$RDP_PORT'+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_title=My Login Title+ls_title=WELCOME IN UNIVERSE OF COMET+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_height=430+ls_height=240+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_bg_color=dedede+ls_bg_color=e8e8e8+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_logo_filename=+ls_logo_filename=/usr/share/xrdp/login-user.bmp+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_logo_transform=none+ls_logo_transform=scale+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_logo_width=240+ls_logo_width=64+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_logo_height=140+ls_logo_height=64+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_logo_x_pos=55+ls_logo_x_pos=150+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_logo_y_pos=50+ls_logo_y_pos=25+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_label_x_pos=30+ls_label_x_pos=20+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_input_x_pos=110+ls_input_x_pos=150+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_input_width=210+ls_input_width=170+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_input_y_pos=220+ls_input_y_pos=100+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_ok_x_pos=142+ls_btn_ok_x_pos=80+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_ok_y_pos=370+ls_btn_ok_y_pos=200+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_cancel_x_pos=237+ls_btn_cancel_x_pos=180+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_cancel_y_pos=370+ls_btn_cancel_y_pos=200+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_top_window_bg_color=009cb5+ls_top_window_bg_color=000000+g' /etc/xrdp/xrdp.ini && sed -i 's+blue=009cb5+#blue=009cb5+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_background_image=+ls_background_image='$STARTUPDIR'/wallpapers/stars-dark-1654074_1280.bmp+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_background_transform=none+ls_background_transform=scale+g' /etc/xrdp/xrdp.ini" > $STARTUPDIR/mycometdesignRDP.sh && chmod 755 $STARTUPDIR/mycometdesignRDP.sh && $STARTUPDIR/mycometdesignRDP.sh
+RUN echo "sed -i 's+port=3389+port= tcp: //:'$RDP_PORT'+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_title=My Login Title+ls_title=$RDP_TITLE+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_height=430+ls_height=240+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_bg_color=dedede+ls_bg_color=e8e8e8+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_logo_filename=+ls_logo_filename=/usr/share/xrdp/login-user.bmp+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_logo_transform=none+ls_logo_transform=scale+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_logo_width=240+ls_logo_width=64+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_logo_height=140+ls_logo_height=64+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_logo_x_pos=55+ls_logo_x_pos=150+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_logo_y_pos=50+ls_logo_y_pos=25+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_label_x_pos=30+ls_label_x_pos=20+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_input_x_pos=110+ls_input_x_pos=150+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_input_width=210+ls_input_width=170+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_input_y_pos=220+ls_input_y_pos=100+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_ok_x_pos=142+ls_btn_ok_x_pos=80+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_ok_y_pos=370+ls_btn_ok_y_pos=200+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_cancel_x_pos=237+ls_btn_cancel_x_pos=180+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_cancel_y_pos=370+ls_btn_cancel_y_pos=200+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_top_window_bg_color=009cb5+ls_top_window_bg_color=000000+g' /etc/xrdp/xrdp.ini && sed -i 's+blue=009cb5+#blue=009cb5+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_background_image=+ls_background_image='$RDP_LOCAL_WLLP'+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_background_transform=none+ls_background_transform=scale+g' /etc/xrdp/xrdp.ini" > $STARTUPDIR/mycometdesignRDP.sh && echo "if [ -f /etc/xrdp/xrdp.ini.original ]; then" >> $STARTUPDIR/mycometdesignRDP.sh && echo "cp -f /etc/xrdp/xrdp.ini.original /etc/xrdp/xrdp.ini" >> $STARTUPDIR/mycometdesignRDP.sh && echo fi >> $STARTUPDIR/mycometdesignRDP.sh && chmod 755 $STARTUPDIR/mycometdesignRDP.sh && $STARTUPDIR/mycometdesignRDP.sh
 RUN echo \[Unit\] > /etc/systemd/system/xrdp.service && echo Description\=RDP >> /etc/systemd/system/xrdp.service && echo "" >> /etc/systemd/system/xrdp.service && echo \[Service\] >> /etc/systemd/system/xrdp.service && echo User\=root >> /etc/systemd/system/xrdp.service && echo WorkingDirectory\=\/root >> /etc/systemd/system/xrdp.service && echo ExecStart=service xrdp restart >> /etc/systemd/system/xrdp.service && echo "" >>  /etc/systemd/system/xrdp.service && echo \[Install\] >> /etc/systemd/system/xrdp.service && echo WantedBy\=multi\-user\.target >> /etc/systemd/system/xrdp.service && chmod 755 /etc/systemd/system/xrdp.service
 RUN echo \[program\:restart\-xrdp\] > /etc/supervisor/conf.d/xrdp.conf && echo command\=$STARTUPDIR\/myrdpservice\.sh >> /etc/supervisor/conf.d/xrdp.conf && chmod 755 /etc/supervisor/conf.d/xrdp.conf && touch /var/run/supervisor.sock && chmod 777 /var/run/supervisor.sock && service supervisor restart && echo service --user enable httpd.service > /etc/systemd/user/xrdp.service /etc/systemd/user && echo >> /etc/systemd/user/xrdp.service
 
