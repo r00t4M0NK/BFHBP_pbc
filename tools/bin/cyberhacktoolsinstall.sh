@@ -121,6 +121,7 @@ export TIMETAG=[TIME]
 #
 #To follow the running:
 #[10] COMET-BASH-user> tail -f /home/$USER/internetdl/installation2.log
+# (11.) When it's finished and validated: COMET-BASH-root> rm /home/$USERCOMET/internetdl/*.log
 #
 #
 ################################################################
