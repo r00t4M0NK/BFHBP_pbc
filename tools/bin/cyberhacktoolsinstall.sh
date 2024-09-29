@@ -357,5 +357,6 @@ tar -xvf /$STARTUPDIR.tar -C /
 # 2. The terminal for root as changed. Run this to correct:
 # [under investigation]
 # List reduced at: john ophcrack fcrackzip hydra gobuster bloodhound
+# The target is bloodhound.
 #
 #Comet (c) 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
