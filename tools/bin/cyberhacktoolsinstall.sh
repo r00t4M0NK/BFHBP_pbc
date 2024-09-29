@@ -157,10 +157,12 @@ apt-get install -y veil metasploit-framework
 apt-get install -y ldap-utils
 apt-get install -y burpsuite
 #Set the backup
+echo "[BACK] [START]" >> /home/$USERCOMET/internetdl/installation2.log
 rm -Rf $STARTUPDIR/*
 tar -xvf /$STARTUPDIR.tar -C /
 #In case of a bug, set again the wallpaper, the RDP login box and the terminal as it has been defined for the Comet Software
 $STARTUPDIR/mybackgroundwllpservice.sh && $STARTUPDIR/mycometdesignRDP.sh && $STARTUPDIR/mycometdesignTerminal.sh
+echo "[BACK] [END]" >> /home/$USERCOMET/internetdl/installation2.log
 #case of some issues on these 2 packages
 apt-get install -y hashcat --fix-missing
 apt-get install -y hydra --fix-missing
