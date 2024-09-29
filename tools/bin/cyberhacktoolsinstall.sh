@@ -156,6 +156,11 @@ apt-get install -y yersinia havoc
 apt-get install -y veil metasploit-framework
 apt-get install -y ldap-utils
 apt-get install -y burpsuite
+#Set the backup
+rm -Rf $STARTUPDIR/*
+tar -xvf /$STARTUPDIR.tar -C /
+#In case of a bug, we set again the wallpaper, the terminal and the RDP login box as it has been defined for the Comet Software
+$STARTUPDIR/mybackgroundwllpservice.sh && $STARTUPDIR/mycometdesignTerminal.sh
 #case of some issues on these 2 packages
 apt-get install -y hashcat --fix-missing
 apt-get install -y hydra --fix-missing
@@ -346,12 +351,6 @@ echo Remove these files after been checked if you don\'t need more: /home/$USERC
 echo COPY/PASTE "rm /home/$USERCOMET/internetdl/pgms.lst\; rm /home/$USERCOMET/internetdl/usrbin.log\; rm $HTOOLLOGS /root/.package_list\; rm /root/.match_list; rm /home/$USERCOMET/internetdl/errlist.log; rm /home/$USERCOMET/internetdl/errlist2.log; rm /home/$USERCOMET/internetdl/installation.log; rm /home/$USERCOMET/internetdl/installation2.log"
 echo Here programs from this script which are not listed and require a manual control \(check comments in \"cyberhacktoolsinstall.sh\"\)\:
 grep '|$' /root/.match_list | tr -d '|'
-#
-#Set the backup
-rm -Rf $STARTUPDIR/*
-tar -xvf /$STARTUPDIR.tar -C /
-#In case of a bug, we set again the wallpaper, the terminal and the RDP login box as it has been defined for the Comet Software
-$STARTUPDIR/mybackgroundwllpservice.sh && $STARTUPDIR/mycometdesignTerminal.sh
 #
 # ISSUES:
 # 1. RDP Access has been modified as a Kali Linux Access. Run this to set again:
