@@ -353,7 +353,7 @@ tar -cvf /$STARTUPDIR.tar -C $STARTUPDIR/
 #
 # ISSUES:
 # 1. RDP Access has been modified as a Kali Linux Access. Run this to set again:
-#$STARTUP/mycometdesignTerminal.sh (watch the right value in Dockerfile)
+#$STARTUPDIR/mycometdesignTerminal.sh (watch the right value in Dockerfile)
 # 2. The terminal for root as changed. Run this to correct:
 # [under investigation]
 # List reduced at: john ophcrack fcrackzip hydra gobuster bloodhound
