@@ -84,7 +84,7 @@ export TIMETAG=[TIME]
 # (10.) COMET-BASH-root> ps -aC apt-get
 # (10.) COMET-BASH-root> ps -aC apt-get -o pid=
 # (10.) COMET-BASH-root> echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >/home/$USERCOMET/internetdl/installation2.log ; sh cyberhacktoolsinstall.sh $USERCOMET 2>>/home/$USERCOMET/internetdl/errlist2.log 1>>/home/$USERCOMET/internetdl/installation2.log ; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >/home/$USERCOMET/internetdl/installation2.log ; echo END [10]
-# This step is about 60 minutes. Check not more, and stop the script if needed.
+# This step is about 45 minutes. Check not more, and stop the script if needed.
 #If script is locked, this end will be displayed:
 #wireshark is already the newest version (4.4.0-1).
 #The following packages were automatically installed and are no longer required:
