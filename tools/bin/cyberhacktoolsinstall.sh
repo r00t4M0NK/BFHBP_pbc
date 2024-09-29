@@ -135,6 +135,12 @@ export TIMETAG=[TIME]
 #
 #
 ################################################################
+# Part before everything: save scripts
+# Change the directory with the valkue choosen in Dockerfile
+################################################################
+tar -cvf /$STARTUPDIR.tar $STARTUPDIR/
+#
+################################################################
 # Part for install -y: packages
 ################################################################
 apt-get update -y
@@ -340,6 +346,10 @@ echo Remove these files after been checked if you don\'t need more: /home/$USERC
 echo COPY/PASTE "rm /home/$USERCOMET/internetdl/pgms.lst\; rm /home/$USERCOMET/internetdl/usrbin.log\; rm $HTOOLLOGS /root/.package_list\; rm /root/.match_list; rm /home/$USERCOMET/internetdl/errlist.log; rm /home/$USERCOMET/internetdl/errlist2.log; rm /home/$USERCOMET/internetdl/installation.log; rm /home/$USERCOMET/internetdl/installation2.log"
 echo Here programs from this script which are not listed and require a manual control \(check comments in \"cyberhacktoolsinstall.sh\"\)\:
 grep '|$' /root/.match_list | tr -d '|'
+#
+#Set the backup
+rm -Rf $STARTUPDIR/*
+tar -cvf /$STARTUPDIR.tar
 #
 # ISSUES:
 # 1. RDP Access has been modified as a Kali Linux Access. Run this to set again:
