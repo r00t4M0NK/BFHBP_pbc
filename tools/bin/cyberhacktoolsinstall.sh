@@ -9,6 +9,14 @@
 # https://github.com/r00t4M0NK/BFHBP_pbc/blob/main/EULA_Comet.txt
 #
 #
+##########################################################################
+## NOTICE2
+##########################################################################
+# Apps are mainly from KALI:
+# The scope of warnings from Kali's Team is to apply here too.
+# The goal is really or learning or labs or anything under legal.
+# Any controled professionnal goals are also inside this scope.
+#
 ################################################################
 # Check sources
 ################################################################
