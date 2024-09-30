@@ -171,7 +171,7 @@ RUN mkdir -p $INST_FF && chmod 755 $INST_FF
 #RUN wget --timeout=5 --tries=2 --no-check-certificate -qO- $FF_URL | tar xvj --strip 1 -C $INST_FF/
 #Uncomment only one line: here without Firewall (more secure to avoid "man in the middle"):
 RUN wget --timeout=5 --tries=2 -qO- $FF_URL | tar xvj --strip 1 -C $INST_FF/
-RUN mkdir -p /home/$USERCOMET/internetdl; chmod 755 /home/$USERCOMET/internetdl;  curl https://addons.mozilla.org/firefox/downloads/file/4343983/ghostery-10.4.3.xpi > /home/$USERCOMET/internetdl/ghostery-10.4.3.xpi; curl https://addons.mozilla.org/firefox/downloads/file/4351045/adblock_plus-4.7.xpi > /home/$USERCOMET/internetdl/adblock_plus-4.7.xpi
+RUN mkdir -p $HOME/firefox/extensions; chmod 755 $HOME/firefox/extensions;  curl https://addons.mozilla.org/firefox/downloads/file/4343983/ghostery-10.4.3.xpi > $HOME/firefox/extensions/ghostery-10.4.3.xpi; curl https://addons.mozilla.org/firefox/downloads/file/4351045/adblock_plus-4.7.xpi > $HOME/firefox/extensions/adblock_plus-4.7.xpi
 
 #Correct issue "certificate not trust":
 # In client side (as WSL), install: apt-get install ca-certificates
@@ -354,7 +354,7 @@ RUN sed -i 's/Navigateur Web/Firefox/g' $HOME/Desktop/firefox.desktop && chmod -
 RUN cp -R $HOME/firefox /usr/lib/firefox && chmod -R 755 /usr/lib/firefox && ln -s /usr/lib/firefox/firefox /usr/bin/firefox
 
 #TEST PAGE HTML (to use for checking association files or use as skeleton to download fast a target)
-RUN echo '<html><head></head><body><table><tr><td><a href="https://testmypage.com">My URL</a></td></tr>' > $HOME/mytestpage.html && echo '<tr><td><a href="https://www.freeopenvpn.org">Free Open VPN Server</a></td></tr>' >> $HOME/mytestpage.html && echo '<tr><td>&nbsp;</td></tr>' >> $HOME/mytestpage.html && echo '</body></html>' >> $HOME/mytestpage.html && chown $USERVNC:$USERVNC $HOME/mytestpage.html
+RUN echo '<html><head></head><body><table><tr><td><a href="https://testmypage.com">My URL</a></td></tr>' > $HOME/mytestpage.html && echo '<tr><td><a href="https://www.freeopenvpn.org">Free Open VPN Server</a> user=freeopenvpn</td></tr>' >> $HOME/mytestpage.html && echo '<tr><td>&nbsp;</td></tr>' >> $HOME/mytestpage.html && echo '</body></html>' >> $HOME/mytestpage.html && chown $USERVNC:$USERVNC $HOME/mytestpage.html
 
 
 ##########################################################################
@@ -543,6 +543,11 @@ CMD ["sleep", "infinity"]
 #
 #Full topic?
 #src=https://stackoverflow.com/questions/57115336/connect-to-vpn-with-podman
+#
+#PS> podman machine set --rootful=xxx (where xx is false or true)
+#PS> podman machine inspect podman-sun | Select-String -Pattern "Rootful"
+#PS> podman machine set --rootful podman-sun
+#src=https://docs.podman.io/en/v4.4/markdown/podman-machine-set.1.html
 
 
 ######################################################
