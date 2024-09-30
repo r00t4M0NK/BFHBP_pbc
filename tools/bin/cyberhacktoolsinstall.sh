@@ -168,7 +168,8 @@ apt-get install -y ldap-utils
 apt-get install -y burpsuite
 #Set the backup
 echo "[BACK] [START]" >> /home/$USERCOMET/internetdl/installation2.log
-rm -Rf $STARTUPDIR/*
+#Please do it manually: in case of error, clean another environment
+#rm -Rf $STARTUPDIR/*
 tar -xvf /$STARTUPDIR.tar -C /
 #In case of a bug, set again the wallpaper, the RDP login box and the terminal as it has been defined for the Comet Software
 $STARTUPDIR/mybackgroundwllpservice.sh && $STARTUPDIR/mycometdesignRDP.sh && $STARTUPDIR/mycometdesignTerminal.sh
