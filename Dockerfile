@@ -171,6 +171,7 @@ RUN mkdir -p $INST_FF && chmod 755 $INST_FF
 #RUN wget --timeout=5 --tries=2 --no-check-certificate -qO- $FF_URL | tar xvj --strip 1 -C $INST_FF/
 #Uncomment only one line: here without Firewall (more secure to avoid "man in the middle"):
 RUN wget --timeout=5 --tries=2 -qO- $FF_URL | tar xvj --strip 1 -C $INST_FF/
+RUN mkdir -p /home/$USERCOMET/internetdl; chmod 755 /home/$USERCOMET/internetdl;  curl https://addons.mozilla.org/firefox/downloads/file/4343983/ghostery-10.4.3.xpi > /home/$USERCOMET/internetdl/ghostery-10.4.3.xpi; curl https://addons.mozilla.org/firefox/downloads/file/4351045/adblock_plus-4.7.xpi > /home/$USERCOMET/internetdl/adblock_plus-4.7.xpi
 
 #Correct issue "certificate not trust":
 # In client side (as WSL), install: apt-get install ca-certificates
@@ -539,6 +540,9 @@ CMD ["sleep", "infinity"]
 #docker run --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=NET_ADMIN comet bash
 #podmanr run --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=net_admin,mknod comet bash
 #src=https://github.com/kylemanna/docker-openvpn/issues/498
+#
+#Full topic?
+#src=https://stackoverflow.com/questions/57115336/connect-to-vpn-with-podman
 
 
 ######################################################
