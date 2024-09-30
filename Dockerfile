@@ -527,6 +527,18 @@ CMD ["sleep", "infinity"]
 #In order to add Firefox in the panel on bottom of screen, you need to open one Terminal with the user.
 #In case of issue, you can try "$STARTUPDIR/myfirefoxsvc.sh containered" (user 'normal', from a "Terminal") => normally, only a new Terminal will do the job itself (silently correction, sentence above)
 #In case of big issue, use "$STARTUPDIR/mydesk.sh" => it will disconnect you from RDP session /!\ Wait a little then you can connect again
+#
+######################################################
+#DOCKER/PODMAN: OPENVPN
+######################################################
+#In orde rto use OpenVPN:
+#COMET-BASH-root> mkdir /dev/net; mknod /dev/net/tun c 10 200; chmod 666 /dev/net/tun
+#src=https://forum.proxmox.com/threads/turnkey-linux-openvpn-template-issues.31668/#post-157372
+#
+#In order to use OpenVPN, thanks to previously run this mode (update each for your own settings):
+#docker run --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=NET_ADMIN comet bash
+#podmanr run --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=net_admin,mknod comet bash
+#src=https://github.com/kylemanna/docker-openvpn/issues/498
 
 
 ######################################################
@@ -536,13 +548,34 @@ CMD ["sleep", "infinity"]
 #2. Install Podman on Windows ("Podman Installer", only - not need Podman CLI)
 #3. Set up a machine: tick "Install WSL if not present", option checked, machine with root rights, not mode networking, not start now
 #4. When error "extracted Error: unexpected EOF", uninstall/install, download again, & force again & again creation.
-#   Another way (not tested) is to try this witth PS> podman machine reset
+#   Another way (not tested) is to try this with PS> podman machine reset
 #   src=https://github.com/containers/podman/issues/22927
 #5. Set up a machine: podman-sun
 #6. Install Podman in WSL> sudo apt-get install -y podman
 #   Keep in mind: do before update & upgrade for a new unix system
-#7 Set vars:
-#  Inside each Clients, [root] set aliases in .bashrc (/root/) as echo "ll='ls -artl'" >> ~/.bashrc
+#6'.Any Issue during install? As a WSL corrupted? First, don't keep files in WSL! Keep them away, and do only copies! Second, install again WSL then:
+#   Uninstall WSL, check list+version+default, install distribution, set as default, set version 2, check, go in WSL (default), and update system before removing/installing podman again:
+#   PS> wsl --unregister Debian
+#   PS> wsl -l -v
+#   PS> wsl --install -d Debian
+#   PS> wsl --set-default Debian
+#   PS> wsl --set-default-version 2
+#   PS> wsl -l -v
+#   PS> wsl
+#   WSL-user> sudo su - root
+#   WSL-root> sudo apt-get update
+#   WSL-root> sudo apt-get clean
+#   WSL-root> sudo apt-get autoremove
+#   WSL-root> sudo apt --fix-broken install
+#   WSL-root> apt-get install podman
+#
+#Yes, sudo is not so need. Up to you.
+#
+#src=https://learn.microsoft.com/fr-fr/windows/wsl/install
+#src=https://superuser.com/questions/1619233/completely-reinstall-wsl
+#
+#7 Set vars (WSL):
+#  Inside each Clients, [root] set aliases in .bashrc (/root/) as echo "alias ll='ls -artl'" >> ~/.bashrc
 #  Inside each Clients, [root] set aliases in .bashrc (/root/) as echo "alias docker=podman" >> ~/.bashrc (PS> Set-Alias -Name docker -Value podman )
 #  [root] echo "sudo mount --make-rshared /" >> ~/.bashrc
 #  [USER] touch /home/$USER/.ssh/known_hosts
@@ -560,12 +593,12 @@ CMD ["sleep", "infinity"]
 #   In Desktop App, a) run machine then b) go to pull image "quay.io/podman/hello:latest".
 #   Check (expected a list): podman --remote image ls
 #   Add SSH:
-#   Deb> mkdir -p /home/$USER/.ssh
-#   Deb> sudo apt-get install -y openssh-clientsudo apt-get install -y openssh-client
-#   Deb> cd /home/$USER/.ssh
-#   Deb> echo /home/$USER/.ssh/podman_rsa | ssh-keygen
-#   podman system connection add $USER --identity /home/$USER/.ssh/podman_rsa ssh://$USER@127.0.0.1:59130/run/user/1000/podman/podman.sock
-#   podman system connection default podman-sun-root
+#   WSL-User-Deb> mkdir -p /home/$USER/.ssh
+#   WSL-User-Deb> sudo apt-get install -y openssh-client
+#   WSL-User-Deb> cd /home/$USER/.ssh
+#   WSL-User-Deb> echo /home/$USER/.ssh/podman_rsa | ssh-keygen
+#   WSL-User-Deb> podman system connection add $USER --identity /home/$USER/.ssh/podman_rsa ssh://$USER@127.0.0.1:59130/run/user/1000/podman/podman.sock
+#   WSL-User-Deb> podman system connection default podman-sun-root
 #   Check (expected a list): podman --remote image ls
 #
 #   [user] mkdir -p /home/$USER/comet/
