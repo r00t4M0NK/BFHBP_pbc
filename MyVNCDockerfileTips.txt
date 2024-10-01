@@ -291,7 +291,7 @@ echo "echo 'nameserver 1.1.1.1' >> /etc/resolv.conf" >> ~/.bashrc
 #ssh -o StrictHostKeyChecking=no <user_wsl_win>@127.0.0.1
 
 ######################################################
-#PODMAN: STORAGE FULL
+#PODMAN: STORAGE FULL (machine)
 ######################################################
 file created when a machine is created: ext4.vhdx
 By default, it's on C but I had a partition with D (and more space)
