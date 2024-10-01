@@ -9,6 +9,14 @@
 
 
 ######################################################
+#ARCHITECTURE
+######################################################
+
+#dpkg --print-architecture
+#src=https://support.torproject.org/fr/apt/tor-deb-repo/
+
+
+######################################################
 #TIPS SHEET
 ######################################################
 
@@ -74,9 +82,12 @@
 ###############
 # CONNECTIONS
 ###############
+#Notice what is the port "<Port_Machine>":  PS> podman machine inspect podman-sun | Select-String -Pattern "Port"
+#
 #Copy what you see from PS to WSL:
-#podman system connection add podman-sun --identity "/mnt/c/users/<user_win>/.local/share/containers/podman/machine/machine" ssh://user@127.0.0.1:58715/run/user/1000/podman/podman.sock
-#podman system connection add --default podman-sun-root --identity "/mnt/c/users/<user_win>/.local/share/containers/podman/machine/machine" ssh://root@127.0.0.1:58715/run/podman/podman.sock
+#podman system connection add podman-sun --identity "/mnt/c/users/<user_win>/.local/share/containers/podman/machine/machine" ssh://user@127.0.0.1:<Port_Machine>/run/user/1000/podman/podman.sock
+#podman system connection add --default podman-sun-root --identity "/mnt/c/users/<user_win>/.local/share/containers/podman/machine/machine" ssh://root@127.0.0.1:<Port_Machine>/run/podman/podman.sock
+#
 #1. Test to know the connection:
 #podman --remote image ls
 #
@@ -205,12 +216,14 @@ echo "echo 'nameserver 1.1.1.1' >> /etc/resolv.conf" >> ~/.bashrc
 ##############################
 #Here some tests if you need informations for debugging
 
+#Notice what is the port "<Port_Machine>":  PS> podman machine inspect podman-sun | Select-String -Pattern "Port"
+
 #$ touch /mnt/wsl/podman.sock
 #$ sudo mount --bind /var/run/user/1000/podman/podman.sock /mnt/wsl/podman.sock
 #$ sudo mount --bind /var/run/user/1000/podman/podman.sock /mnt/wsl/podman.sock
 #$ exit
 #WSL(custom)> podman --remote --url unix:///mnt/wsl/podman.sock ps -a
-#WSL(custom)> podman system connection add --default podman-sun ssh://user@127.0.0.1:59130/run/user/1000/podman/podman.sock
+#WSL(custom)> podman system connection add --default podman-sun ssh://user@127.0.0.1:<Port_Machine>/run/user/1000/podman/podman.sock
 #WSL(custom)> podman system connection add --default podman-sun \\.\pipe\podman-sun
 #WSL(custom)> podman system connection list
 #WSL(custom)> podman system connection remove podman-machine-default-user
@@ -270,7 +283,7 @@ echo "echo 'nameserver 1.1.1.1' >> /etc/resolv.conf" >> ~/.bashrc
 #Deb> podman system connection add <user> --identity /home/<user>/.ssh/podman_sun_rsa ssh://<user><ip>/run/user/1000/podman/podman.sock
 #PS> podman system connection list
 #Check connection and use same port:
-#Deb> podman system connection add <user> --identity /home/<user>/.ssh/podman_sun_rsa ssh://<user>127.0.0.1:58715/run/user/1000/podman/podman.sock
+#Deb> podman system connection add <user> --identity /home/<user>/.ssh/podman_sun_rsa ssh://<user>127.0.0.1:<Port_Machine>/run/user/1000/podman/podman.sock
 #Deb> podman system connection add <user_wsl_win> --identity /home/<user_wsl_win>/.ssh/podman_sun_rsa ssh://<user_wsl_win>@127.0.0.1/run/user/1000/podman/podman.sock
 #Deb> podman info
 #info:: podman system connection default podman-sun
@@ -310,11 +323,50 @@ Made changes, and reboot:
 PS> wsl --shutdown
 <reboot machine "computer host">
 
+
+######################################################
+#TOR BROWSER
+######################################################
+#ROOT> curl -O https://dist.torproject.org/torbrowser/13.5.5/tor-browser-linux-x86_64-13.5.5.tar.xz
+#ROOT> curl -O https://dist.torproject.org/torbrowser/13.5.5/tor-browser-linux-x86_64-13.5.5.tar.xz.asc
+#ROOT> gpg --auto-key-locate nodefault,wkd --locate-keys torbrowser@torproject.org
+#ROOT> gpgv --keyring ./tor.keyring tor-browser-linux-x86_64-13.5.5.tar.xz.asc tor-browser-linux-x86_64-13.5.5.tar.xz
+#ROOT> tar -xvf tor-browser-linux-x86_64-13.5.5.tar.xz
+#ROOT> mkdir -p /pgm; chown $USERCOMET:$USERCOMET /pgm; chmod 755 /pgm; mv /etc/apt/sources.list.d/tor-browser /pgm/tor-browser; chmod -R 755 /pgm
+#START#USER>cd /pgm/tor-browser; ./start-tor-browser.desktop
+#src=Operational Process: https://medium.com/@donfiealex/installing-tor-browser-on-debian-12-in-command-line-a-comprehensive-guide-2c8f7bb4e86e
+#Command corrected: https://gitlab.torproject.org/tpo/web/support/-/issues/123
+#Signatures: https://support.torproject.org/tbb/how-to-verify-signature/
+#old check: gpg --verify tor-browser-linux-x86_64-13.5.5.tar.xz.asc tor-browser-linux-x86_64-13.5.5.tar.xz
+#
+#Issue 1: "line 45: zenity: command not found"
+#apt-get install -y zenity
+
+#Issue 2: "line 53: kdialog: command not found"
+#apt-get install -y kdialog
+#src=https://www.thegeekdiary.com/kdialog-command-not-found/
+#
+#Huge Big Package:
+#apt-get install kde-standard
+#src=https://itslinuxguide.com/install-kde-plasma-debian-12/
+
 ######################################################
 #CHECKSUM FILE
 ######################################################
 #For checking 2 files and be sure it's same:
 WSL> md5sum /mnt/d/podman/machine/podman-<machine>/ext4.vhdx
+
+######################################################
+#OPEN VPN
+######################################################
+# apt-get install openvpn
+# echo tun >> /etc/modules
+#src=https://serverfault.com/questions/1003011/openvpn-error-cannot-open-tun-tap-dev-dev-net-tun-no-such-file-or-directory
+# mkdir -p /dev/net
+# mknod /dev/net/tun c 10 200
+#src=https://discuss.linuxcontainers.org/t/openvpn-error-cannot-open-tun-tap-dev-dev-net-tun-no-such-file-or-directory-errno-2-solved/1614
+#Servers: pick a file .ovpn from the list
+#https://www.freeopenvpn.org
 
 ######################################################
 #SEARCHES
