@@ -304,6 +304,7 @@ mkdir podman-machine-default
 wsl --shutdown
 wsl --export podman-machine-default podman.tar
 wsl --unregister podman-machine-default
+podman machine rm podman-<machine>
 wsl --import podman-machine-default podman-machine-default/ podman.tar --version 2
 del podman.tar
 src=https://github.com/containers/podman/issues/13984
