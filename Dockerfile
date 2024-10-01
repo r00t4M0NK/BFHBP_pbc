@@ -570,7 +570,12 @@ CMD ["sleep", "infinity"]
 #And the easiest way:
 #sudo openvpn clientfilecfg.ovpn
 #src=https://serverfault.com/questions/647231/getting-cannot-ioctl-tunsetiff-tun-operation-not-permitted-when-trying-to-con
-
+#
+#Error TUN when launching OpenVPN:
+#WSL-root> modprobe tun
+#FATAL: Module tun not found in directory /lib/modules/5.15.153.1-microsoft-standard-WSL2
+#WSL-root> apt-get update
+#WSL-root> apt install linux-image-amd64 linux-headers-amd64
 
 ######################################################
 #PODMAN: INSTALL
