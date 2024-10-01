@@ -520,6 +520,7 @@ CMD ["sleep", "infinity"]
 #
 #Have you deleted the container just created because some work done isn't as you want? And you want another container from the same image wihtout building because it's not need? And you see same ID? Ok. Do this:
 #docker run --name halley --replace -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp comet bash
+#docker run --name halley --replace -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp -p 943:943 -p 443:443 -p 1194:1194/udp --cap-add=NET_ADMIN comet bash
 #
 #CHECK AFTER THE START
 #docker ps -a
@@ -538,7 +539,7 @@ CMD ["sleep", "infinity"]
 #
 #In order to use OpenVPN, thanks to previously run this mode (update each for your own settings):
 #docker run --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=NET_ADMIN comet bash
-#podmanr run --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=net_admin,mknod comet bash
+#podmanr run --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=net_admin,mknod -v /dataexchg:/dataexchg comet bash
 #src=https://github.com/kylemanna/docker-openvpn/issues/498
 #
 #Full topic?
@@ -546,7 +547,10 @@ CMD ["sleep", "infinity"]
 #
 #PS> podman machine set --rootful=xxx (where xx is false or true)
 #PS> podman machine inspect podman-sun | Select-String -Pattern "Rootful"
+#rootless to rootful:
 #PS> podman machine set --rootful podman-sun
+#rootful to rootless:
+#PS> podman machine set --rootful=false podman-sun
 #src=https://docs.podman.io/en/v4.4/markdown/podman-machine-set.1.html
 
 
