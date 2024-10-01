@@ -539,8 +539,19 @@ CMD ["sleep", "infinity"]
 #
 #In order to use OpenVPN, thanks to previously run this mode (update each for your own settings):
 #docker run --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=NET_ADMIN comet bash
-#podmanr run --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=net_admin,mknod -v /dataexchg:/dataexchg comet bash
+#podmanr run --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=net_admin,mknod -v /dataexchg:/dataexchg -v /dev/net/tun:/dev/net/tun comet bash
 #src=https://github.com/kylemanna/docker-openvpn/issues/498
+#
+#Volume
+#This will delete every data inside machine /!\
+#PS> podman machine ls
+#PS> podman machine stop podman-sun
+#PS> podman machine rm podman-sun
+#PS> podman machine init podman-sun --disk-size 200 --memory=16384 -v /dataexchg:/dataexchg -v /dev/net/tun:/dev/net/tun
+#PS> podman machine start podman-sun
+# Machine is set with 200GB for disk size and more than 16GB for Memory
+# It will be needed to recreate connections /!\ See podman-sun-root + ssh
+#src=https://stackoverflow.com/questions/69298356/how-to-mount-a-volume-from-a-local-machine-on-podman
 #
 #Full topic?
 #src=https://stackoverflow.com/questions/57115336/connect-to-vpn-with-podman
@@ -552,6 +563,13 @@ CMD ["sleep", "infinity"]
 #rootful to rootless:
 #PS> podman machine set --rootful=false podman-sun
 #src=https://docs.podman.io/en/v4.4/markdown/podman-machine-set.1.html
+#
+#Location for machines (cf Tips):
+#/mnt/c/Users/<user>/.local/share/containers/podman/machine/wsl/wsldist/
+#
+#And the easiest way:
+#sudo openvpn clientfilecfg.ovpn
+#src=https://serverfault.com/questions/647231/getting-cannot-ioctl-tunsetiff-tun-operation-not-permitted-when-trying-to-con
 
 
 ######################################################
@@ -592,13 +610,16 @@ CMD ["sleep", "infinity"]
 #  Inside each Clients, [root] set aliases in .bashrc (/root/) as echo "alias docker=podman" >> ~/.bashrc (PS> Set-Alias -Name docker -Value podman )
 #  [root] echo "sudo mount --make-rshared /" >> ~/.bashrc
 #  [USER] touch /home/$USER/.ssh/known_hosts
-#8. Set connections as for PowerShell
-#   podman system connection add podman-sun ssh://user@127.0.0.1:51223/run/user/1000/podman/podman.sock --identity "/mnt/c/users/<user_wsl>/.local/share/containers/podman/machine/machine"
-#   podman system connection add --default podman-sun-root  ssh://root@127.0.0.1:51223/run/podman/podman.sock --identity "/mnt/c/users/<user_wsl>/.local/share/containers/podman/machine/machine"
+#8. Set connections in WSL as for PowerShell
+#   Notice what is the port "<Port_Machine>":  PS> podman machine inspect podman-sun | Select-String -Pattern "Port"
+#   podman system connection ls
+#   podman system connection add podman-sun ssh://user@127.0.0.1:<Port_Machine>/run/user/1000/podman/podman.sock --identity "/mnt/c/users/<user_wsl>/.local/share/containers/podman/machine/machine"
+#   podman system connection add --default podman-sun-root  ssh://root@127.0.0.1:<Port_Machine>/run/podman/podman.sock --identity "/mnt/c/users/<user_wsl>/.local/share/containers/podman/machine/machine"
 #   Activate "Load remote system connections (ssh)" In Podman Desktop
 #   Get a remote client:
 #   src=https://podman-desktop.io/docs/podman/accessing-podman-from-another-wsl-instance
 #   In WSL [root]: apt-get install -y wget
+#   In WSL [root]: cd /root
 #   In WSL [root]: wget https://github.com/containers/podman/releases/download/v4.9.1/podman-remote-static-linux_amd64.tar.gz
 #   In WSL [root]: tar -C /usr/local -xzf podman-remote-static-linux_amd64.tar.gz
 #   In WSL [root]: tar -C /usr/local -xzf podman-remote-static-linux_amd64.tar.gz
@@ -610,7 +631,7 @@ CMD ["sleep", "infinity"]
 #   WSL-User-Deb> sudo apt-get install -y openssh-client
 #   WSL-User-Deb> cd /home/$USER/.ssh
 #   WSL-User-Deb> echo /home/$USER/.ssh/podman_rsa | ssh-keygen
-#   WSL-User-Deb> podman system connection add $USER --identity /home/$USER/.ssh/podman_rsa ssh://$USER@127.0.0.1:59130/run/user/1000/podman/podman.sock
+#   WSL-User-Deb> podman system connection add $USER --identity /home/$USER/.ssh/podman_rsa ssh://$USER@127.0.0.1:<Port_Machine>/run/user/1000/podman/podman.sock
 #   WSL-User-Deb> podman system connection default podman-sun-root
 #   Check (expected a list): podman --remote image ls
 #
