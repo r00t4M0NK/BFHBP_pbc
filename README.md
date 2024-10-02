@@ -40,22 +40,22 @@ The Tool can be used in RDP (for easiest way) to use on hack-boxes (next update 
 
 [INSTALL]
 
-Step 1. In WSL2, create your work directory. As mkdir -p /home/<your_user>/comet (with correct rights, correct user, up to you)
-Step 2. Follow instructions inside Dockerfile. Chapter "DOWNLOAD DIRECTLY" is an easy-way to set up fast your environment: Build, Clean, Run.
-Step 3. Check the COntainer which is up.
-Step 4. To add the CyberSecurity Layer (CSL), refer to /tools/bin/cyberhacktoolsinstall.sh (here in GitHub) in chapter "For Downloading parts" with 10 steps.
-Step 5. Enjoy.
+- Step 1. In WSL2, create your work directory. As mkdir -p /home/<your_user>/comet (with correct rights, correct user, up to you)
+- Step 2. Follow instructions inside Dockerfile. Chapter "DOWNLOAD DIRECTLY" is an easy-way to set up fast your environment: Build, Clean, Run.
+- Step 3. Check the COntainer which is up.
+- Step 4. To add the CyberSecurity Layer (CSL), refer to /tools/bin/cyberhacktoolsinstall.sh (here in GitHub) in chapter "For Downloading parts" with 10 steps.
+- Step 5. Enjoy.
 
 [ESTIMATED TIME]
 
-First Full Run: 180 mn
-Full Build: 30 mn
-Install CSL: 90 mn
+- First Full Run: 180 mn
+- Full Build: 30 mn
+- Install CSL: 90 mn
 
 [NOTES]
 
-When you build the first image, it stays in cache. So, other runnings should be faster.
-If you change Dockerfile on the top of document, it will be generated from the change. More it's near the top, more time it's need to build again.
+- When you build the first image, it stays in cache. So, other runnings should be faster.
+- If you change Dockerfile on the top of document, it will be generated from the change. More it's near the top, more time it's need to build again.
 
 ################################
 
