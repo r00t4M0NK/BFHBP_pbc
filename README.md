@@ -10,6 +10,8 @@ COMET is a debian-based environment inside a container.
 
 It will be used for ethical hacking, but also for so many ways: why not build a stream-container? Or a Musical server, with tools dedicated? Graphical server? Gaming server as a Minecraft server? And so on...!
 
+################################
+
 You find here:
 - a "EULA_Comet.txt" File with the legal warnings as usuel for many softwares (mainly to avoid ugly people who are searching the bad!)
 - a "ReadMe" File is set on "Tools" directory and this document explains what is this project: in a hand, my needs & all the big questions, and in the other hand the solution which is the Answer, with This Project.
@@ -21,6 +23,7 @@ You find here:
    - bin_prv (when dir is activated): it's the target for the main using from me in order to swap files from a machine to another (goal: validation)
    - img: here you find pictures as logos for RDP or anything to be displayed for a "better" graphical interface (more for graphism than for hardware power)
 
+################################
 
 COMET, an easy-software
 - easy-to-use, not need a project with a structure including many files...
@@ -33,6 +36,7 @@ COMET, an easy-software
 
 The Tool can be used in RDP (for easiest way) to use on hack-boxes (next update will be to add a VPN feature).
 
+################################
 
 [INSTALL]
 
@@ -53,6 +57,7 @@ Install CSL: 90 mn
 When you build the first image, it stays in cache. So, other runnings should be faster.
 If you change Dockerfile on the top of document, it will be generated from the change. More it's near the top, more time it's need to build again.
 
+################################
 
 Comet © 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
 [eof]
