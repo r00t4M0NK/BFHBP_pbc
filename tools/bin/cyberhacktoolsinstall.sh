@@ -104,6 +104,9 @@ export TIMETAG=[TIME]
 #Use 'apt autoremove' to remove them.
 #0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
 #
+# (In case of any error) COMET-BASH-root> apt-get install --fix-broken
+#
+#[END]
 #macchanger is requesting to change automatically MAC @ y/n
 #For this, you need manually :(
 #apt-get install -y macchanger
