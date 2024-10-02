@@ -42,7 +42,7 @@ The Tool can be used in RDP (for easiest way) to use on hack-boxes (next update 
 
 - Step 1. In WSL2, create your work directory. As mkdir -p /home/<your_user>/comet (with correct rights, correct user, up to you)
 - Step 2. Follow instructions inside Dockerfile. Chapter "DOWNLOAD DIRECTLY" is an easy-way to set up fast your environment: Build, Clean, Run.
-- Step 3. Check the COntainer which is up.
+- Step 3. Check the Container which is up.
 - Step 4. To add the CyberSecurity Layer (CSL), refer to /tools/bin/cyberhacktoolsinstall.sh (here in GitHub) in chapter "For Downloading parts" with 10 steps.
 - Step 5. Enjoy.
 
