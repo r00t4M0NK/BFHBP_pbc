@@ -360,11 +360,11 @@ WSL> md5sum /mnt/d/podman/machine/podman-<machine>/ext4.vhdx
 ######################################################
 #OPEN VPN
 ######################################################
-# apt-get install openvpn
-# echo tun >> /etc/modules
+# WSL-root> apt-get install openvpn
+# WSL-root> echo tun >> /etc/modules
 #src=https://serverfault.com/questions/1003011/openvpn-error-cannot-open-tun-tap-dev-dev-net-tun-no-such-file-or-directory
-# mkdir -p /dev/net
-# mknod /dev/net/tun c 10 200
+# WSL-root> mkdir -p /dev/net
+# WSL-root> mknod /dev/net/tun c 10 200
 #src=https://discuss.linuxcontainers.org/t/openvpn-error-cannot-open-tun-tap-dev-dev-net-tun-no-such-file-or-directory-errno-2-solved/1614
 #Servers: pick a file .ovpn from the list
 #https://www.freeopenvpn.org
