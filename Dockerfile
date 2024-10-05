@@ -519,6 +519,9 @@ CMD ["sleep", "infinity"]
 #Have you deleted the container just created because some work done isn't as you want? And you want another container from the same image wihtout building because it's not need? And you see same ID? Ok. Do this:
 #docker run --privileged --name halley --replace -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp comet bash
 #
+#For Podman, use openvpn in the computer environment, because inside the pod, it cuts each connection; Use pod as this:
+#podman run --name halley --replace -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp comet bash
+#
 #CHECK AFTER THE START
 #docker ps -a
 #docker attach xxx
