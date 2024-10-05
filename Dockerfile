@@ -102,9 +102,8 @@ WORKDIR $HOME
 
 RUN apt-get update
 RUN apt-get -y upgrade
-RUN apt-get -y install vim
+RUN apt-get -y install vim sudo procps
 RUN apt-get -y install wget net-tools iproute2 curl dos2unix
-RUN apt-get -y install sudo procps
 RUN apt-get -y install bzip2 apt-utils coreutils
 RUN apt-get -y install supervisor
 RUN apt-get -y install xfce4 xfce4-terminal
@@ -118,13 +117,13 @@ RUN apt-get clean -y
 
 # INFOS PACKAGINGS INSTALL
 # vim for editor when to use in terminal
+# sudo for using this in terminal
+# procps for accessing informations about processors (legacy from Dockerfile from ConSol)
 # wget for downloading from terminal
 # net-tools for tools to management network (as ping)
 # iproute2 for completing net-tools
 # curl for reach URL
 # dos2unix for tool to convert files into unix format
-# sudo for using this in terminal
-# procps for accessing informations about processors (legacy from Dockerfile from ConSol)
 # bzip2 for a tool about compressing files and unzipping
 # apt-utils for management packaging in order to install/remove
 # coreutils for sha256sum (already installed => openssl sha256 OR sha256sum)
@@ -304,9 +303,8 @@ RUN echo     \#\!\/usr\/bin\/env bash >  $STARTUPDIR/myentrypoint.sh
 RUN echo $STARTUPDIR\/myvncservice\.sh >> $STARTUPDIR/myentrypoint.sh && echo $STARTUPDIR\/mynovncservice\.sh >> $STARTUPDIR/myentrypoint.sh && echo $STARTUPDIR\/myfirefoxservice\.sh >> $STARTUPDIR/myentrypoint.sh && echo $STARTUPDIR\/mypsswdservice\.sh >> $STARTUPDIR/myentrypoint.sh && echo $STARTUPDIR\/myscreenstretched\.sh >> $STARTUPDIR/myentrypoint.sh && echo $STARTUPDIR\/myrdpservice\.sh >> $STARTUPDIR/myentrypoint.sh
 RUN echo $STARTUPDIR\/r00t4m0nk\.sh >> $STARTUPDIR/myentrypoint.sh
 RUN echo $STARTUPDIR\/myfirefoxservice\.sh > $STARTUPDIR/mydesk.sh && echo $STARTUPDIR\/myrdpservice\.sh >> $STARTUPDIR/mydesk.sh && chmod 755 $STARTUPDIR/mydesk.sh
-
 RUN echo     exec \"\$\@\" >>  $STARTUPDIR/myentrypoint.sh
-RUN chmod 755 $STARTUPDIR/myvncservice.sh && chmod 755 $STARTUPDIR/mynovncservice.sh && chmod 755 $STARTUPDIR/myfirefoxservice.sh && chmod 755 $STARTUPDIR/mypsswdservice.sh && chmod 755 $STARTUPDIR/myrdpservice.sh && chmod 755 $STARTUPDIR/r00t4m0nk.sh && chmod 755 $STARTUPDIR/myscreenstretched.sh && chmod 755 $STARTUPDIR/myentrypoint.sh && chown $USERVNC:$USERVNC $STARTUPDIR/myscreenstretched.sh
+RUN chmod 755 $STARTUPDIR/myvncservice.sh && chmod 755 $STARTUPDIR/mynovncservice.sh && chmod 755 $STARTUPDIR/myfirefoxservice.sh && chmod 755 $STARTUPDIR/mypsswdservice.sh && chmod 755 $STARTUPDIR/myrdpservice.sh && chmod 755 $STARTUPDIR/r00t4m0nk.sh && chmod 755 $STARTUPDIR/myscreenstretched.sh && chmod 755 $STARTUPDIR/myentrypoint.sh && chown $USERVNC:$USERVNC $STARTUPDIR/myscreenstretched.sh && echo "mkdir /dev/net; mknod /dev/net/tun c 10 200; chmod 666 /dev/net/tun; echo 'nameserver 8.8.8.8' > /etc/resolv.conf; echo 'nameserver 1.1.1.1' > /etc/resolv.conf" >> $STARTUPDIR/myopenvpnnetwork.sh && chmod 755 $STARTUPDIR/myopenvpnnetwork.sh
 
 #UPDATE ROOT USER: SET THE PASSWORD
 #Alias ll is on part 2
@@ -519,7 +517,7 @@ CMD ["sleep", "infinity"]
 #Wait at least 20 seconds and connect. Main functions will be all in an available state.
 #
 #Have you deleted the container just created because some work done isn't as you want? And you want another container from the same image wihtout building because it's not need? And you see same ID? Ok. Do this:
-#docker run --name halley --replace -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp comet bash
+#docker run --privileged --name halley --replace -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp comet bash
 #
 #CHECK AFTER THE START
 #docker ps -a
@@ -528,7 +526,8 @@ CMD ["sleep", "infinity"]
 #Failed to try this setting in order to work with openvpn directly inside container.
 #As workaround, use directly openvpn with your host (WSL2, here Debian in Comet Documentation): it will propagate on your entire network.
 #WSL-root> openvpn filesetting.ovpn
-#docker run --name halley --replace -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp -p 943:943 -p 443:443 -p 1194:1194/udp --cap-add=NET_ADMIN comet bash
+#Or try:
+#docker run --privileged --name halley --replace -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp -p 943:943 -p 443:443 -p 1194:1194/udp --cap-add=NET_ADMIN comet bash
 #
 #In order to add Firefox in the panel on bottom of screen, you need to open one Terminal with the user.
 #In case of issue, you can try "$STARTUPDIR/myfirefoxsvc.sh containered" (user 'normal', from a "Terminal") => normally, only a new Terminal will do the job itself (silently correction, sentence above)
@@ -537,7 +536,14 @@ CMD ["sleep", "infinity"]
 ######################################################
 #DOCKER/PODMAN: OPENVPN
 ######################################################
-#In orde rto use OpenVPN:
+#In order to use OpenVPN:
+#Run the script: WSL-root> $STARTUPDIR/myopenvpnnetwork.sh
+#If pod is running with --privileged and the script above is working fine (nod + network config by resolv), you will be able to be granted to run well openvpn
+#WSL-root> openvpn <file>.ovpn
+#If it's any Free Server, enter login/password (and respect law as it is required)
+#
+#Or use any tips below.
+#
 #COMET-BASH-root> mkdir /dev/net; mknod /dev/net/tun c 10 200; chmod 666 /dev/net/tun
 #src=https://forum.proxmox.com/threads/turnkey-linux-openvpn-template-issues.31668/#post-157372
 #
@@ -545,6 +551,10 @@ CMD ["sleep", "infinity"]
 #docker run --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=NET_ADMIN comet bash
 #podmanr run --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=net_admin,mknod -v /dataexchg:/dataexchg -v /dev/net/tun:/dev/net/tun comet bash
 #src=https://github.com/kylemanna/docker-openvpn/issues/498
+#
+#Volume: creation
+#
+#podmanr volume create --opt type=none --opt o=bind --opt device=/dataexchg dataexchg
 #
 #Volume
 #This will delete every data inside machine /!\
@@ -580,7 +590,11 @@ CMD ["sleep", "infinity"]
 #FATAL: Module tun not found in directory /lib/modules/5.15.153.1-microsoft-standard-WSL2
 #WSL-root> apt-get update
 #WSL-root> apt install linux-image-amd64 linux-headers-amd64
-
+#
+#[CONCLUSION] No solution has been found & works. Better way is to use anotehr pod: an openvpn container dedicated which completes this pod:
+#podmanr image pull openvpn/openvpn-as
+#podmanr run -it -d --name=openvpn-as --cap-add=NET_ADMIN -p 943:943 -p 443:443 -p 1194:1194/udp openvpn/openvpn-as
+#
 ######################################################
 #PODMAN: INSTALL
 ######################################################
