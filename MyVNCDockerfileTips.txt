@@ -368,6 +368,14 @@ WSL> md5sum /mnt/d/podman/machine/podman-<machine>/ext4.vhdx
 #src=https://discuss.linuxcontainers.org/t/openvpn-error-cannot-open-tun-tap-dev-dev-net-tun-no-such-file-or-directory-errno-2-solved/1614
 #Servers: pick a file .ovpn from the list
 #https://www.freeopenvpn.org
+#
+#[DOCKER] BE SURE TO SEE OPENVPN working:
+# 1. make the mkdir+mknod+chmod instructions (the "NOD part")
+#src=https://stackoverflow.com/questions/53052234/docker-build-cannot-open-tun-tap-dev-dev-net-tun
+# 2. be sure the container run with <<--privileged>>
+#src=https://serverfault.com/questions/815167/cannot-open-tun-tap-dev-dev-net-tun-no-such-device
+# 3. check if file resolv.conf is set with right additions: 
+# see "PODMAN: NETWORK"
 
 ######################################################
 #SEARCHES
