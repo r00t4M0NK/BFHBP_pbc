@@ -387,6 +387,7 @@ grep '|$' /root/.match_list | tr -d '|'
 grep '|$' /root/.match_list | tr -d '|' | wc -l
 #result should be 228 (in this version up to date: I find 169 => WSL-root> apt-get update; apt-get install -y --fix-broken; ./cyberhacktoolsinstall.sh)
 #if macchanger installed: 230
+#The number gives an idea to check from full lists: if you want or need details, check the full list in files (as do the action with /root/.match_list)
 echo "[END] SCRIPT" >>  /home/$USERCOMET/internetdl/timetags.log
 echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> /home/$USERCOMET/internetdl/timetags.log
 echo [END SCRIPT]
