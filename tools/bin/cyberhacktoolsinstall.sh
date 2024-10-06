@@ -368,7 +368,7 @@ mypaint --version > $HTOOLLOGS; echo " " >> $HTOOLLOGS; nmap -v >> $HTOOLLOGS; e
 #Cleaning:
 apt-get clean
 #
-#To check if each package are well install, open a new terminal under root:
+#[GENERATE .MATCH_LIST] To check if each package are well install, open a new terminal under root:
 dpkg --get-selections > /root/.package_list
 export caret='\r\n'
 cat "/home/$USERCOMET/internetdl/pgms.lst" | while read line 
@@ -386,7 +386,7 @@ echo Here programs from this script which are not listed and require a manual co
 grep '|$' /root/.match_list | tr -d '|'
 grep '|$' /root/.match_list | tr -d '|' | wc -l
 #result should be 228 (in this version up to date: I find 169 => WSL-root> apt-get update; apt-get install -y --fix-broken; ./cyberhacktoolsinstall.sh)
-#if macchanger installed: 230
+#if macchanger installed (+ regenerate .match_list as above): 230
 #The number gives an idea to check from full lists: if you want or need details, check the full list in files (as do the action with /root/.match_list)
 echo "[END] SCRIPT" >>  /home/$USERCOMET/internetdl/timetags.log
 echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> /home/$USERCOMET/internetdl/timetags.log
@@ -400,5 +400,5 @@ echo [END SCRIPT]
 # List reduced at: john ophcrack fcrackzip hydra gobuster bloodhound
 # The target is bloodhound. (+ shellter +crucnh)
 #
-#Increment 0.5
+#Increment 0.6
 #Comet (c) 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
