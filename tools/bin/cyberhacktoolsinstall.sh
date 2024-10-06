@@ -90,7 +90,7 @@ echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> /home/$USERCOMET/internetdl/timetags
 # (9.) COMET-BASH-root> echo "[9] START" >>/home/$USERCOMET/internetdl/installation2.log; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/installation2.log ; echo deb http://http.kali.org/kali kali-rolling main contrib non-free >> /etc/apt/sources.list && apt-get update -y && apt-get upgrade -y && apt-get dist-upgrade -y && $STARTUPDIR/mybackgroundwllpservice.sh && $STARTUPDIR/mycometdesignRDP.sh && $STARTUPDIR/mycometdesignTerminal.sh; echo "[9] END" >>/home/$USERCOMET/internetdl/installation2.log; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/installation2.log ; echo END [9]
 # [9] This step should change the wallpaper: to come back to Comet, it's to use <STARTUPDIR>/mybackgroundwllpservice.sh
 # [9] This step should change the Terminal for the root user: to come back to Comet, it's to use <STARTUPDIR>/mycometdesignTerminal.sh (already done above) => after a bug, it is done again at end of this script
-# [9] This step is during about 20~40 minutes on a medium machine & slow internet connection (this measure is not higly defined and is only to be shared to keep in mind)
+# [9] This step is during about 20~45 minutes on a medium machine & slow internet connection (this measure is not higly defined and is only to be shared to keep in mind)
 # [9] To have a measure in a file "mytracking.log": echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') > mytracking.log; [here_script_to_mesure]; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> mytracking.log
 # If the step to check validates and need again:
 # (10.) It's need to check processes (lock by apt-get, with a command "sh") and with only the id list:
