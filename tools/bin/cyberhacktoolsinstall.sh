@@ -381,10 +381,11 @@ echo ""
 echo If you don\'t already did it, thank you to install manually this last package: [[[ apt-get install -y macchanger ]]]
 echo Remove these files after been checked if you don\'t need more: /home/$USERCOMET/internetdl/pgms.lst /home/$USERCOMET/internetdl/usrbin.log $HTOOLLOGS /root/.package_list /root/.match_list
 echo COPY/PASTE "rm /home/$USERCOMET/internetdl/pgms.lst\; rm /home/$USERCOMET/internetdl/usrbin.log\; rm $HTOOLLOGS /root/.package_list\; rm /root/.match_list; rm /home/$USERCOMET/internetdl/errlist.log; rm /home/$USERCOMET/internetdl/errlist2.log; rm /home/$USERCOMET/internetdl/installation.log; rm /home/$USERCOMET/internetdl/installation2.log"
+#[FINAL CHECK]
 echo Here programs from this script which are not listed and require a manual control \(check comments in \"cyberhacktoolsinstall.sh\"\)\:
 grep '|$' /root/.match_list | tr -d '|'
 grep '|$' /root/.match_list | tr -d '|' | wc -l
-#result should be 228 (in this version up to date: I find 169 => WSL-root> apt-get update; ./cyberhacktoolsinstall.sh)
+#result should be 228 (in this version up to date: I find 169 => WSL-root> apt-get update; apt-get install -y --fix-broken; ./cyberhacktoolsinstall.sh)
 #if macchanger installed: 230
 echo "[END] SCRIPT" >>  /home/$USERCOMET/internetdl/timetags.log
 echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> /home/$USERCOMET/internetdl/timetags.log
@@ -398,5 +399,5 @@ echo [END SCRIPT]
 # List reduced at: john ophcrack fcrackzip hydra gobuster bloodhound
 # The target is bloodhound. (+ shellter +crucnh)
 #
-#Increment 0.4
+#Increment 0.5
 #Comet (c) 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
