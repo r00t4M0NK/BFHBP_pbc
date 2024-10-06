@@ -66,7 +66,7 @@ echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> /home/$USERCOMET/internetdl/timetags
 #If need only update the local script with a new download (check "Increment" version to be sure no cache phenomenon, here curl bypassing cache):
 #export HTOOLLOGS=/home/$USERCOMET/internetdl/htools.log; export HTOOLLOGS=/home/$USERCOMET/internetdl/htools.log; export INSTALL_SH_MYTOOLS=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/tools/bin/cyberhacktoolsinstall.sh; cd /home/$USERCOMET/internetdl; curl -H 'Cache-Control: no-cache' $INSTALL_SH_MYTOOLS > cyberhacktoolsinstall.sh; dos2unix cyberhacktoolsinstall.sh; chown $USERCOMET:$USERCOMET cyberhacktoolsinstall.sh; chmod 755 cyberhacktoolsinstall.sh; sleep 10; echo END [2b]
 #src=https://stackoverflow.com/questions/31653271/how-to-call-curl-without-using-server-side-cache
-#But download without cache seems not so working great...
+#But download without cache seems not so working great... (case: when you switch from curl into curl -H => requires time !!! Please wait)
 # (3.) COMET-BASH-root> echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >/home/$USERCOMET/internetdl/installation.log ; sh cyberhacktoolsinstall.sh $USERCOMET 2>>/home/$USERCOMET/internetdl/errlist.log 1>>/home/$USERCOMET/internetdl/installation.log ; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/installation.log; echo END [3]
 # [3] It's a fast run, less than 5 minutes. Check & Analyze Error File Logs: cat /home/$USERCOMET/internetdl/errlist.log
 # [3] You can follow the run:
@@ -398,5 +398,5 @@ echo [END SCRIPT]
 # List reduced at: john ophcrack fcrackzip hydra gobuster bloodhound
 # The target is bloodhound. (+ shellter +crucnh)
 #
-#Increment 0.2
+#Increment 0.3
 #Comet (c) 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
