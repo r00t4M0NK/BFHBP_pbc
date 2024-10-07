@@ -117,6 +117,11 @@ echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> /home/$USERCOMET/internetdl/timetags
 # (In case of any error) COMET-BASH-root> apt-get install --fix-broken
 #
 #[END]
+# # # # # For the FINAL CHECK, see below. # # # # # 
+#Here the shortcut for the command to check:
+#grep '|$' /root/.match_list | tr -d '|' | wc -l
+#Result expected: 228. See details in the concerning part below.
+#
 #macchanger is requesting to change automatically MAC @ y/n
 #For this, you need manually :(
 #apt-get install -y macchanger
@@ -400,5 +405,5 @@ echo [END SCRIPT]
 # List reduced at: john ophcrack fcrackzip hydra gobuster bloodhound
 # The target is bloodhound. (+ shellter +crucnh)
 #
-#Increment 0.6
+#Increment 0.7
 #Comet (c) 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
