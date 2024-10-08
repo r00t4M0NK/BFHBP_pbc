@@ -183,6 +183,13 @@ RUN mkdir -p $HOME/firefox/extensions; chmod 755 $HOME/firefox/extensions;  curl
 ################################
 # C. RDP: PICS
 ################################
+#Logo file needs to be a bmp picture
+#If you have any issue, as an image created/modified with GIMP, be sure about your file and check:
+# WSL-root> file /usr/share/xrdp/login-user.bmp
+# The success format file I found is here: PC bitmap, Windows 98/2000 and newer format, 64 x 64 x 24, cbSize 12426, bits offset 138
+# From GIMP, my checkbox "do not write" is not checked.
+# I use 24 bits for the export.
+#src=https://github.com/neutrinolabs/xrdp/issues/2343
 #Uncomment only one line: here under Firewall:
 #RUN wget --timeout=5 --tries=2 --no-check-certificate -O /home/$USERVNC/login-user.bmp -c $RDP_LOGO && sleep 5 && chmod 755 /usr/share/xrdp/login-user.bmp && wget --timeout=5 --tries=2 --no-check-certificate -O $RDP_LOCAL_WLLP -c $RDP_WLLP && sleep 5 && chmod 755 $RDP_LOCAL_WLLP
 #Uncomment only one line: here without Firewall (more secure to avoid "man in the middle"):
@@ -674,7 +681,9 @@ src=#https://stackoverflow.com/questions/41178553/docker-how-to-avoid-operation-
 #HERE FIND FEW CHARS TO COPY WHEN NEED (some terminals doesn't allow the direct input from keyboard)
 # | \
 
+# Version and Increment
 #v1.0.1
+#ic 1
 
 #Thanks for authors from differents sources quoted in this document.
 #by r00t4M0NK
