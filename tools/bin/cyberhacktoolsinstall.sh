@@ -68,7 +68,7 @@ echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> /home/$USERCOMET/internetdl/timetags
 #src=https://stackoverflow.com/questions/31653271/how-to-call-curl-without-using-server-side-cache
 #But download without cache seems not so working great... (case: when you switch from curl into curl -H => requires time !!! Please wait)
 # (3.) COMET-BASH-root> echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >/home/$USERCOMET/internetdl/installation.log ; sh cyberhacktoolsinstall.sh $USERCOMET 2>>/home/$USERCOMET/internetdl/errlist.log 1>>/home/$USERCOMET/internetdl/installation.log ; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/installation.log; echo END [3]
-# [3] It's a fast run, less than 5 minutes. Check & Analyze Error File Logs: cat /home/$USERCOMET/internetdl/errlist.log
+# [3] It's a fast run, less than 5 minutes (sometimes up to 12 min). Check & Analyze Error File Logs: cat /home/$USERCOMET/internetdl/errlist.log
 # [3] You can follow the run:
 # [3] COMET-BASH-user> tail -f /home/$USERCOMET/internetdl/installation.log
 #If script in Step [3] will be ended normally, this text will be displayed:
