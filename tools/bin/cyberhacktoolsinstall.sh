@@ -114,6 +114,7 @@ echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> /home/$USERCOMET/internetdl/timetags
 #Use 'apt autoremove' to remove them.
 #0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
 #
+# (In case of any error) COMET-BASH-root> grep broken /home/$USERCOMET/internetdl/installation2.log
 # (In case of any error) COMET-BASH-root> apt-get install --fix-broken
 #
 #[END]
