@@ -311,7 +311,7 @@ RUN echo $STARTUPDIR\/myvncservice\.sh >> $STARTUPDIR/myentrypoint.sh && echo $S
 RUN echo $STARTUPDIR\/r00t4m0nk\.sh >> $STARTUPDIR/myentrypoint.sh
 RUN echo $STARTUPDIR\/myfirefoxservice\.sh > $STARTUPDIR/mydesk.sh && echo $STARTUPDIR\/myrdpservice\.sh >> $STARTUPDIR/mydesk.sh && chmod 755 $STARTUPDIR/mydesk.sh
 RUN echo     exec \"\$\@\" >>  $STARTUPDIR/myentrypoint.sh
-RUN chmod 755 $STARTUPDIR/myvncservice.sh && chmod 755 $STARTUPDIR/mynovncservice.sh && chmod 755 $STARTUPDIR/myfirefoxservice.sh && chmod 755 $STARTUPDIR/mypsswdservice.sh && chmod 755 $STARTUPDIR/myrdpservice.sh && chmod 755 $STARTUPDIR/r00t4m0nk.sh && chmod 755 $STARTUPDIR/myscreenstretched.sh && chmod 755 $STARTUPDIR/myentrypoint.sh && chown $USERVNC:$USERVNC $STARTUPDIR/myscreenstretched.sh && echo "mkdir /dev/net; mknod /dev/net/tun c 10 200; chmod 666 /dev/net/tun; echo 'nameserver 8.8.8.8' > /etc/resolv.conf; echo 'nameserver 1.1.1.1' > /etc/resolv.conf" >> $STARTUPDIR/myopenvpnnetwork.sh && chmod 755 $STARTUPDIR/myopenvpnnetwork.sh
+RUN chmod 755 $STARTUPDIR/myvncservice.sh && chmod 755 $STARTUPDIR/mynovncservice.sh && chmod 755 $STARTUPDIR/myfirefoxservice.sh && chmod 755 $STARTUPDIR/mypsswdservice.sh && chmod 755 $STARTUPDIR/myrdpservice.sh && chmod 755 $STARTUPDIR/r00t4m0nk.sh && chmod 755 $STARTUPDIR/myscreenstretched.sh && chmod 755 $STARTUPDIR/myentrypoint.sh && chown $USERVNC:$USERVNC $STARTUPDIR/myscreenstretched.sh && echo "mkdir /dev/net; mknod /dev/net/tun c 10 200; chmod 666 /dev/net/tun; echo 'nameserver 8.8.8.8' >> /etc/resolv.conf; echo 'nameserver 1.1.1.1' >> /etc/resolv.conf" >> $STARTUPDIR/myopenvpnnetwork.sh && chmod 755 $STARTUPDIR/myopenvpnnetwork.sh
 
 #UPDATE ROOT USER: SET THE PASSWORD
 #Alias ll is on part 2
