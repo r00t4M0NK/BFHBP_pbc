@@ -530,7 +530,7 @@ CMD ["sleep", "infinity"]
 #If you don't use  --privileged, nmap can't work:
 #src=https://stackoverflow.com/questions/41178553/docker-how-to-avoid-operation-not-permitted-in-docker-container
 #And option "--security-opt" as described on source:
-src=#https://stackoverflow.com/questions/41178553/docker-how-to-avoid-operation-not-permitted-in-docker-container
+#src=#https://stackoverflow.com/questions/41178553/docker-how-to-avoid-operation-not-permitted-in-docker-container
 #
 #CHECK AFTER THE START
 #docker ps -a
@@ -683,7 +683,7 @@ src=#https://stackoverflow.com/questions/41178553/docker-how-to-avoid-operation-
 
 # Version and Increment
 #v1.0.1
-#ic 2
+#ic 3
 
 #Thanks for authors from differents sources quoted in this document.
 #by r00t4M0NK
