@@ -538,7 +538,7 @@ CMD ["sleep", "infinity"]
 #
 #Failed to try this setting in order to work with openvpn directly inside container.
 #As workaround, use directly openvpn with your host (WSL2, here Debian in Comet Documentation): it will propagate on your entire network.
-#WSL-root> export CONFIG_FILE=filesetting_xxx.ovpn; export VPN_USER=freeopenvpn; export VPN_PASSWORD=****; bash -c "openvpn --config '"$CONFIG_FILE"' --auth-user-pass <(echo -e "$VPN_USER"'\n''"$VPN_PASSWORD"')"
+#WSL-root> export VPN_PASSWORD=****; export CONFIG_FILE=filesetting_xxx.ovpn; export VPN_USER=freeopenvpn; bash -c "openvpn --config '"$CONFIG_FILE"' --auth-user-pass <(echo -e "$VPN_USER"'\n''"$VPN_PASSWORD"')"
 #Or try:
 #docker run --privileged --name halley --replace -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp -p 943:943 -p 443:443 -p 1194:1194/udp --cap-add=NET_ADMIN comet bash
 #
