@@ -542,6 +542,10 @@ CMD ["sleep", "infinity"]
 #Or try:
 #docker run --privileged --name halley --replace -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp -p 943:943 -p 443:443 -p 1194:1194/udp --cap-add=NET_ADMIN comet bash
 #
+#REMIND
+#DOCKER => VPN inside container is ok: command-line above
+#PODMAN: => VPN outside of the container, inside the host (WSL host): command-line above
+#
 #In order to add Firefox in the panel on bottom of screen, you need to open one Terminal with the user.
 #In case of issue, you can try "$STARTUPDIR/myfirefoxsvc.sh containered" (user 'normal', from a "Terminal") => normally, only a new Terminal will do the job itself (silently correction, sentence above)
 #In case of big issue, use "$STARTUPDIR/mydesk.sh" => it will disconnect you from RDP session /!\ Wait a little then you can connect again
@@ -683,7 +687,7 @@ CMD ["sleep", "infinity"]
 
 # Version and Increment
 #v1.0.1
-#ic 3
+#ic 4
 
 #Thanks for authors from differents sources quoted in this document.
 #by r00t4M0NK
