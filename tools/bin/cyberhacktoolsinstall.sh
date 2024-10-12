@@ -157,6 +157,10 @@ echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> /home/$USERCOMET/internetdl/timetags
 #An information to keep in mind, my package is near 17 GB, from my side.
 #In any case an issue would appear, you will be able to install it again easily.
 #
+#To check if file already existing:
+#cd /mnt/c/Users/<user>/.local/share/containers/podman/machine/wsl/wsldist/; ls -artl
+#cd /mnt/d/podman/machine/; ls -artl
+#
 ################################################################
 # Analyse each script from KALI
 ################################################################
