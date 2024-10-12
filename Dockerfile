@@ -544,7 +544,9 @@ CMD ["sleep", "infinity"]
 #
 #REMIND
 #DOCKER => VPN inside container is ok: command-line above
-#PODMAN: => VPN outside of the container, inside the host (WSL host): command-line above
+#PODMAN => VPN outside of the container, inside the host (WSL host): command-line above
+#
+#In case of starting VPN inside a Podman container: connection will be lost. In the Host, search the openvpn process and kill with a root user. At this point you can connect with RDP.
 #
 #In order to add Firefox in the panel on bottom of screen, you need to open one Terminal with the user.
 #In case of issue, you can try "$STARTUPDIR/myfirefoxsvc.sh containered" (user 'normal', from a "Terminal") => normally, only a new Terminal will do the job itself (silently correction, sentence above)
