@@ -150,7 +150,7 @@ echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> /home/$USERCOMET/internetdl/timetags
 #When every point is operational and validated by you, the suggestion is to save the container:
 # PS> wsl --shutdown
 # PS> wsl --export podman-<machine> podman.tar
-#For more details, refer to document "MyVNCDockerfileTips" (part "Storage Full")
+#For more details, refer to document "MyVNCDockerfileTips" (part "Storage Full" from file with "Tips")
 #If you have 2 drives, check to go on the right location. If my C:\ is near full, do the change dir:
 # PS> D:
 # PS>(export cmd, see above)
