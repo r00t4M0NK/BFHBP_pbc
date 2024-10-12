@@ -40,7 +40,10 @@
 #grep "docker run" Dockerfile | sed -e 's/docker/podmanr/g'
 #
 #Why these differences? Because Docker & Podman haven't same architecture. So VPN can't be use in a same way.
-#/!\ If you run a pod (ex: with podman), install (as CSL) and you run another image (replacing it), you will loose all updates you have done.
+#/!\ If you run a pod (ex: with podman), install (as CSL) and you run the same image but another instance (replacing it), you will loose all updates you have done in your first instance.
+#Gentle Reminder: IMAGE (comet) => INSTANCE (halley)
+#You run the INSTANCE from the IMAGE.
+#The IMAGE is built from the Dockerfile.
 #A Pod is always created with the mind of "one-shot". That's important to keep in mind to explain any behaviour.
 
 
