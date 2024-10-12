@@ -34,6 +34,8 @@
 #grep "docker build" Dockerfile | sed -e 's/docker/podmanr/g'
 #grep "docker rmi" Dockerfile | sed -e 's/docker/podmanr/g'
 #grep "docker run" Dockerfile | sed -e 's/docker/podmanr/g'
+#
+#RUN: last line for Podman, line with --privileged for Docker
 
 
 ##########################################################################
