@@ -160,6 +160,12 @@ echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> /home/$USERCOMET/internetdl/timetags
 #To check if file already existing:
 #cd /mnt/c/Users/<user>/.local/share/containers/podman/machine/wsl/wsldist/; ls -artl
 #cd /mnt/d/podman/machine/; ls -artl
+#WINDOWS
+#cd C:\Users\<user>\.local\share\containers\podman\machine\wsl\wsldist\; dir
+#D:; cd D:\podman\machine\; dir
+#
+#ADVICE: Run the command, save into a tar-file, then rename this file ("podman.tar") and move it into a Save-Directory.
+#Example: I choose directory "Install_Import_Save_Sun" in the host.
 #
 ################################################################
 # Analyse each script from KALI
@@ -418,5 +424,5 @@ echo [END SCRIPT]
 # List reduced at: john ophcrack fcrackzip hydra gobuster bloodhound
 # The target is bloodhound. (+ shellter +crucnh)
 #
-#Increment 1.0
+#Increment 1.1
 #Comet (c) 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
