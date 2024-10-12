@@ -33,6 +33,10 @@
 #RUN: last line for Podman (add --replace), line with --privileged for Docker
 #Line only for Podman, with --replace:
 #grep "podmanr run" Dockerfile
+#VALIDATED line:
+#podmanr run --replace --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=NET_ADMIN comet bash
+#
+#If you see any <<podman run --privileged>>, don't use it if you need to use VPN.
 #
 #My personnal shotcurts
 #grep "docker build" Dockerfile | sed -e 's/docker/podmanr/g'
