@@ -135,10 +135,15 @@ echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> /home/$USERCOMET/internetdl/timetags
 # xfce4-xkb-plugin : Depends: libglib2.0-0t64 (>= 2.38.0) but it is not going to be installed
 # xfdesktop4 : Depends: libglib2.0-0t64 (>= 2.75.3) but it is not going to be installed
 # xfwm4 : Depends: libglib2.0-0t64 (>= 2.75.3) but it is not going to be installed
+#[BACK] [START]
+#[BACK] [END]
 #]
 ################ [11]
 #  Do "/home/$USERCOMET/internetdl/genmatchlist.sh" as described in this file and check with "Final Check" /home/$USERCOMET/internetdl/finalcheck.sh.
 # (check eventually) COMET-BASH-root> grep broken /home/$USERCOMET/internetdl/installation2.log
+# Correction:
+# ./cyberhacktoolsinstall.sh ; echo [END SCRIPT] ; apt-get install -y --fix-broken ; /home/$USERCOMET/internetdl/genmatchlist.sh ; /home/$USERCOMET/internetdl/finalcheck.sh
+# Try 2 times or little more if needed.
 #
 #[END]
 # # # # # For the FINAL CHECK, see below. # # # # # 
@@ -475,5 +480,5 @@ echo [END SCRIPT]
 # List reduced at: john ophcrack fcrackzip hydra gobuster bloodhound
 # The target is bloodhound. (+ shellter +crucnh)
 #
-#Increment 1.6
+#Increment 1.7
 #Comet (c) 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
