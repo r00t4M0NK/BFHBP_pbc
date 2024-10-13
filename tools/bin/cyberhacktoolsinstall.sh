@@ -454,7 +454,7 @@ grep ' | ' /root/.match_list | tr -d '|' | cut -d' ' -f 3 | wc -l
 #if macchanger installed (+ regenerate .match_list as above): 66
 #The number gives an idea to check from full lists: if you want or need details, check the full list in files (as do the action with /root/.match_list)
 #
-apt-get autoremove
+apt-get -y autoremove
 echo "[END] SCRIPT" >>  /home/$USERCOMET/internetdl/timetags.log
 echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> /home/$USERCOMET/internetdl/timetags.log
 echo [END SCRIPT]
