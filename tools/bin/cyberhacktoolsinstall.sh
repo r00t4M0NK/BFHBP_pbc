@@ -109,13 +109,28 @@ echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> /home/$USERCOMET/internetdl/timetags
 #The following packages were automatically installed and are no longer required:
 # COMET-BASH-user> tail -20 /home/$USERCOMET/internetdl/installation2.log
 #Result expected:
+#[
 #  fdisk gdisk gpg-wks-server libabsl20220623 libargon2-1 libassuan0
 # (...)
 #Use 'apt autoremove' to remove them.
 #0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+#]
 #
+#It might be broken if you have this result:
+#[
+# xfce4-timer-plugin : Depends: libglib2.0-0t64 (>= 2.26.0) but it is not going to be installed
+# xfce4-verve-plugin : Depends: libglib2.0-0t64 (>= 2.32.0) but it is not going to be installed
+# xfce4-wavelan-plugin : Depends: libglib2.0-0t64 (>= 2.18.0) but it is not going to be installed
+# xfce4-weather-plugin : Depends: libglib2.0-0t64 (>= 2.68.0) but it is not going to be installed
+# xfce4-whiskermenu-plugin : Depends: libglib2.0-0t64 (>= 2.38.0) but it is not going to be installed
+# xfce4-xkb-plugin : Depends: libglib2.0-0t64 (>= 2.38.0) but it is not going to be installed
+# xfdesktop4 : Depends: libglib2.0-0t64 (>= 2.75.3) but it is not going to be installed
+# xfwm4 : Depends: libglib2.0-0t64 (>= 2.75.3) but it is not going to be installed
+#]
+#  Do "/home/$USERCOMET/internetdl/genmatchlist.sh" as described in this file and check with "Final Check" /home/$USERCOMET/internetdl/finalcheck.sh.
 # (In case of any error) COMET-BASH-root> grep broken /home/$USERCOMET/internetdl/installation2.log
 # (In case of any error) COMET-BASH-root> apt-get install -y --fix-broken
+# (In case of final check is not at the result expected) COMET-BASH-root> /home/$USERCOMET/internetdl/cyberhacktoolsinstall.sh
 #
 #[END]
 # # # # # For the FINAL CHECK, see below. # # # # # 
@@ -382,15 +397,41 @@ export cpt=1; echo " [ $cpt ] " > $HTOOLLOGS; export cpt=`expr $cpt + 1`;  echo 
 apt-get clean
 #
 #[GENERATE .MATCH_LIST] To check if each package are well install, open a new terminal under root:
-dpkg --get-selections > /root/.package_list
-rm /root/.match_list
-export caret='\r\n'
-cat "/home/$USERCOMET/internetdl/pgms.lst" | while read line 
-do
-    export p=`echo ${line//[$'\t\r\n ']}| tr -d $caret`
-    echo $p '|' `grep $p /root/.package_list` >> /root/.match_list
-	echo $p '|' `grep $p /root/.package_list` >> /root/.unmatch_list
-done
+#[
+if ! [ -f "/home/$USERCOMET/internetdl/finalcheck.sh" ]; then
+echo "grep ' | ' /root/.match_list | tr -d '|' | cut -d' ' -f 3 | wc -l" > /home/$USERCOMET/internetdl/finalcheck.sh
+chmod 755 /home/$USERCOMET/internetdl/finalcheck.sh
+fi
+if ! [ -f "/home/$USERCOMET/internetdl/genmatchlist.sh" ]; then
+echo '#!/bin/bash' > /home/$USERCOMET/internetdl/genmatchlist.sh
+echo "dpkg --get-selections > /root/.package_list" >> /home/$USERCOMET/internetdl/genmatchlist.sh
+echo "rm /root/.match_list" >> /home/$USERCOMET/internetdl/genmatchlist.sh
+echo "export caret='\r\n'" >> /home/$USERCOMET/internetdl/genmatchlist.sh
+echo "cat "/home/$USERCOMET/internetdl/pgms.lst" | while read line " >> /home/$USERCOMET/internetdl/genmatchlist.sh
+echo "do" >> /home/$USERCOMET/internetdl/genmatchlist.sh
+echo "    export p=\`echo \${line//[$'\t\r\n ']}| tr -d \$caret\`" >> /home/$USERCOMET/internetdl/genmatchlist.sh
+echo "    echo \$p '|' \`grep \$p /root/.package_list\` >> /root/.match_list" >> /home/$USERCOMET/internetdl/genmatchlist.sh
+echo "    export p=\`echo \${line//[\$'\t\r\n ']}\`" >> /home/$USERCOMET/internetdl/genmatchlist.sh
+echo "done" >> /home/$USERCOMET/internetdl/genmatchlist.sh
+chmod 755 /home/$USERCOMET/internetdl/genmatchlist.sh
+fi
+./genmatchlist.sh
+#
+#Here the code in case it's need to copy/paste (here idea for file "unmatch" is kept but not neeed now):
+#
+#dpkg --get-selections > /root/.package_list
+#rm /root/.match_list
+#rm /root/.unmatch_list
+#export caret='\r\n'
+#cat "/home/$USERCOMET/internetdl/pgms.lst" | while read line 
+#do
+#    export p=`echo ${line//[$'\t\r\n ']}| tr -d $caret`
+#    echo $p '|' `grep $p /root/.package_list` >> /root/.match_list
+#	export p=`echo ${line//[$'\t\r\n ']}`
+#	echo $p '|' `grep $p /root/.package_list` >> /root/.unmatch_list
+#done
+#chmod 755 /home/$USERCOMET/internetdl/genmatchlist.sh
+#]
 #
 echo ""
 echo If you don\'t already did it, thank you to install manually this last package: [[[ apt-get install -y macchanger ]]]
@@ -398,15 +439,15 @@ echo Remove these files after been checked if you don\'t need more: /home/$USERC
 echo COPY/PASTE "rm /home/$USERCOMET/internetdl/pgms.lst\; rm /home/$USERCOMET/internetdl/usrbin.log\; rm $HTOOLLOGS /root/.package_list\; rm /root/.match_list; rm /home/$USERCOMET/internetdl/errlist.log; rm /home/$USERCOMET/internetdl/errlist2.log; rm /home/$USERCOMET/internetdl/installation.log; rm /home/$USERCOMET/internetdl/installation2.log"
 #[FINAL CHECK]
 echo Here programs from this script which are not listed and require a manual control \(check comments in \"cyberhacktoolsinstall.sh\"\)\:
-grep '|$' /root/.unmatch_list | tr -d '|'
-grep '|$' /root/.unmatch_list | tr -d '|' | wc -l
+grep '|$' /root/.match_list | tr -d '|'
+grep '|$' /root/.match_list | tr -d '|' | wc -l
 #result should be 3: macchanger, msfvenom , msfrpcd  => [ msfvenom + msfrpcd ] are in metasploit-framework
 #CHECK MANUALLY (result expected: shells are here):
 #grep msfvenom $HTOOLLOGS -B 1 -A 10
 #grep msfrpcd $HTOOLLOGS -B 1 -A 10
 grep ' | ' /root/.match_list | tr -d '|' | cut -d' ' -f 3
 grep ' | ' /root/.match_list | tr -d '|' | cut -d' ' -f 3 | wc -l
-#65 + macchanger = 66 from list
+#65 + macchanger = 66 from list (list is 68 because 2 are listed even if included inside another, the metasploit framework)
 #apt-get install -y macchanger
 #generate again files and check as described above.
 #result should be 65 (in case of any difference => WSL-root> apt-get update; apt-get install -y --fix-broken; ./cyberhacktoolsinstall.sh)
@@ -424,5 +465,5 @@ echo [END SCRIPT]
 # List reduced at: john ophcrack fcrackzip hydra gobuster bloodhound
 # The target is bloodhound. (+ shellter +crucnh)
 #
-#Increment 1.1
+#Increment 1.2
 #Comet (c) 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
