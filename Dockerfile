@@ -36,6 +36,9 @@
 #VALIDATED line ("--privileged" could crash pod if you use openvpn inside but it's needed for nmap!):
 #podmanr run --replace --security-opt seccomp=unconfined --privileged --name halley --replace -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=NET_ADMIN comet bash
 #
+#Note: It's not really a crash but it will be network problem access if you use remote access as RDP and start an openvpn session.
+#      You can repair with WSL podman access: attach the pod, go inside with a root-user and kill openvpn process.
+#
 #You don't need nmap:
 #podmanr run --replace --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=NET_ADMIN comet bash
 #
