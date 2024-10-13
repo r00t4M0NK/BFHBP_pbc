@@ -33,10 +33,13 @@
 #RUN: last line for Podman (add --replace), line with --privileged for Docker
 #Line only for Podman, with --replace:
 #grep "podmanr run" Dockerfile
-#VALIDATED line:
+#VALIDATED line ("--privileged" could crash pod if you use openvpn inside but it's needed for nmap!):
+#podmanr run --replace --security-opt seccomp=unconfined --privileged --name halley --replace -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=NET_ADMIN comet bash
+#
+#You don't need nmap:
 #podmanr run --replace --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=NET_ADMIN comet bash
 #
-#If you see any <<podman run --privileged>>, don't use it if you need to use VPN.
+#If you see any <<podman run --privileged>>, don't use it if you need to use VPN. If you don't use "privileged", it's more secure: BUT! But you need this option for nmap.
 #
 #My personnal shotcurts
 #grep "docker build" Dockerfile | sed -e 's/docker/podmanr/g'
@@ -586,6 +589,8 @@ CMD ["sleep", "infinity"]
 #docker run --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=NET_ADMIN comet bash
 #podmanr run --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=net_admin,mknod -v /dataexchg:/dataexchg -v /dev/net/tun:/dev/net/tun comet bash
 #podmanr run --replace --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=NET_ADMIN comet bash
+#Thinkin in addition about nmap:
+#podmanr run --replace --security-opt seccomp=unconfined --privileged --name halley --replace -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp comet bash
 #src=https://github.com/kylemanna/docker-openvpn/issues/498
 #
 #Volume: creation
@@ -706,7 +711,7 @@ CMD ["sleep", "infinity"]
 
 # Version and Increment
 #v1.0.1
-#ic 4
+#ic 5
 
 #Thanks for authors from differents sources quoted in this document.
 #by r00t4M0NK
