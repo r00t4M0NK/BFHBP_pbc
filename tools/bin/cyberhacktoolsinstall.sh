@@ -57,11 +57,13 @@ echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> /home/$USERCOMET/internetdl/timetags
 # For Downloading parts: choice to store in a dedicated dir
 ################################################################
 # You need to run these commands in order to download this script in the target machine for adding these tools
+################ [1]
 # (1.) COMET-BASH-user> export HTOOLLOGS=/home/$USERCOMET/internetdl/htools.log; mkdir -p /home/$USERCOMET/internetdl; touch /home/$USERCOMET/internetdl/htools.log; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> $HTOOLLOGS; cd /home/$USERCOMET/internetdl; echo END [1]
 # If need Firefox extensions plugins:
 #export HTOOLLOGS=/home/$USERCOMET/internetdl/htools.log; mkdir -p /home/$USERCOMET/internetdl; touch /home/$USERCOMET/internetdl/htools.log; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> $HTOOLLOGS; cd /home/$USERCOMET/internetdl; curl https://addons.mozilla.org/firefox/downloads/file/4343983/ghostery-10.4.3.xpi > /home/$USERCOMET/internetdl/ghostery-10.4.3.xpi; curl https://addons.mozilla.org/firefox/downloads/file/4351045/adblock_plus-4.7.xpi > /home/$USERCOMET/internetdl/adblock_plus-4.7.xpi; echo END [1b]
 # [1] 2 extensions to block have been download in the folder: if you need, install them manually. Be carefull, it will be 2 Firefox in this version! (FF from Comet and FF from Kali)
 # Then, switch into root (or open a new terminal): su - root
+################ [2]
 # (2.) COMET-BASH-root> export HTOOLLOGS=/home/$USERCOMET/internetdl/htools.log; apt-get install -y curl dos2unix; apt-get upgrade; apt-get update; export HTOOLLOGS=/home/$USERCOMET/internetdl/htools.log; export INSTALL_SH_MYTOOLS=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/tools/bin/cyberhacktoolsinstall.sh; cd /home/$USERCOMET/internetdl; curl $INSTALL_SH_MYTOOLS > cyberhacktoolsinstall.sh; dos2unix cyberhacktoolsinstall.sh; chown $USERCOMET:$USERCOMET cyberhacktoolsinstall.sh; chmod 755 cyberhacktoolsinstall.sh; sleep 10; echo END [2]
 #Only the script CSL to download and update when needed:
 #export INSTALL_SH_MYTOOLS=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/tools/bin/cyberhacktoolsinstall.sh; cd /home/$USERCOMET/internetdl; curl $INSTALL_SH_MYTOOLS > cyberhacktoolsinstall.sh; dos2unix cyberhacktoolsinstall.sh; chown $USERCOMET:$USERCOMET cyberhacktoolsinstall.sh; chmod 755 cyberhacktoolsinstall.sh
@@ -69,6 +71,7 @@ echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> /home/$USERCOMET/internetdl/timetags
 #export HTOOLLOGS=/home/$USERCOMET/internetdl/htools.log; export HTOOLLOGS=/home/$USERCOMET/internetdl/htools.log; export INSTALL_SH_MYTOOLS=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/tools/bin/cyberhacktoolsinstall.sh; cd /home/$USERCOMET/internetdl; curl -H 'Cache-Control: no-cache' $INSTALL_SH_MYTOOLS > cyberhacktoolsinstall.sh; dos2unix cyberhacktoolsinstall.sh; chown $USERCOMET:$USERCOMET cyberhacktoolsinstall.sh; chmod 755 cyberhacktoolsinstall.sh; sleep 10; echo END [2b]
 #src=https://stackoverflow.com/questions/31653271/how-to-call-curl-without-using-server-side-cache
 #But download without cache seems not so working great... (case: when you switch from curl into curl -H => requires time !!! Please wait)
+################ [3]
 # (3.) COMET-BASH-root> echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >/home/$USERCOMET/internetdl/installation.log ; sh cyberhacktoolsinstall.sh $USERCOMET 2>>/home/$USERCOMET/internetdl/errlist.log 1>>/home/$USERCOMET/internetdl/installation.log ; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/installation.log; echo END [3]
 # [3] It's a fast run, less than 5 minutes (sometimes up to 12 min). Check & Analyze Error File Logs: cat /home/$USERCOMET/internetdl/errlist.log
 # [3] You can follow the run:
@@ -83,8 +86,9 @@ echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> /home/$USERCOMET/internetdl/timetags
 #Processing triggers for hicolor-icon-theme (0.17-2) ...
 #Processing triggers for libc-bin (2.36-9+deb12u8) ...
 # [3] Check if all apt commands are well (not locked): COMET-BASH-root> ps -aux | grep apt
+################ [4] [OPTIONAL]
 # (4.) Check errors in error-list: COMET-BASH-root> grep Unable /home/$USERCOMET/internetdl/errlist.log; echo END [4]
-# (4.) If you need to count, number expected is 28: COMET-BASH-root> grep Unable /home/$USERCOMET/internetdl/errlist.log | wc -l
+# (4.) If you need to count, number expected is 29: COMET-BASH-root> grep Unable /home/$USERCOMET/internetdl/errlist.log | wc -l
 # [4] At this step, sources from default image should be not enough. That's this error list seems long. It's mandatory to correct this point.
 # [5] Download part
 # (5.) COMET-BASH-root> wget http://http.kali.org/kali/pool/main/k/kali-archive-keyring/kali-archive-keyring_2024.1_all.deb
@@ -94,7 +98,9 @@ echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> /home/$USERCOMET/internetdl/timetags
 # (7.) COMET-BASH-root> rm kali-archive-keyring_2024.1_all.deb
 # [8] Update
 # (8.) COMET-BASH-root> apt-get update
+################ [5]-[8]
 # [5-6-7-8] In one line: wget http://http.kali.org/kali/pool/main/k/kali-archive-keyring/kali-archive-keyring_2024.1_all.deb; dpkg -i kali-archive-keyring_2024.1_all.deb; rm kali-archive-keyring_2024.1_all.deb; apt-get update
+################ [9]
 # (9.) COMET-BASH-root> echo "[9] START" >>/home/$USERCOMET/internetdl/installation2.log; echo "[9][START]" $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/timetags.log ; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/installation2.log ; echo deb http://http.kali.org/kali kali-rolling main contrib non-free >> /etc/apt/sources.list && apt-get update -y && apt-get upgrade -y && apt-get dist-upgrade -y && $STARTUPDIR/mybackgroundwllpservice.sh && $STARTUPDIR/mycometdesignRDP.sh && $STARTUPDIR/mycometdesignTerminal.sh; echo "[9] END" >>/home/$USERCOMET/internetdl/installation2.log; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/installation2.log ; echo "[9][END]" $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/timetags.log ; echo END [9]
 # [9] This step should change the wallpaper: to come back to Comet, it's to use <STARTUPDIR>/mybackgroundwllpservice.sh
 # [9] This step should change the Terminal for the root user: to come back to Comet, it's to use <STARTUPDIR>/mycometdesignTerminal.sh (already done above) => after a bug, it is done again at end of this script
@@ -104,7 +110,8 @@ echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> /home/$USERCOMET/internetdl/timetags
 # (10.) It's need to check processes (lock by apt-get, with a command "sh") and with only the id list:
 # (10.) COMET-BASH-root> ps -aC apt-get
 # (10.) COMET-BASH-root> ps -aC apt-get -o pid=
-# (10.) COMET-BASH-root> echo "[10][START]" $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/timetags.log ; echo "[10] START" >>/home/$USERCOMET/internetdl/installation2.log; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/installation2.log ; sh /home/$USERCOMET/internetdl/cyberhacktoolsinstall.sh $USERCOMET 2>>/home/$USERCOMET/internetdl/errlist2.log 1>>/home/$USERCOMET/internetdl/installation2.log ; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >/home/$USERCOMET/internetdl/installation2.log ; echo "[10] END" >>/home/$USERCOMET/internetdl/installation2.log; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/installation2.log ; echo "[10][END]" $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/timetags.log ; echo END [10]
+################ [10]
+# (10.) COMET-BASH-root> echo "[10][START]" $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/timetags.log ; echo "[10] START" >>/home/$USERCOMET/internetdl/installation2.log; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/installation2.log ; sh /home/$USERCOMET/internetdl/cyberhacktoolsinstall.sh $USERCOMET 2>>/home/$USERCOMET/internetdl/errlist2.log 1>>/home/$USERCOMET/internetdl/installation2.log ; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >/home/$USERCOMET/internetdl/installation2.log ; echo "[10] END" >>/home/$USERCOMET/internetdl/installation2.log; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/installation2.log ; echo "[10][END]" $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/timetags.log ; apt-get install -y --fix-broken ; /home/$USERCOMET/internetdl/cyberhacktoolsinstall.sh ; echo END [10]
 # This step is about 45 minutes. Check not more, and stop the script if needed.
 #If script is locked, this end will be displayed:
 #wireshark is already the newest version (4.4.0-1).
@@ -129,10 +136,9 @@ echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> /home/$USERCOMET/internetdl/timetags
 # xfdesktop4 : Depends: libglib2.0-0t64 (>= 2.75.3) but it is not going to be installed
 # xfwm4 : Depends: libglib2.0-0t64 (>= 2.75.3) but it is not going to be installed
 #]
+################ [11]
 #  Do "/home/$USERCOMET/internetdl/genmatchlist.sh" as described in this file and check with "Final Check" /home/$USERCOMET/internetdl/finalcheck.sh.
-# (In case of any error) COMET-BASH-root> grep broken /home/$USERCOMET/internetdl/installation2.log
-# (In case of any error) COMET-BASH-root> apt-get install -y --fix-broken
-# (In case of final check is not at the result expected) COMET-BASH-root> /home/$USERCOMET/internetdl/cyberhacktoolsinstall.sh
+# (check eventually) COMET-BASH-root> grep broken /home/$USERCOMET/internetdl/installation2.log
 #
 #[END]
 # # # # # For the FINAL CHECK, see below. # # # # # 
@@ -469,5 +475,5 @@ echo [END SCRIPT]
 # List reduced at: john ophcrack fcrackzip hydra gobuster bloodhound
 # The target is bloodhound. (+ shellter +crucnh)
 #
-#Increment 1.4
+#Increment 1.6
 #Comet (c) 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
