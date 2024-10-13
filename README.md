@@ -46,6 +46,8 @@ The Tool can be used in RDP (for easiest way) to use on hack-boxes (next update 
 - Step 4. To add the CyberSecurity Layer (CSL), refer to /tools/bin/cyberhacktoolsinstall.sh (here in GitHub) in chapter "For Downloading parts" with 10 steps.
 - Step 5. Enjoy.
 
+  ==> refer to the document PDF "Comet_User_Guide.pdf" with some pictures and a better view for processes in order to install each component.
+
 [ESTIMATED TIME]
 
 - First Full Run: 180 mn
