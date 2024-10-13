@@ -453,6 +453,8 @@ grep ' | ' /root/.match_list | tr -d '|' | cut -d' ' -f 3 | wc -l
 #result should be 65 (in case of any difference => WSL-root> apt-get update; apt-get install -y --fix-broken; ./cyberhacktoolsinstall.sh)
 #if macchanger installed (+ regenerate .match_list as above): 66
 #The number gives an idea to check from full lists: if you want or need details, check the full list in files (as do the action with /root/.match_list)
+#
+apt-get autoremove
 echo "[END] SCRIPT" >>  /home/$USERCOMET/internetdl/timetags.log
 echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> /home/$USERCOMET/internetdl/timetags.log
 echo [END SCRIPT]
@@ -465,5 +467,5 @@ echo [END SCRIPT]
 # List reduced at: john ophcrack fcrackzip hydra gobuster bloodhound
 # The target is bloodhound. (+ shellter +crucnh)
 #
-#Increment 1.2
+#Increment 1.3
 #Comet (c) 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
