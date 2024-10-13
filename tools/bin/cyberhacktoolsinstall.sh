@@ -63,6 +63,8 @@ echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> /home/$USERCOMET/internetdl/timetags
 # [1] 2 extensions to block have been download in the folder: if you need, install them manually. Be carefull, it will be 2 Firefox in this version! (FF from Comet and FF from Kali)
 # Then, switch into root (or open a new terminal): su - root
 # (2.) COMET-BASH-root> export HTOOLLOGS=/home/$USERCOMET/internetdl/htools.log; apt-get install -y curl dos2unix; apt-get upgrade; apt-get update; export HTOOLLOGS=/home/$USERCOMET/internetdl/htools.log; export INSTALL_SH_MYTOOLS=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/tools/bin/cyberhacktoolsinstall.sh; cd /home/$USERCOMET/internetdl; curl $INSTALL_SH_MYTOOLS > cyberhacktoolsinstall.sh; dos2unix cyberhacktoolsinstall.sh; chown $USERCOMET:$USERCOMET cyberhacktoolsinstall.sh; chmod 755 cyberhacktoolsinstall.sh; sleep 10; echo END [2]
+#Only the script CSL to download and update when needed:
+#export INSTALL_SH_MYTOOLS=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/tools/bin/cyberhacktoolsinstall.sh; cd /home/$USERCOMET/internetdl; curl $INSTALL_SH_MYTOOLS > cyberhacktoolsinstall.sh; dos2unix cyberhacktoolsinstall.sh; chown $USERCOMET:$USERCOMET cyberhacktoolsinstall.sh; chmod 755 cyberhacktoolsinstall.sh
 #If need only update the local script with a new download (check "Increment" version to be sure no cache phenomenon, here curl bypassing cache):
 #export HTOOLLOGS=/home/$USERCOMET/internetdl/htools.log; export HTOOLLOGS=/home/$USERCOMET/internetdl/htools.log; export INSTALL_SH_MYTOOLS=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/tools/bin/cyberhacktoolsinstall.sh; cd /home/$USERCOMET/internetdl; curl -H 'Cache-Control: no-cache' $INSTALL_SH_MYTOOLS > cyberhacktoolsinstall.sh; dos2unix cyberhacktoolsinstall.sh; chown $USERCOMET:$USERCOMET cyberhacktoolsinstall.sh; chmod 755 cyberhacktoolsinstall.sh; sleep 10; echo END [2b]
 #src=https://stackoverflow.com/questions/31653271/how-to-call-curl-without-using-server-side-cache
@@ -415,7 +417,7 @@ echo "    export p=\`echo \${line//[\$'\t\r\n ']}\`" >> /home/$USERCOMET/interne
 echo "done" >> /home/$USERCOMET/internetdl/genmatchlist.sh
 chmod 755 /home/$USERCOMET/internetdl/genmatchlist.sh
 fi
-./genmatchlist.sh
+/home/$USERCOMET/internetdl/genmatchlist.sh
 #
 #Here the code in case it's need to copy/paste (here idea for file "unmatch" is kept but not neeed now):
 #
@@ -467,5 +469,5 @@ echo [END SCRIPT]
 # List reduced at: john ophcrack fcrackzip hydra gobuster bloodhound
 # The target is bloodhound. (+ shellter +crucnh)
 #
-#Increment 1.3
+#Increment 1.4
 #Comet (c) 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
