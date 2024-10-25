@@ -463,7 +463,7 @@ grep ' | ' /root/.match_list | tr -d '|' | cut -d' ' -f 3 | wc -l
 #65 + macchanger = 66 from list (list is 68 because 2 are listed even if included inside another, the metasploit framework)
 #apt-get install -y macchanger
 #generate again files and check as described above.
-#result should be 65 (in case of any difference => WSL-root> apt-get update; apt-get install -y --fix-broken; ./cyberhacktoolsinstall.sh)
+#result should be 65 (in case of any difference => Terminal-root> apt-get update; apt-get install -y --fix-broken; ./cyberhacktoolsinstall.sh)
 #if macchanger installed (+ regenerate .match_list as above): 66
 #The number gives an idea to check from full lists: if you want or need details, check the full list in files (as do the action with /root/.match_list)
 #
@@ -480,5 +480,17 @@ echo [END SCRIPT]
 # List reduced at: john ophcrack fcrackzip hydra gobuster bloodhound
 # The target is bloodhound. (+ shellter +crucnh)
 #
-#Increment 1.7
+#BLACK SCREEN (XRDP):
+# Connect with WSL and use root to find XRDP processes:
+# WSL-root> ps -aux | grep XRDP
+# WSL-root> lsof -i
+# pkill xrdp
+# /startup/myrdpservice.sh
+# Check again process
+#src=https://forum.xfce.org/viewtopic.php?id=15896&p=2
+# apt-get install xfce4 xfce4-settings xauth ; apt-get update
+#src=https://github.com/neutrinolabs/xrdp/issues/2752
+# vi /etc/xrdp/startwm.sh 
+#
+#Increment 1.10
 #Comet (c) 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
