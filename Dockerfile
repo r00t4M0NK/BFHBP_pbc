@@ -396,6 +396,13 @@ RUN echo '<html><head></head><body><table><tr><td><a href="https://testmypage.co
 ## PART 6: RDP
 ##########################################################################
 #To know version: xrdp -v | grep "xrdp " | head -n 1 | cut -d' ' -f2
+#
+#Don't forget to set port forwarding in the host machine, with PowerShell:
+#netsh interface portproxy add v4tov4 listenport=3389 listenaddress=<IP_MACHINE_HOST> connectport=3390 connectaddress=<IP_CONTAINER>
+#
+#<IP_MACHINE_HOST> => or you know because you connect through a VNC service, or type in the machine within a DOS shell: CMD > ipconfig (most of time: ethernet, "IPV4")
+#<IP_CONTAINER> => in the WSL, within the host and outside from container: WSL ifconfig (most of time: eth0, inet @ddress)
+#
 #Set Port and Graphic RDP
 #Leave <<port = 3 3 8 9>> without blanks, here because it's the standard port to change into the new port /!\
 RUN echo "sed -i 's+port=3389+port= tcp: //:'$RDP_PORT'+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_title=My Login Title+ls_title=$RDP_TITLE+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_height=430+ls_height=240+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_bg_color=dedede+ls_bg_color=e8e8e8+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_logo_filename=$+ls_logo_filename=/usr/share/xrdp/login-user.bmp+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_logo_transform=none+ls_logo_transform=scale+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_logo_width=240+ls_logo_width=64+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_logo_height=140+ls_logo_height=64+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_logo_x_pos=55+ls_logo_x_pos=150+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_logo_y_pos=50+ls_logo_y_pos=25+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_label_x_pos=30+ls_label_x_pos=20+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_input_x_pos=110+ls_input_x_pos=150+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_input_width=210+ls_input_width=170+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_input_y_pos=220+ls_input_y_pos=100+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_ok_x_pos=142+ls_btn_ok_x_pos=80+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_ok_y_pos=370+ls_btn_ok_y_pos=200+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_cancel_x_pos=237+ls_btn_cancel_x_pos=180+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_cancel_y_pos=370+ls_btn_cancel_y_pos=200+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_top_window_bg_color=009cb5+ls_top_window_bg_color=000000+g' /etc/xrdp/xrdp.ini && sed -i 's+blue=009cb5+#blue=009cb5+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_background_image=+ls_background_image='$RDP_LOCAL_WLLP'+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_background_transform=none+ls_background_transform=scale+g' /etc/xrdp/xrdp.ini" > $STARTUPDIR/mycometdesignRDP.sh && echo touch /root/.hushlogin  >> $STARTUPDIR/mycometdesignRDP.sh && echo "if [ -f /etc/xrdp/xrdp.ini.original ]; then" >> $STARTUPDIR/mycometdesignRDP.sh && echo "cp -f /etc/xrdp/xrdp.ini.original /etc/xrdp/xrdp.ini" >> $STARTUPDIR/mycometdesignRDP.sh && echo fi >> $STARTUPDIR/mycometdesignRDP.sh && chmod 755 $STARTUPDIR/mycometdesignRDP.sh && $STARTUPDIR/mycometdesignRDP.sh
@@ -723,7 +730,7 @@ CMD ["sleep", "infinity"]
 
 # Version and Increment
 #v1.0.1
-#ic 8
+#ic 9
 
 #Thanks for authors from differents sources quoted in this document.
 #by r00t4M0NK
