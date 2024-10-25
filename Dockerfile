@@ -34,14 +34,14 @@
 #Line only for Podman, with --replace:
 #grep "podmanr run" Dockerfile
 #VALIDATED line ("--privileged" could crash pod if you use openvpn inside but it's needed for nmap!):
-#podmanr run --security-opt seccomp=unconfined --privileged --name halley --replace -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=NET_ADMIN comet bash
+#podmanr run --security-opt seccomp=unconfined --privileged --name halley --replace -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=NET_ADMIN comet bash
 #/!\ It will replace any pod named "halley"
 #
 #Note: It's not really a crash but it will be network problem access if you use remote access as RDP and start an openvpn session.
 #      You can repair with WSL podman access: attach the pod, go inside with a root-user and kill openvpn process.
 #
 #You don't need nmap:
-#podmanr run --replace --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=NET_ADMIN comet bash
+#podmanr run --replace --name halley -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=NET_ADMIN comet bash
 #
 #If you see any <<podman run --privileged>>, don't use it if you need to use VPN. If you don't use "privileged", it's more secure: BUT! But you need this option for nmap.
 #
@@ -77,8 +77,15 @@ LABEL org.opencontainers.image.authors="r00t4M0NK"
 ENV DISPLAY=:1 \
     VNC_PORT=5901 \
     NO_VNC_PORT=6901 \
-    RDP_PORT=3389
+    RDP_PORT=3390
 EXPOSE $VNC_PORT $NO_VNC_PORT $RDP_PORT
+
+#3390 is choosen for RDP because 3389 has conflict with WSL
+#src=https://answers.microsoft.com/en-us/windows/forum/all/cannot-connect-to-xrdp-running-in-wsl-via-remote/bce76f7f-37da-44be-8117-9465290b54c8?page=2
+
+#Check in Firewall (Windows) to allow this port
+#Check from Windows > Remote > Settings > Port
+#Don't have RDP active in the host machine
 
 #This line could test but we keep in mind it's not same scope inside the container than here in the build file
 #echo DISPLAY: $DISPLAY VNC: $VNC_PORT NONC: $NO_VNC_PORT RDP: $RDP_PORT
@@ -390,6 +397,7 @@ RUN echo '<html><head></head><body><table><tr><td><a href="https://testmypage.co
 ##########################################################################
 #To know version: xrdp -v | grep "xrdp " | head -n 1 | cut -d' ' -f2
 #Set Port and Graphic RDP
+#Leave <<port = 3 3 8 9>> without blanks, here because it's the standard port to change into the new port /!\
 RUN echo "sed -i 's+port=3389+port= tcp: //:'$RDP_PORT'+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_title=My Login Title+ls_title=$RDP_TITLE+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_height=430+ls_height=240+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_bg_color=dedede+ls_bg_color=e8e8e8+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_logo_filename=$+ls_logo_filename=/usr/share/xrdp/login-user.bmp+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_logo_transform=none+ls_logo_transform=scale+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_logo_width=240+ls_logo_width=64+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_logo_height=140+ls_logo_height=64+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_logo_x_pos=55+ls_logo_x_pos=150+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_logo_y_pos=50+ls_logo_y_pos=25+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_label_x_pos=30+ls_label_x_pos=20+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_input_x_pos=110+ls_input_x_pos=150+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_input_width=210+ls_input_width=170+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_input_y_pos=220+ls_input_y_pos=100+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_ok_x_pos=142+ls_btn_ok_x_pos=80+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_ok_y_pos=370+ls_btn_ok_y_pos=200+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_cancel_x_pos=237+ls_btn_cancel_x_pos=180+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_cancel_y_pos=370+ls_btn_cancel_y_pos=200+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_top_window_bg_color=009cb5+ls_top_window_bg_color=000000+g' /etc/xrdp/xrdp.ini && sed -i 's+blue=009cb5+#blue=009cb5+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_background_image=+ls_background_image='$RDP_LOCAL_WLLP'+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_background_transform=none+ls_background_transform=scale+g' /etc/xrdp/xrdp.ini" > $STARTUPDIR/mycometdesignRDP.sh && echo touch /root/.hushlogin  >> $STARTUPDIR/mycometdesignRDP.sh && echo "if [ -f /etc/xrdp/xrdp.ini.original ]; then" >> $STARTUPDIR/mycometdesignRDP.sh && echo "cp -f /etc/xrdp/xrdp.ini.original /etc/xrdp/xrdp.ini" >> $STARTUPDIR/mycometdesignRDP.sh && echo fi >> $STARTUPDIR/mycometdesignRDP.sh && chmod 755 $STARTUPDIR/mycometdesignRDP.sh && $STARTUPDIR/mycometdesignRDP.sh
 RUN echo \[Unit\] > /etc/systemd/system/xrdp.service && echo Description\=RDP >> /etc/systemd/system/xrdp.service && echo "" >> /etc/systemd/system/xrdp.service && echo \[Service\] >> /etc/systemd/system/xrdp.service && echo User\=root >> /etc/systemd/system/xrdp.service && echo WorkingDirectory\=\/root >> /etc/systemd/system/xrdp.service && echo ExecStart=service xrdp restart >> /etc/systemd/system/xrdp.service && echo "" >>  /etc/systemd/system/xrdp.service && echo \[Install\] >> /etc/systemd/system/xrdp.service && echo WantedBy\=multi\-user\.target >> /etc/systemd/system/xrdp.service && chmod 755 /etc/systemd/system/xrdp.service
 RUN echo \[program\:restart\-xrdp\] > /etc/supervisor/conf.d/xrdp.conf && echo command\=$STARTUPDIR\/myrdpservice\.sh >> /etc/supervisor/conf.d/xrdp.conf && chmod 755 /etc/supervisor/conf.d/xrdp.conf && touch /var/run/supervisor.sock && chmod 777 /var/run/supervisor.sock && service supervisor restart && echo service --user enable httpd.service > /etc/systemd/user/xrdp.service /etc/systemd/user && echo >> /etc/systemd/user/xrdp.service
@@ -543,11 +551,11 @@ CMD ["sleep", "infinity"]
 #/!\ Clean images: docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
 #This line could test but we keep in mind it's not same scope inside the container than here in the build file: Here it's mainly to set manually what port are needed (labels in comment should help).
 #docker run --name halley -h=halley -it -d -p $RDP_PORT:$RDP_PORT/tcp -p $VNC_PORT:$VNC_PORT/tcp -p $NO_VNC_PORT:$NO_VNC_PORT/tcp comet bash
-#docker run --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp comet bash
+#docker run --name halley -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp comet bash
 #Wait at least 20 seconds and connect. Main functions will be all in an available state.
 #
 #Have you deleted the container just created because some work done isn't as you want? And you want another container from the same image wihtout building because it's not need? And you see same ID? Ok. Do this:
-#docker run --security-opt seccomp=unconfined --privileged --name halley --replace -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp comet bash
+#docker run --security-opt seccomp=unconfined --privileged --name halley --replace -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp comet bash
 #
 #For Podman, use openvpn in the computer environment, because inside the pod, it cuts each connection; Use pod same as docker.
 #If you don't use  --privileged, nmap can't work:
@@ -563,7 +571,7 @@ CMD ["sleep", "infinity"]
 #As workaround, use directly openvpn with your host (WSL2, here Debian in Comet Documentation): it will propagate on your entire network.
 #WSL-root> export VPN_PASSWORD=****; export CONFIG_FILE=filesetting_xxx.ovpn; export VPN_USER=freeopenvpn; bash -c "openvpn --config '"$CONFIG_FILE"' --auth-user-pass <(echo -e "$VPN_USER"'\n''"$VPN_PASSWORD"')"
 #Or try:
-#docker run --privileged --name halley --replace -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp -p 943:943 -p 443:443 -p 1194:1194/udp --cap-add=NET_ADMIN comet bash
+#docker run --privileged --name halley --replace -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp -p 943:943 -p 443:443 -p 1194:1194/udp --cap-add=NET_ADMIN comet bash
 #
 #REMIND
 #DOCKER => VPN inside container is ok: command-line above
@@ -590,11 +598,11 @@ CMD ["sleep", "infinity"]
 #src=https://forum.proxmox.com/threads/turnkey-linux-openvpn-template-issues.31668/#post-157372
 #
 #In order to use OpenVPN, thanks to previously run this mode (update each for your own settings):
-#docker run --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=NET_ADMIN comet bash
-#podmanr run --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=net_admin,mknod -v /dataexchg:/dataexchg -v /dev/net/tun:/dev/net/tun comet bash
-#podmanr run --replace --name halley -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=NET_ADMIN comet bash
+#docker run --name halley -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=NET_ADMIN comet bash
+#podmanr run --name halley -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=net_admin,mknod -v /dataexchg:/dataexchg -v /dev/net/tun:/dev/net/tun comet bash
+#podmanr run --replace --name halley -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=NET_ADMIN comet bash
 #Thinkin in addition about nmap:
-#podmanr run --replace --security-opt seccomp=unconfined --privileged --name halley --replace -h=halley -it -d -p 3389:3389/tcp -p 5901:5901/tcp -p 6901:6901/tcp comet bash
+#podmanr run --replace --security-opt seccomp=unconfined --privileged --name halley --replace -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp comet bash
 #src=https://github.com/kylemanna/docker-openvpn/issues/498
 #
 #Volume: creation
@@ -715,7 +723,7 @@ CMD ["sleep", "infinity"]
 
 # Version and Increment
 #v1.0.1
-#ic 6
+#ic 8
 
 #Thanks for authors from differents sources quoted in this document.
 #by r00t4M0NK
