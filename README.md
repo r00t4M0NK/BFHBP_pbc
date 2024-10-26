@@ -52,7 +52,7 @@ The Tool can be used in RDP (for easiest way) to use on hack-boxes (next update 
 
 - First Full Run: 180 mn
 - Full Build: 30 mn
-- Install CSL: 90 mn
+- Install CSL: 120 mn
 
 [NOTES]
 
