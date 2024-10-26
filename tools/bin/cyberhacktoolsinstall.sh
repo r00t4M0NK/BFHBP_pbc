@@ -467,6 +467,13 @@ grep ' | ' /root/.match_list | tr -d '|' | cut -d' ' -f 3 | wc -l
 #if macchanger installed (+ regenerate .match_list as above): 66
 #The number gives an idea to check from full lists: if you want or need details, check the full list in files (as do the action with /root/.match_list)
 #
+#To Avoid black screen RDP:
+#src=https://www.kali.org/docs/general-use/xfce-with-rdp/
+apt-get update
+apt-get full-upgrade -y
+$STARTUPDIR/mybackgroundwllpservice.sh
+#
+#End Script:
 apt-get -y autoremove
 echo "[END] SCRIPT" >>  /home/$USERCOMET/internetdl/timetags.log
 echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> /home/$USERCOMET/internetdl/timetags.log
@@ -492,5 +499,5 @@ echo [END SCRIPT]
 #src=https://github.com/neutrinolabs/xrdp/issues/2752
 # vi /etc/xrdp/startwm.sh 
 #
-#Increment 1.10
+#Increment 1.11
 #Comet (c) 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
