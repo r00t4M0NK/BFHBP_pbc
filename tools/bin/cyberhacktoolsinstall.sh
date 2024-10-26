@@ -144,6 +144,7 @@ echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> /home/$USERCOMET/internetdl/timetags
 # Correction:
 # ./cyberhacktoolsinstall.sh ; echo [END SCRIPT] ; apt-get install -y --fix-broken ; /home/$USERCOMET/internetdl/genmatchlist.sh ; /home/$USERCOMET/internetdl/finalcheck.sh
 # Try 2 times or little more if needed.
+# Estimated Time: 60 minuts
 #
 #[END]
 # # # # # For the FINAL CHECK, see below. # # # # # 
