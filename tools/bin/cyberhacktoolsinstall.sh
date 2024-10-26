@@ -111,7 +111,7 @@ echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >> /home/$USERCOMET/internetdl/timetags
 # (10.) COMET-BASH-root> ps -aC apt-get
 # (10.) COMET-BASH-root> ps -aC apt-get -o pid=
 ################ [10]
-# (10.) COMET-BASH-root> echo "[10][START]" $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/timetags.log ; echo "[10] START" >>/home/$USERCOMET/internetdl/installation2.log; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/installation2.log ; sh /home/$USERCOMET/internetdl/cyberhacktoolsinstall.sh $USERCOMET 2>>/home/$USERCOMET/internetdl/errlist2.log 1>>/home/$USERCOMET/internetdl/installation2.log ; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >/home/$USERCOMET/internetdl/installation2.log ; echo "[10] END" >>/home/$USERCOMET/internetdl/installation2.log; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/installation2.log ; echo "[10][END]" $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/timetags.log ; apt-get install -y --fix-broken ; /home/$USERCOMET/internetdl/cyberhacktoolsinstall.sh ; echo END [10]
+# (10.) COMET-BASH-root> echo "[10][START]" $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/timetags.log ; echo "[10] START" >>/home/$USERCOMET/internetdl/installation2.log; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/installation2.log ; sh /home/$USERCOMET/internetdl/cyberhacktoolsinstall.sh $USERCOMET 2>>/home/$USERCOMET/internetdl/errlist2.log 1>>/home/$USERCOMET/internetdl/installation2.log ; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >/home/$USERCOMET/internetdl/installation2.log ; echo "[10] END" >>/home/$USERCOMET/internetdl/installation2.log; echo $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/installation2.log ; echo "[10][END]" $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/timetags.log ; apt-get install -y --fix-broken ; /home/$USERCOMET/internetdl/cyberhacktoolsinstall.sh ; echo "[10][END]" $TIMETAG $(date '+%Y%m%d_%H_%M_%S') >>/home/$USERCOMET/internetdl/timetags.log ; echo END [10]
 # This step is about 45 minutes. Check not more, and stop the script if needed.
 #If script is locked, this end will be displayed:
 #wireshark is already the newest version (4.4.0-1).
@@ -472,6 +472,8 @@ grep ' | ' /root/.match_list | tr -d '|' | cut -d' ' -f 3 | wc -l
 apt-get update
 apt-get full-upgrade -y
 $STARTUPDIR/mybackgroundwllpservice.sh
+#
+#To test all install: when finish, you close everything in Container, then you shutdown Container, then wsl --shutdwon in host machine then save then start everything again.
 #
 #End Script:
 apt-get -y autoremove
