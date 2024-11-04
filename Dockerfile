@@ -694,6 +694,9 @@ CMD ["sleep", "infinity"]
 #  Inside each Clients, [root] set aliases in .bashrc (/root/) as echo "alias docker=podman" >> ~/.bashrc (PS> Set-Alias -Name docker -Value podman )
 #  [root] echo "sudo mount --make-rshared /" >> ~/.bashrc
 #  [USER] touch /home/$USER/.ssh/known_hosts
+######################################################
+#   CONNECT WSL TO PODMAN DESKTOP
+######################################################
 #8. Set connections in WSL as for PowerShell
 #   Notice what is the port "<Port_Machine>":  PS> podman machine inspect podman-sun | Select-String -Pattern "Port"
 #   podman system connection ls
@@ -705,7 +708,6 @@ CMD ["sleep", "infinity"]
 #   In WSL [root]: apt-get install -y wget
 #   In WSL [root]: cd /root
 #   In WSL [root]: wget https://github.com/containers/podman/releases/download/v4.9.1/podman-remote-static-linux_amd64.tar.gz
-#   In WSL [root]: tar -C /usr/local -xzf podman-remote-static-linux_amd64.tar.gz
 #   In WSL [root]: tar -C /usr/local -xzf podman-remote-static-linux_amd64.tar.gz
 #   Check (expected: empty list): podman --remote image ls
 #   In Desktop App, a) run machine then b) go to pull image "quay.io/podman/hello:latest".
