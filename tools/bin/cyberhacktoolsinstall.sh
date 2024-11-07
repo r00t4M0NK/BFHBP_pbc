@@ -222,7 +222,7 @@ apt-get install -y bloodhound crackmapexec evil-winrm enum4linux shellter smbmap
 apt-get install -y wpscan dirbuster cewl dnsrecon dnsenum whatweb parsero lbd dirsearch subfinder httrack dmitry wfuzz sublist3r skipfish nikto
 apt-get install -y crunch theharvester powershell responder snort impacket-scripts chntpw wordlists eyewitness trufflehog chisel ncat openssh-client
 apt-get install -y yersinia havoc
-apt-get install -y veil metasploit-framework
+apt-get install -y veil metasploit-framework exploitdb
 apt-get install -y ldap-utils
 apt-get install -y burpsuite
 #Wine32 for shellter (shellter + crunch makes root-bash changing)
@@ -313,6 +313,7 @@ echo "wireshark-common wireshark-common/install-setuid boolean true" | sudo debc
 # [LDAP] ldapsearch> classical for LDAP, in addition of all other scripts listed here
 # [Special] burpsuite> framework to use only for 1 scan / 1 action and NOT automatic
 # [Special] msfrpcd> framework Metasploit (only in 1 machine)
+# [Special] exploitdb> database to search exploits
 # [Special] winpeas> windows priv escal => not install -yed as other, it's from git
 # [Special] linpeas> linux priv escal => not install -yed as other, it's from git
 #src=101labs.net/comptia-security/lab-86-how-to-enumerate-for-privilege-escalation-on-a-linux-target-with-linpeas/
@@ -470,6 +471,8 @@ grep ' | ' /root/.match_list | tr -d '|' | cut -d' ' -f 3 | wc -l
 #
 #To Avoid black screen RDP:
 #src=https://www.kali.org/docs/general-use/xfce-with-rdp/
+cd /usr/share/wordlists; gzip -d rockyou.txt.gz; chmod 755 rockyou.txt
+apt-get update; apt-get install metasploit-framework
 apt-get update
 apt-get full-upgrade -y
 $STARTUPDIR/mybackgroundwllpservice.sh
@@ -502,5 +505,5 @@ echo [END SCRIPT]
 #src=https://github.com/neutrinolabs/xrdp/issues/2752
 # vi /etc/xrdp/startwm.sh 
 #
-#Increment 1.11
+#Increment 1.12
 #Comet (c) 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
