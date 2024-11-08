@@ -338,7 +338,8 @@ RUN echo sed -i \'s\+\"image\-style\" type\=\"int\" value\=\"5\"\+\"image\-style
 RUN echo     \#\!\/usr\/bin\/env bash >  $STARTUPDIR/myentrypoint.sh
 #An issue is on a Refresh during a RDP session, so it's need to relaunch twice:
 RUN echo $STARTUPDIR\/myvncservice\.sh >> $STARTUPDIR/myentrypoint.sh && echo $STARTUPDIR\/mynovncservice\.sh >> $STARTUPDIR/myentrypoint.sh && echo $STARTUPDIR\/myfirefoxservice\.sh >> $STARTUPDIR/myentrypoint.sh && echo $STARTUPDIR\/mypsswdservice\.sh >> $STARTUPDIR/myentrypoint.sh && echo $STARTUPDIR\/myscreenstretched\.sh >> $STARTUPDIR/myentrypoint.sh && echo $STARTUPDIR\/myrdpservice\.sh >> $STARTUPDIR/myentrypoint.sh
-RUN echo $STARTUPDIR\/r00t4m0nk\.sh >> $STARTUPDIR/myentrypoint.sh
+RUN echo $STARTUPDIR\/r00t4m0nk\.sh >> $STARTUPDIR/myentrypoint.sh && echo sudo -H -u $USERVNC bash -c 'pulseaudio --start' >> $STARTUPDIR/myentrypoint.sh
+#sudo -H -u otheruser bash -c 'echo "I am $USER, with uid $UID"' 
 RUN echo $STARTUPDIR\/myfirefoxservice\.sh > $STARTUPDIR/mydesk.sh && echo $STARTUPDIR\/myrdpservice\.sh >> $STARTUPDIR/mydesk.sh && chmod 755 $STARTUPDIR/mydesk.sh
 RUN echo     exec \"\$\@\" >>  $STARTUPDIR/myentrypoint.sh
 RUN chmod 755 $STARTUPDIR/myvncservice.sh && chmod 755 $STARTUPDIR/mynovncservice.sh && chmod 755 $STARTUPDIR/myfirefoxservice.sh && chmod 755 $STARTUPDIR/mypsswdservice.sh && chmod 755 $STARTUPDIR/myrdpservice.sh && chmod 755 $STARTUPDIR/r00t4m0nk.sh && chmod 755 $STARTUPDIR/myscreenstretched.sh && chmod 755 $STARTUPDIR/myentrypoint.sh && chown $USERVNC:$USERVNC $STARTUPDIR/myscreenstretched.sh && echo "mkdir /dev/net; mknod /dev/net/tun c 10 200; chmod 666 /dev/net/tun; echo 'nameserver 8.8.8.8' >> /etc/resolv.conf; echo 'nameserver 1.1.1.1' >> /etc/resolv.conf" >> $STARTUPDIR/myopenvpnnetwork.sh && chmod 755 $STARTUPDIR/myopenvpnnetwork.sh
@@ -389,7 +390,7 @@ RUN sed -i 's/Navigateur Web/Firefox/g' $HOME/Desktop/firefox.desktop && chmod -
 RUN cp -R $HOME/firefox /usr/lib/firefox && chmod -R 755 /usr/lib/firefox && ln -s /usr/lib/firefox/firefox /usr/bin/firefox
 
 #TEST PAGE HTML (to use for checking association files or use as skeleton to download fast a target) +OPENVPN
-RUN echo '<html><head></head><body><table><tr><td><a href="https://testmypage.com">My URL</a></td></tr>' > $HOME/mytestpage.html && echo '<tr><td><a href="https://www.freeopenvpn.org">Free Open VPN Server</a> user=freeopenvpn</td></tr>' >> $HOME/mytestpage.html && echo '<tr><td><a href="https://www.showmyip.com">Test on the IP address</a></td></tr>' >> $HOME/mytestpage.html && echo '<tr><td>&nbsp;</td></tr>' >> $HOME/mytestpage.html && echo '</body></html>' >> $HOME/mytestpage.html && chown $USERVNC:$USERVNC $HOME/mytestpage.html && echo "export VPN_PASSWORD=\$2; export CONFIG_FILE=\$1; export VPN_USER=freeopenvpn; bash -c \"openvpn --config '\"\$CONFIG_FILE\"' --auth-user-pass <(echo -e \"\$VPN_USER\"'\n''\"\$VPN_PASSWORD\"')\"" >> $STARTUPDIR/mystartopenvpn.sh && chmod 755 $STARTUPDIR/mystartopenvpn.sh
+RUN echo '<html><head></head><body><table><tr><td><a href="https://testmypage.com">My URL</a></td></tr>' > $HOME/mytestpage.html && echo '<tr><td><a href="https://www.freeopenvpn.org">Free Open VPN Server</a> user=freeopenvpn</td></tr>' >> $HOME/mytestpage.html && echo '<tr><td><a href="https://www.showmyip.com">Test on the IP address</a></td></tr>' >> $HOME/mytestpage.html && echo '<tr><td><a href="https://www.browserling.com/tools/ntlm-hash">Test a NT Hash</a></td></tr>' >> $HOME/mytestpage.html && echo '<tr><td>&nbsp;</td></tr>' >> $HOME/mytestpage.html && echo '</body></html>' >> $HOME/mytestpage.html && chown $USERVNC:$USERVNC $HOME/mytestpage.html && echo "export VPN_PASSWORD=\$2; export CONFIG_FILE=\$1; export VPN_USER=freeopenvpn; bash -c \"openvpn --config '\"\$CONFIG_FILE\"' --auth-user-pass <(echo -e \"\$VPN_USER\"'\n''\"\$VPN_PASSWORD\"')\"" >> $STARTUPDIR/mystartopenvpn.sh && chmod 755 $STARTUPDIR/mystartopenvpn.sh
 #[code] export VPN_PASSWORD=$2; export CONFIG_FILE=$1; export VPN_USER=freeopenvpn; bash -c "openvpn --config '"$CONFIG_FILE"' --auth-user-pass <(echo -e "$VPN_USER"'\n''"$VPN_PASSWORD"')"
 
 
@@ -734,7 +735,7 @@ CMD ["sleep", "infinity"]
 
 # Version and Increment
 #v1.0.1
-#ic 11
+#ic 12
 
 #Thanks for authors from differents sources quoted in this document.
 #by r00t4M0NK
