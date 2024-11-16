@@ -34,7 +34,7 @@ COMET, an easy-software
    * RDP throught a Windows Computer
 - For a compatibility reason, Graphical choosen is: XFCE
 
-The Tool can be used in RDP (for easiest way) to use on hack-boxes (next update will be to add a VPN feature).
+The Tool can be used in RDP (for easiest way) to use on hack-boxes (with a VPN feature included).
 
 ################################
 
@@ -57,6 +57,7 @@ The Tool can be used in RDP (for easiest way) to use on hack-boxes (next update 
 [NOTES]
 
 - When you build the first image, it stays in cache. So, other runnings should be faster.
+- Estimated Time was measured with a medium/slow connection (not fiber): it's a hard state and you can expect a faster time for you
 - If you change Dockerfile on the top of document, it will be generated from the change. More it's near the top, more time it's need to build again.
 
 ################################
