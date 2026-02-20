@@ -706,8 +706,8 @@ CMD ["sleep", "infinity"]
 #8. Set connections in WSL as for PowerShell
 #   Notice what is the port "<Port_Machine>":  PS> podman machine inspect podman-sun | Select-String -Pattern "Port"
 #   podman system connection ls
-#   podman system connection add podman-sun ssh://user@127.0.0.1:<Port_Machine>/run/user/1000/podman/podman.sock --identity "/mnt/c/users/<user_wsl>/.local/share/containers/podman/machine/machine"
-#   podman system connection add --default podman-sun-root  ssh://root@127.0.0.1:<Port_Machine>/run/podman/podman.sock --identity "/mnt/c/users/<user_wsl>/.local/share/containers/podman/machine/machine"
+#   podman system connection add podman-sun ssh://user@127.0.0.1:<Port_Machine>/run/user/1000/podman/podman.sock --identity "/mnt/c/Users/<user_wsl>/.local/share/containers/podman/machine/machine"
+#   podman system connection add --default podman-sun-root  ssh://root@127.0.0.1:<Port_Machine>/run/podman/podman.sock --identity "/mnt/c/Users/<user_wsl>/.local/share/containers/podman/machine/machine"
 #   Activate "Load remote system connections (ssh)" In Podman Desktop
 #   Get a remote client:
 #   src=https://podman-desktop.io/docs/podman/accessing-podman-from-another-wsl-instance
@@ -752,6 +752,7 @@ CMD ["sleep", "infinity"]
 #by r00t4M0NK
 
 #Comet © 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
+
 
 
 
