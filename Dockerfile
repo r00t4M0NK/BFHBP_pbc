@@ -734,6 +734,11 @@ CMD ["sleep", "infinity"]
 
 #If need an help, check the Sheet "MyVNCDockerfileTips"
 
+#UPDATE
+#some updates will be needed during years, as for Kali tools
+#wget https://archive.kali.org/archive-keyring.gpg -O /usr/share/keyrings/kali-archive-keyring.gpg
+#apt update && apt full-upgrade
+
 #HERE FIND FEW CHARS TO COPY WHEN NEED (some terminals doesn't allow the direct input from keyboard)
 # | \
 
@@ -745,4 +750,5 @@ CMD ["sleep", "infinity"]
 #by r00t4M0NK
 
 #Comet © 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
+
 
