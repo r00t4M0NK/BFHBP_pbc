@@ -740,6 +740,12 @@ CMD ["sleep", "infinity"]
 #apt update && apt full-upgrade
 #apt --fix-broken install
 #apt autoremove
+#
+#if a Podman update crash your settings: start again this checklist and keep in mind these points:
+#check podman connections and recreate ssh keys (with right port used by podman-desktop)
+#check netsh connections with ports
+#be carfeul if you have local batch script (i.e. as for me a wsl.cmd to launch wsl => rename it into launcherwsl.cmd coz wsl.cmd will be used as "wsl.exe")
+#FINAL: Powershell will display "podman image ls" and in an other hand WSL will display "podman --remote image ls" => same list (and view in Podman-Desktop)
 
 #HERE FIND FEW CHARS TO COPY WHEN NEED (some terminals doesn't allow the direct input from keyboard)
 # | \
@@ -752,6 +758,7 @@ CMD ["sleep", "infinity"]
 #by r00t4M0NK
 
 #Comet © 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
+
 
 
 
