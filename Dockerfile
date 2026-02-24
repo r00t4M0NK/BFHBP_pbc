@@ -50,6 +50,13 @@
 #grep "docker rmi" Dockerfile | sed -e 's/docker/podmanr/g'
 #grep "docker run" Dockerfile | sed -e 's/docker/podmanr/g'
 #
+#Need check inside?
+#podman exec -it <name> bash
+#
+#Need start and get this warning: WARN[0000] "/" is not a shared mount, this could cause issues or missing mounts with rootless containers
+#WSL-USER> sudo usermod --add-subuids 200000-201000 --add-subgids 200000-201000 <USER>
+#src=https://forums.gentoo.org/viewtopic-t-1146641-start-0.html
+#
 #Why these differences? Because Docker & Podman haven't same architecture. So VPN can't be use in a same way.
 #/!\ If you run a pod (ex: with podman), install (as CSL) and you run the same image but another instance (replacing it), you will loose all updates you have done in your first instance.
 #Gentle Reminder: IMAGE (comet) => INSTANCE (halley)
@@ -758,6 +765,7 @@ CMD ["sleep", "infinity"]
 #by r00t4M0NK
 
 #Comet © 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
+
 
 
 
