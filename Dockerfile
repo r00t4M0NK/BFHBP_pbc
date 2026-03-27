@@ -34,14 +34,14 @@
 #Line only for Podman, with --replace:
 #grep "podmanr run" Dockerfile
 #VALIDATED line ("--privileged" could crash pod if you use openvpn inside but it's needed for nmap!):
-#podmanr run --security-opt seccomp=unconfined --privileged --name halley --replace -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=NET_ADMIN comet bash
+#podmanr run --security-opt seccomp=unconfined --privileged --name halley --replace -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp -p 8554:8554/tcp --cap-add=NET_ADMIN comet bash
 #/!\ It will replace any pod named "halley"
 #
 #Note: It's not really a crash but it will be network problem access if you use remote access as RDP and start an openvpn session.
 #      You can repair with WSL podman access: attach the pod, go inside with a root-user and kill openvpn process.
 #
 #You don't need nmap:
-#podmanr run --replace --name halley -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=NET_ADMIN comet bash
+#podmanr run --replace --name halley -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp -p 8554:8554/tcp --cap-add=NET_ADMIN comet bash
 #
 #If you see any <<podman run --privileged>>, don't use it if you need to use VPN. If you don't use "privileged", it's more secure: BUT! But you need this option for nmap.
 #
@@ -96,7 +96,7 @@ EXPOSE $VNC_PORT $NO_VNC_PORT $RDP_PORT $AUDIO_PORT
 #Don't have RDP active in the host machine
 
 #This line could test but we keep in mind it's not same scope inside the container than here in the build file
-#echo DISPLAY: $DISPLAY VNC: $VNC_PORT NONC: $NO_VNC_PORT RDP: $RDP_PORT
+#echo DISPLAY: $DISPLAY VNC: $VNC_PORT NONC: $NO_VNC_PORT RDP: $RDP_PORT: $AUDIO_PORT
 
 ##########################################################################
 ## VAR PART: SETTINGS
@@ -370,8 +370,10 @@ RUN rm -Rf /tmp/.X1-lock && rm -Rf /tmp/.X11-unix/X1
 #Listen audio flow from client (CMD-Windows or Terminal-Unix)
 # (OS) Console> ffplay -rtsp_transport tcp rtsp://[RTSP_IP]:[RTSP_PORT]/[RTSP_PATH]
 #IP= it's Docker-Server's IP (from the WSL machine which hosts Docker, value= localhost)
-#PATH= usually "live" (at least, it's the setting here)
-RUN cd $STARTUPDIR/ && wget --timeout=5 --tries=2 -qO- $MEDIA_URL > $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && tar -xvzf $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && rm $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && rm $STARTUPDIR/LICENSE && echo \#\!\/bin\/sh > $STARTUPDIR/audiostrm.sh &&  echo \.\/mediamtx \& >> $STARTUPDIR/audiostrm.sh && echo ffmpeg \-f alsa \-i default \-acodec aac \-f rtsp \-rtsp\_transport tcp rtsp\:\/\/localhost\:8554\/live >> $STARTUPDIR/audiostrm.sh
+#PORT= 8554 (at least, setting is used here)
+#PATH= live (at least, setting is used here)
+# (OS) Console> ffplay -rtsp_transport tcp rtsp://[IP]:8554/live
+RUN cd $STARTUPDIR/ && wget --timeout=5 --tries=2 -qO- $MEDIA_URL > $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && tar -xvzf $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && rm $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && rm $STARTUPDIR/LICENSE && echo \#\!\/bin\/sh > $STARTUPDIR/audiostrm.sh &&  echo pulseaudio \-\-start \& >> $STARTUPDIR/audiostrm.sh &&  echo \.\/mediamtx \& >> $STARTUPDIR/audiostrm.sh && echo ffmpeg \-f alsa \-i default \-acodec aac \-f rtsp \-rtsp\_transport tcp rtsp\:\/\/localhost\:8554\/live >> $STARTUPDIR/audiostrm.sh
 
 ##########################################################################
 ## PART 5: FIREFOX SETTINGS HERE
@@ -416,7 +418,7 @@ RUN echo '<html><head></head><body><table><tr><td><a href="https://testmypage.co
 ##########################################################################
 #To know version: xrdp -v | grep "xrdp " | head -n 1 | cut -d' ' -f2
 #
-#Don't forget to set port forwarding in the host machine, with PowerShell:
+#[Optional] Don't forget to set port forwarding in the host machine, with PowerShell [mode PODMAN]:
 #netsh interface portproxy add v4tov4 listenport=3389 listenaddress=<IP_MACHINE_HOST> connectport=3390 connectaddress=<IP_CONTAINER>
 #
 #<IP_MACHINE_HOST> => or you know because you connect through a VNC service, or type in the machine within a DOS shell: CMD > ipconfig (most of time: ethernet, "IPV4")
@@ -583,12 +585,12 @@ CMD ["sleep", "infinity"]
 #/!\ Clean images: docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
 #This line could test but we keep in mind it's not same scope inside the container than here in the build file: Here it's mainly to set manually what port are needed (labels in comment should help).
 #docker run --name halley -h=halley -it -d -p $RDP_PORT:$RDP_PORT/tcp -p $VNC_PORT:$VNC_PORT/tcp -p $NO_VNC_PORT:$NO_VNC_PORT/tcp comet bash
-#docker run --name halley -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp-p 8554:8554/tcp  comet bash
+#docker run --name halley -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp -p 8554:8554/tcp comet bash
 #Wait at least 20 seconds and connect. Main functions will be all in an available state.
 #
 #Have you deleted the container just created because some work done isn't as you want? And you want another container from the same image wihtout building because it's not need? And you see same ID? Ok.
 #But --replace doesn't work. Try this last option validated:
-#sudo docker run --security-opt seccomp=unconfined --privileged --name halley -h=halley -it -d -p 3389:3389/tcp -p 3901:3901/tcp -p 4901:4901/tcp comet bash
+#sudo docker run --security-opt seccomp=unconfined --privileged --name halley -h=halley -it -d -p 3389:3389/tcp -p 3901:3901/tcp -p 4901:4901/tcp -p 8554:8554/tcp comet bash
 #
 #For Podman, use openvpn in the computer environment, because inside the pod, it cuts each connection; Use pod same as docker.
 #If you don't use  --privileged, nmap can't work:
@@ -604,7 +606,7 @@ CMD ["sleep", "infinity"]
 #As workaround, use directly openvpn with your host (WSL2, here Debian in Comet Documentation): it will propagate on your entire network.
 #WSL-root> export VPN_PASSWORD=****; export CONFIG_FILE=filesetting_xxx.ovpn; export VPN_USER=freeopenvpn; bash -c "openvpn --config '"$CONFIG_FILE"' --auth-user-pass <(echo -e "$VPN_USER"'\n''"$VPN_PASSWORD"')"
 #Or try:
-#docker run --privileged --name halley --replace -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp -p 943:943 -p 443:443 -p 1194:1194/udp --cap-add=NET_ADMIN comet bash
+#docker run --privileged --name halley --replace -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp -p 943:943 -p 443:443 -p 8554:8554/tcp -p 1194:1194/udp --cap-add=NET_ADMIN comet bash
 #
 #REMIND
 #DOCKER => VPN inside container is ok: command-line above
@@ -631,11 +633,11 @@ CMD ["sleep", "infinity"]
 #src=https://forum.proxmox.com/threads/turnkey-linux-openvpn-template-issues.31668/#post-157372
 #
 #In order to use OpenVPN, thanks to previously run this mode (update each for your own settings):
-#docker run --name halley -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=NET_ADMIN comet bash
-#podmanr run --name halley -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=net_admin,mknod -v /dataexchg:/dataexchg -v /dev/net/tun:/dev/net/tun comet bash
-#podmanr run --replace --name halley -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp --cap-add=NET_ADMIN comet bash
+#docker run --name halley -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp -p 8554:8554/tcp --cap-add=NET_ADMIN comet bash
+#podmanr run --name halley -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp -p 8554:8554/tcp --cap-add=net_admin,mknod -v /dataexchg:/dataexchg -v /dev/net/tun:/dev/net/tun comet bash
+#podmanr run --replace --name halley -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp -p 8554:8554/tcp --cap-add=NET_ADMIN comet bash
 #Thinkin in addition about nmap:
-#podmanr run --replace --security-opt seccomp=unconfined --privileged --name halley --replace -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp comet bash
+#podmanr run --replace --security-opt seccomp=unconfined --privileged --name halley --replace -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp -p 8554:8554/tcp comet bash
 #src=https://github.com/kylemanna/docker-openvpn/issues/498
 #
 #Volume: creation
@@ -766,17 +768,21 @@ CMD ["sleep", "infinity"]
 #be carfeul if you have local batch script (i.e. as for me a wsl.cmd to launch wsl => rename it into launcherwsl.cmd coz wsl.cmd will be used as "wsl.exe")
 #FINAL: Powershell will display "podman image ls" and in an other hand WSL will display "podman --remote image ls" => same list (and view in Podman-Desktop)
 
+#Milestone achieved: 2026 03 27
+#This Tool is now fully functionnal with a graphical Unix environment, including RDP/VNC/AUDIO
+#Project will improve security access: even if anything is able to destroy this Tool, you can have a fast rebuild
+
 #HERE FIND FEW CHARS TO COPY WHEN NEED (some terminals doesn't allow the direct input from keyboard)
 # | \
 
 # Version and Increment
 #v1.0.1
-#ic 13
+#ic 14
 
 #Thanks for authors from differents sources quoted in this document.
 #by r00t4M0NK
 
-#Comet © 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
+#Comet © 2026 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
 
 
 
