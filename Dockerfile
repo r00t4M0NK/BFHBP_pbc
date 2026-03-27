@@ -364,7 +364,8 @@ RUN mkdir $HOME/.vnc && chown -R $USERVNC:$USERVNC $HOME && chmod -R 755 $HOME
 RUN rm -Rf /tmp/.X1-lock && rm -Rf /tmp/.X11-unix/X1
 
 #AUDIO
-RUN curl https\:\/\/github\.com\/bluenviron\/mediamtx\/releases\/download\/v1\.17\.0\/mediamtx_v1\.17\.0_linux_amd64\.tar.gz > $STARTUPDIR/mediamtx_v1\.17\.0_linux_amd64\.tar.gz && tar -xzf mediamtx_v1\.17\.0_linux_amd64\.tar\.gz && echo \#\!\/bin\/sh > $STARTUPDIR/audiostrm.sh &&  echo \.\/mediamtx >> $STARTUPDIR/audiostrm.sh && echo ffmpeg \-f alsa \-i default \-acodec aac \-f rtsp \-rtsp_transport tcp rtsp\:\/\/localhost\:8554\/live >> $STARTUPDIR/audiostrm.sh
+#url direct was impossible so needed to host this from https://github.com/bluenviron/mediamtx/releases/download/v1.17.0/mediamtx_v1.17.0_linux_arm64.tar.gz
+RUN curl https\:\/\/github\.com\/r00t4M0NK\/BFHBP_pbc\/raw\/refs\/heads\/main\/tools\/bin\/mediamtx\_v1\.17\.0\_linux\_amd64\.tar\.gz > $STARTUPDIR/mediamtx\_v1\.17\.0\_linux\_amd64\.tar.gz && tar -xzf mediamtx\_v1\.17\.0\_linux\_amd64\.tar\.gz && echo \#\!\/bin\/sh > $STARTUPDIR/audiostrm.sh &&  echo \.\/mediamtx >> $STARTUPDIR/audiostrm.sh && echo ffmpeg \-f alsa \-i default \-acodec aac \-f rtsp \-rtsp\_transport tcp rtsp\:\/\/localhost\:8554\/live >> $STARTUPDIR/audiostrm.sh
 
 ##########################################################################
 ## PART 5: FIREFOX SETTINGS HERE
