@@ -139,10 +139,10 @@ WORKDIR $HOME
 
 RUN apt-get update
 RUN apt-get -y upgrade
-RUN apt-get -y install vim sudo procps
+RUN apt-get -y install vim sudo procps supervisor
 RUN apt-get -y install wget net-tools iproute2 curl dos2unix
 RUN apt-get -y install bzip2 apt-utils coreutils
-RUN apt-get -y install supervisor
+RUN apt-get -y install ffmpeg libportaudio2
 RUN apt-get -y install xfce4 xfce4-terminal
 RUN apt-get -y install xterm dbus-x11 libdbus-glib-1-2 libgtk2.0-dev
 RUN apt-get -y install xfce4-goodies
@@ -156,6 +156,7 @@ RUN apt-get clean -y
 # vim for editor when to use in terminal
 # sudo for using this in terminal
 # procps for accessing informations about processors (legacy from Dockerfile from ConSol)
+# supervisor for alternative to a  scheduler (doesn't work for now but it has been keeping + legacy from Dockerfile from ConSol)
 # wget for downloading from terminal
 # net-tools for tools to management network (as ping)
 # iproute2 for completing net-tools
@@ -164,7 +165,7 @@ RUN apt-get clean -y
 # bzip2 for a tool about compressing files and unzipping
 # apt-utils for management packaging in order to install/remove
 # coreutils for sha256sum (already installed => openssl sha256 OR sha256sum)
-# supervisor for alternative to a  scheduler (doesn't work for now but it has been keeping + legacy from Dockerfile from ConSol)
+# ffmpeg libportaudio2 for audio streaming
 # xfce4 + xfce4-terminal + xterm + dbus-x11 + libdbus-glib-1-2 + xfce4-goodies => GUI
 # libgtk2.0-dev for GIO
 # tigervnc-standalone-server for server VNC
@@ -362,6 +363,8 @@ RUN mkdir $HOME/.vnc && chown -R $USERVNC:$USERVNC $HOME && chmod -R 755 $HOME
 #CLEAN
 RUN rm -Rf /tmp/.X1-lock && rm -Rf /tmp/.X11-unix/X1
 
+#AUDIO
+RUN cd /startup && wget https://github.com/bluenviron/mediamtx/releases/download/v1.17.0/mediamtx_v1.17.0_linux_amd64.tar.gz && tar -xzf mediamtx_v1.17.0_linux_amd64.tar.gz && acho #!/bin/sh > $STARTUPDIR/audiostrm.sh &&  echo ./mediamtx >> $STARTUPDIR/audiostrm.sh && echo ffmpeg -f alsa -i default -acodec aac -f rtsp -rtsp_transport tcp rtsp://localhost:8554/live >> $STARTUPDIR/audiostrm.sh
 
 ##########################################################################
 ## PART 5: FIREFOX SETTINGS HERE
@@ -378,8 +381,7 @@ RUN echo user_pref\(\"app\.update\.lastUpdateTime\.microsummary\-generator\-upda
 RUN echo user_pref\(\"app\.update\.lastUpdateTime\.search-engine\-update\-timer\"\, 1182010203\)\; >> $INST_FF/browser/defaults/profile/user.js
 
 #Firefox Desktop: BETTER TO COPY EXISTING TO AVOID "MAX DEPTH EXCEEDED"
-RUN mkdir -p $HOME/Desktop
-RUN cp /usr/share/applications/xfce4-web-browser.desktop $HOME/.xfce4-web-browser-cpy && cp /usr/share/applications/xfce4-web-browser.desktop $HOME/Desktop/firefox.desktop && cp /usr/share/applications/xfce4-web-browser.desktop /usr/share/applications/firefox.desktop
+RUN mkdir -p $HOME/Desktop && cp /usr/share/applications/xfce4-web-browser.desktop $HOME/.xfce4-web-browser-cpy && cp /usr/share/applications/xfce4-web-browser.desktop $HOME/Desktop/firefox.desktop && cp /usr/share/applications/xfce4-web-browser.desktop /usr/share/applications/firefox.desktop
 #TRUST
 RUN cd $HOME/Desktop/ && chown $USERVNC:$USERVNC firefox.desktop && chmod +x firefox.desktop && dbus-launch gio set firefox.desktop "metadata::trusted" yes && cd -
 RUN cd /usr/share/applications/ && chown $USERVNC:$USERVNC firefox.desktop && chmod +x firefox.desktop && dbus-launch gio set firefox.desktop "metadata::trusted" yes && cd -
