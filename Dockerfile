@@ -174,7 +174,6 @@ RUN apt-get clean -y
 # xrdp for the remote windows access
 # openvpn for the vpn tool
 # filezilla for the GUI ftp tool
-#
 # python3-numpy for websockify (VNC)
 # python3-websockify for Websockify, for VNC
 # libnss-wrapper for daemon management user (legacy from Dockerfile from ConSol)
@@ -365,7 +364,7 @@ RUN mkdir $HOME/.vnc && chown -R $USERVNC:$USERVNC $HOME && chmod -R 755 $HOME
 RUN rm -Rf /tmp/.X1-lock && rm -Rf /tmp/.X11-unix/X1
 
 #AUDIO
-RUN cd /startup && wget https://github.com/bluenviron/mediamtx/releases/download/v1.17.0/mediamtx_v1.17.0_linux_amd64.tar.gz && tar -xzf mediamtx_v1.17.0_linux_amd64.tar.gz && acho #!/bin/sh > $STARTUPDIR/audiostrm.sh &&  echo ./mediamtx >> $STARTUPDIR/audiostrm.sh && echo ffmpeg -f alsa -i default -acodec aac -f rtsp -rtsp_transport tcp rtsp://localhost:8554/live >> $STARTUPDIR/audiostrm.sh
+RUN cd /startup && wget https://github.com/bluenviron/mediamtx/releases/download/v1.17.0/mediamtx_v1.17.0_linux_amd64.tar.gz && tar -xzf mediamtx_v1.17.0_linux_amd64.tar.gz && acho #!/bin/sh > $STARTUPDIR/audiostrm.sh &&  echo ./mediamtx >> $STARTUPDIR/audiostrm.sh && echo ffmpeg \-f alsa \-i default \-acodec aac \-f rtsp \-rtsp_transport tcp rtsp\:\/\/localhost\:8554\/live >> $STARTUPDIR/audiostrm.sh
 
 ##########################################################################
 ## PART 5: FIREFOX SETTINGS HERE
