@@ -116,6 +116,7 @@ ENV HOME=/universe \
     INST_FF=/universe/firefox \
     FF_URL=https://ftp.mozilla.org/pub/firefox/releases/102.3.0esr/linux-x86_64/en-US/firefox-102.3.0esr.tar.bz2 \
     MEDIA_URL=https://github.com/bluenviron/mediamtx/releases/download/v1.17.0/mediamtx_v1.17.0_linux_amd64.tar.gz \
+    TOR_URL=https://www.torproject.org/dist/torbrowser/15.0.8/tor-browser-linux-x86_64-15.0.8.tar.xz \
     NO_VNC_HOME=/universe/noVNC \
     DEBIAN_FRONTEND=noninteractive \
     BG_WLLP=https://raw.githubusercontent.com/r00t4M0NK/BFHBP_pbc/refs/heads/main/wallpapers/wllpp_comet_milkyway_1280_720.jpg\
@@ -412,6 +413,8 @@ RUN echo '<html><head></head><body><table><tr><td><a href="https://testmypage.co
 # INSERT BELOW: && echo "mkdir -p /root/.vpn; cd /root/.vpn; wget -O /root/.vpn/myvpnusing.ovpn "<INSERT_URL.ovpn>";echo <USER_VPN> > /root/.vpn/auth.txt;echo <PASSWD_VPN> >> /root/.vpn/auth.txt;sed -i 's/auth-user-pass/auth-user-pass auth.txt/g' myvpnusing.ovpn;openvpn myvpnusing.ovpn" > /startup/mystartopenvpn.sh && chmod 755 $STARTUPDIR/mystartopenvpn.sh
 #[code] export VPN_PASSWORD=$2; export CONFIG_FILE=$1; export VPN_USER=oneuseropenvpn; bash -c "openvpn --config '"$CONFIG_FILE"' --auth-user-pass <(echo -e "$VPN_USER"'\n''"$VPN_PASSWORD"')"
 
+#TOR
+RUN mkdir $HOME/tor && chmod -R 755 $HOME/tor && cd $HOME/tor && wget --timeout=5 --tries=2 -qO- $TOR_URL > $HOME/tor/tor-browser-linux-x86_64-15.0.8.tar.xz && xz -d $HOME/tor/tor-browser-linux-x86_64-15.0.8.tar.xz && tar -xvf $HOME/tor/tor-browser-linux-x86_64-15.0.8.tar && rm $HOME/tor/tor-browser-linux-x86_64-15.0.8.tar && chmod -R 755 $HOME/tor/
 
 ##########################################################################
 ## PART 6: RDP
