@@ -84,8 +84,9 @@ LABEL org.opencontainers.image.authors="r00t4M0NK"
 ENV DISPLAY=:1 \
     VNC_PORT=5901 \
     NO_VNC_PORT=6901 \
-    RDP_PORT=3390
-EXPOSE $VNC_PORT $NO_VNC_PORT $RDP_PORT
+    RDP_PORT=3390 \
+    AUDIO_PORT=8554
+EXPOSE $VNC_PORT $NO_VNC_PORT $RDP_PORT $AUDIO_PORT
 
 #3390 is choosen for RDP because 3389 has conflict with WSL
 #src=https://answers.microsoft.com/en-us/windows/forum/all/cannot-connect-to-xrdp-running-in-wsl-via-remote/bce76f7f-37da-44be-8117-9465290b54c8?page=2
