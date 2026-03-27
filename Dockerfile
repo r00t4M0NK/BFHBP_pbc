@@ -367,9 +367,11 @@ RUN rm -Rf /tmp/.X1-lock && rm -Rf /tmp/.X11-unix/X1
 #AUDIO
 #Test a flow from local unix which diffuses?
 #ffplay -f alsa -i default
-#Test a flow from client?
-#ffplay -rtsp_transport tcp rtsp://%RTSP_IP%:%RTSP_PORT%/%RTSP_PATH%
-RUN cd $STARTUPDIR/ && wget --timeout=5 --tries=2 -qO- $MEDIA_URL > $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && tar -xvzf $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && rm $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && rm $STARTUPDIR/LICENSE && echo \#\!\/bin\/sh > $STARTUPDIR/audiostrm.sh &&  echo \.\/mediamtx >> $STARTUPDIR/audiostrm.sh && echo ffmpeg \-f alsa \-i default \-acodec aac \-f rtsp \-rtsp\_transport tcp rtsp\:\/\/localhost\:8554\/live >> $STARTUPDIR/audiostrm.sh
+#Listen audio flow from client (CMD-Windows or Terminal-Unix)
+# (OS) Console> ffplay -rtsp_transport tcp rtsp://[RTSP_IP]:[RTSP_PORT]/[RTSP_PATH]
+#IP= it's Docker-Server's IP (from the WSL machine which hosts Docker, value= localhost)
+#PATH= usually "live" (at least, it's the setting here)
+RUN cd $STARTUPDIR/ && wget --timeout=5 --tries=2 -qO- $MEDIA_URL > $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && tar -xvzf $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && rm $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && rm $STARTUPDIR/LICENSE && echo \#\!\/bin\/sh > $STARTUPDIR/audiostrm.sh &&  echo \.\/mediamtx \& >> $STARTUPDIR/audiostrm.sh && echo ffmpeg \-f alsa \-i default \-acodec aac \-f rtsp \-rtsp\_transport tcp rtsp\:\/\/localhost\:8554\/live >> $STARTUPDIR/audiostrm.sh
 
 ##########################################################################
 ## PART 5: FIREFOX SETTINGS HERE
