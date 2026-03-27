@@ -338,8 +338,8 @@ RUN echo     su \- $USERVNC \-c \'vncserver \:1 \-rfbport $VNC_PORT \-localhost 
 RUN echo fi >> $STARTUPDIR/myvncservice.sh
 RUN echo if \[ \`whoami\` \=\= \'$USERVNC\' \]\; then >> $STARTUPDIR/myvncservice.sh
 RUN echo     vncserver \:1 \-rfbport $VNC_PORT \-localhost no >>  $STARTUPDIR/myvncservice.sh
-RUN echo fi >> $STARTUPDIR/myvncservice.sh
-RUN echo     " " >>  $STARTUPDIR/myvncservice.sh
+RUN echo fi >> $STARTUPDIR/myvncservice.sh && echo     " " >>  $STARTUPDIR/myvncservice.sh
+
 #MYNOVNCSERVICE
 RUN echo     \/usr\/share\/novnc\/utils\/novnc_proxy \-\-vnc localhost\:$VNC_PORT \-\-listen $NO_VNC_PORT \& >  $STARTUPDIR/mynovncservice.sh
 #Screen Stretched
@@ -369,11 +369,9 @@ RUN rm -Rf /tmp/.X1-lock && rm -Rf /tmp/.X11-unix/X1
 #Test a flow from local unix which diffuses?
 #ffplay -f alsa -i default
 #Listen audio flow from client (CMD-Windows or Terminal-Unix)
-# (OS) Console> ffplay -rtsp_transport tcp rtsp://[RTSP_IP]:[RTSP_PORT]/[RTSP_PATH]
+# (OS) Console> ffplay -rtsp_transport tcp rtsp://[RTSP_IP]:[RTSP_PORT]/[RTSP_PATH] ||  Console> ffplay -rtsp_transport tcp rtsp://[IP]:8554/live
 #IP= it's Docker-Server's IP (from the WSL machine which hosts Docker, value= localhost)
-#PORT= 8554 (at least, setting is used here)
-#PATH= live (at least, setting is used here)
-# (OS) Console> ffplay -rtsp_transport tcp rtsp://[IP]:8554/live
+
 RUN cd $STARTUPDIR/ && wget --timeout=5 --tries=2 -qO- $MEDIA_URL > $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && tar -xvzf $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && rm $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && rm $STARTUPDIR/LICENSE && echo \#\!\/bin\/sh > $STARTUPDIR/audiostrm.sh &&  echo pulseaudio \-\-start \& >> $STARTUPDIR/audiostrm.sh &&  echo \.\/mediamtx \& >> $STARTUPDIR/audiostrm.sh && echo ffmpeg \-f alsa \-i default \-acodec aac \-f rtsp \-rtsp\_transport tcp rtsp\:\/\/localhost\:8554\/live >> $STARTUPDIR/audiostrm.sh
 
 ##########################################################################
