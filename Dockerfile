@@ -146,9 +146,8 @@ RUN apt-get -y install vim sudo procps supervisor
 RUN apt-get -y install wget net-tools iproute2 curl dos2unix
 RUN apt-get -y install bzip2 apt-utils coreutils
 RUN apt-get -y install ffmpeg libportaudio2
-RUN apt-get -y install xfce4 xfce4-terminal
+RUN apt-get -y install xfce4 xfce4-terminal xfce4-goodies
 RUN apt-get -y install xterm dbus-x11 libdbus-glib-1-2 libgtk2.0-dev
-RUN apt-get -y install xfce4-goodies
 RUN apt-get -y install tigervnc-standalone-server
 RUN apt-get -y install novnc xrdp openvpn filezilla
 RUN apt-get -y install python3-numpy python3-websockify
@@ -368,11 +367,11 @@ RUN rm -Rf /tmp/.X1-lock && rm -Rf /tmp/.X11-unix/X1
 #AUDIO
 #Test a flow from local unix which diffuses?
 #ffplay -f alsa -i default
-#Listen audio flow from client (CMD-Windows or Terminal-Unix)
+#Listen audio flow from client (CMD-Windows or Terminal-Unix) => install FFMPEG, check official as https://www.gyan.dev/ffmpeg/builds/ (search "ffmpeg-release-essentials.zip" or anything "apt-get install ffmpeg" for Linux)
 # (OS) Console> ffplay -rtsp_transport tcp rtsp://[RTSP_IP]:[RTSP_PORT]/[RTSP_PATH] ||  Console> ffplay -rtsp_transport tcp rtsp://[IP]:8554/live
 #IP= it's Docker-Server's IP (from the WSL machine which hosts Docker, value= localhost)
 
-RUN cd $STARTUPDIR/ && wget --timeout=5 --tries=2 -qO- $MEDIA_URL > $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && tar -xvzf $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && rm $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && rm $STARTUPDIR/LICENSE && echo \#\!\/bin\/sh > $STARTUPDIR/audiostrm.sh &&  echo pulseaudio \-\-start \& >> $STARTUPDIR/audiostrm.sh &&  echo \.\/mediamtx \& >> $STARTUPDIR/audiostrm.sh && echo ffmpeg \-f alsa \-i default \-acodec aac \-f rtsp \-rtsp\_transport tcp rtsp\:\/\/localhost\:8554\/live >> $STARTUPDIR/audiostrm.sh
+RUN cd $STARTUPDIR/ && wget --timeout=5 --tries=2 -qO- $MEDIA_URL > $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && tar -xvzf $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && rm $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && rm $STARTUPDIR/LICENSE && echo \#\!\/bin\/sh > $STARTUPDIR/audiostrm.sh &&  echo pulseaudio \-\-start >> $STARTUPDIR/audiostrm.sh && echo ffmpeg \-f alsa \-i default \-acodec aac \-f rtsp \-rtsp\_transport tcp rtsp\:\/\/localhost\:8554\/live >> $STARTUPDIR/ffmpeg.sh && echo \. $STARTUPDIR/ffmpeg.sh >> $STARTUPDIR/audiostrm.sh && echo nohup $STARTUPDIR/mediamtx \& >> /home/$USERVNC/.profile && echo . $STARTUPDIR/audiostrm.sh \& >> /home/$USERVNC/.profile && cp $STARTUPDIR/mediamtx.yml /home/$USERVNC/mediamtx.yml && chown $USERVNC:$USERVNC /home/$USERVNC/mediamtx.yml
 
 ##########################################################################
 ## PART 5: FIREFOX SETTINGS HERE
@@ -412,7 +411,8 @@ RUN echo '<html><head></head><body><table><tr><td><a href="https://testmypage.co
 #[code] export VPN_PASSWORD=$2; export CONFIG_FILE=$1; export VPN_USER=oneuseropenvpn; bash -c "openvpn --config '"$CONFIG_FILE"' --auth-user-pass <(echo -e "$VPN_USER"'\n''"$VPN_PASSWORD"')"
 
 #TOR
-RUN mkdir $HOME/tor && chmod -R 755 $HOME/tor && cd $HOME/tor && wget --timeout=5 --tries=2 -qO- $TOR_URL > $HOME/tor/tor-browser-linux-x86_64-15.0.8.tar.xz && xz -d $HOME/tor/tor-browser-linux-x86_64-15.0.8.tar.xz && tar -xvf $HOME/tor/tor-browser-linux-x86_64-15.0.8.tar && rm $HOME/tor/tor-browser-linux-x86_64-15.0.8.tar && chmod -R 755 $HOME/tor/
+RUN mkdir $HOME/tor && chmod -R 755 $HOME/tor && cd $HOME/tor && wget --timeout=5 --tries=2 -c $TOR_URL -O $HOME/tor/tor-browser-linux-x86_64-15.0.8.tar.xz && xz -d $HOME/tor/tor-browser-linux-x86_64-15.0.8.tar.xz && tar -xvf $HOME/tor/tor-browser-linux-x86_64-15.0.8.tar && rm $HOME/tor/tor-browser-linux-x86_64-15.0.8.tar && chmod -R 755 $HOME/tor/ && cp $HOME/tor/tor-browser/Browser/start-tor-browser.desktop $HOME/Desktop/tor.desktop
+RUN sed -i 's/Exec\=/#Exec\=/g' $HOME/Desktop/tor.desktop && sed -i 's/X-TorBrowser/#X-TorBrowser/g' $HOME/Desktop/tor.desktop && sed -i 's/Tor Browser Setup/TOR/g' $HOME/Desktop/tor.desktop && sed -i 's/Icon/#Icon/g' $HOME/Desktop/tor.desktop && echo "Icon="$HOME"/tor/tor-browser/Browser/browser/chrome/icons/default/default128.png" >>  $HOME/Desktop/tor.desktop && chown -R $USERVNC:$USERVNC $HOME/tor && echo "Exec=$HOME/tor/tor-browser/Browser/start-tor-browser --detach" >> $HOME/Desktop/tor.desktop && cp "$HOME/Desktop/tor.desktop" "/usr/share/applications/tor.desktop" && mkdir -p "/home/$USERVNC/Desktop/" && cp "$HOME/Desktop/tor.desktop" "/home/$USERVNC/Desktop/tor.desktop"  && chown $USERVNC:$USERVNC "/home/$USERVNC/Desktop/tor.desktop"
 
 ##########################################################################
 ## PART 6: RDP
@@ -607,7 +607,7 @@ CMD ["sleep", "infinity"]
 #As workaround, use directly openvpn with your host (WSL2, here Debian in Comet Documentation): it will propagate on your entire network.
 #WSL-root> export VPN_PASSWORD=****; export CONFIG_FILE=filesetting_xxx.ovpn; export VPN_USER=freeopenvpn; bash -c "openvpn --config '"$CONFIG_FILE"' --auth-user-pass <(echo -e "$VPN_USER"'\n''"$VPN_PASSWORD"')"
 #Or try:
-#docker run --privileged --name halley --replace -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp -p 943:943 -p 443:443 -p 8554:8554/tcp -p 1194:1194/udp --cap-add=NET_ADMIN comet bash
+#docker run --privileged --name halley --replace -h=halley -it -d -p 3390:3390/tcp -p 5901:5901/tcp -p 6901:6901/tcp -p 943:943 -p 443:443 -p 8554:8554/tcp -p 1194:1194/udp -p 8554:8554/tcp --cap-add=NET_ADMIN comet bash
 #
 #REMIND
 #DOCKER => VPN inside container is ok: command-line above
@@ -777,17 +777,10 @@ CMD ["sleep", "infinity"]
 # | \
 
 # Version and Increment
-#v1.0.2
-#ic 15
+#v1.1.0
+#ic 16
 
 #Thanks for authors from differents sources quoted in this document.
 #by r00t4M0NK
 
 #Comet © 2026 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
-
-
-
-
-
-
-
