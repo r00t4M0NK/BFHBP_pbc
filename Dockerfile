@@ -370,6 +370,12 @@ RUN rm -Rf /tmp/.X1-lock && rm -Rf /tmp/.X11-unix/X1
 #Listen audio flow from client (CMD-Windows or Terminal-Unix) => install FFMPEG, check official as https://www.gyan.dev/ffmpeg/builds/ (search "ffmpeg-release-essentials.zip" or anything "apt-get install ffmpeg" for Linux)
 # (OS) Console> ffplay -rtsp_transport tcp rtsp://[RTSP_IP]:[RTSP_PORT]/[RTSP_PATH] ||  Console> ffplay -rtsp_transport tcp rtsp://[IP]:8554/live
 #IP= it's Docker-Server's IP (from the WSL machine which hosts Docker, value= localhost)
+#
+#CLIENT CMD WINDOWS (BATCH)
+#@echo off
+#taskkill /f /im ffplay.exe
+#start "LISTEN AUDIO COMET" "D:\<your_path>\ffmpeg\bin\ffplay" -rtsp_transport tcp rtsp://<your_ip>:8554/live
+#
 
 RUN cd $STARTUPDIR/ && wget --timeout=5 --tries=2 -qO- $MEDIA_URL > $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && tar -xvzf $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && rm $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && rm $STARTUPDIR/LICENSE && echo \#\!\/bin\/sh > $STARTUPDIR/audiostrm.sh &&  echo pulseaudio \-\-start >> $STARTUPDIR/audiostrm.sh && echo ffmpeg \-f alsa \-i default \-acodec aac \-f rtsp \-rtsp\_transport tcp rtsp\:\/\/localhost\:8554\/live >> $STARTUPDIR/ffmpeg.sh && echo \. $STARTUPDIR/ffmpeg.sh >> $STARTUPDIR/audiostrm.sh && echo nohup $STARTUPDIR/mediamtx \& >> /home/$USERVNC/.profile && echo . $STARTUPDIR/audiostrm.sh \& >> /home/$USERVNC/.profile && cp $STARTUPDIR/mediamtx.yml /home/$USERVNC/mediamtx.yml && chown $USERVNC:$USERVNC /home/$USERVNC/mediamtx.yml
 
