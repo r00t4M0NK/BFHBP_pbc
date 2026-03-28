@@ -420,7 +420,7 @@ RUN sed -i 's/Exec\=/#Exec\=/g' $HOME/Desktop/tor.desktop && sed -i 's/X-TorBrow
 #To know version: xrdp -v | grep "xrdp " | head -n 1 | cut -d' ' -f2
 #
 #[Optional] Don't forget to set port forwarding in the host machine, with PowerShell [mode PODMAN]:
-#netsh interface portproxy add v4tov4 listenport=3389 listenaddress=<IP_MACHINE_HOST> connectport=3390 connectaddress=<IP_CONTAINER>
+#netsh interface portproxy add v4tov4 listenport=3390 listenaddress=<IP_MACHINE_HOST> connectport=3390 connectaddress=<IP_CONTAINER>
 #
 #<IP_MACHINE_HOST> => or you know because you connect through a VNC service, or type in the machine within a DOS shell: CMD > ipconfig (most of time: ethernet, "IPV4")
 #<IP_CONTAINER> => in the WSL, within the host and outside from container: WSL ifconfig (most of time: eth0, inet @ddress)
@@ -591,7 +591,7 @@ CMD ["sleep", "infinity"]
 #
 #Have you deleted the container just created because some work done isn't as you want? And you want another container from the same image wihtout building because it's not need? And you see same ID? Ok.
 #But --replace doesn't work. Try this last option validated:
-#sudo docker run --security-opt seccomp=unconfined --privileged --name halley -h=halley -it -d -p 3389:3389/tcp -p 3901:3901/tcp -p 4901:4901/tcp -p 8554:8554/tcp comet bash
+#sudo docker run --security-opt seccomp=unconfined --privileged --name halley -h=halley -it -d -p 3390:3390/tcp -p 3901:3901/tcp -p 4901:4901/tcp -p 8554:8554/tcp comet bash
 #
 #For Podman, use openvpn in the computer environment, because inside the pod, it cuts each connection; Use pod same as docker.
 #If you don't use  --privileged, nmap can't work:
