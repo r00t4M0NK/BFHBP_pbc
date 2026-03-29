@@ -59,7 +59,14 @@ Transport: RTP/AVP/TCP;unicast;interleaved=0-1
 
 ---
 
+####################################################################################
+#                                 SOCAT TEST
+####################################################################################
 
+WSL-USER> socat TCP-LISTEN:8554,fork TCP:127.0.0.1:8554
+WSL-USER> socat TCP-LISTEN:9998,fork TCP:172.17.x.x:8554
+PS-ADMIN> wsl socat TCP-LISTEN:9998,fork TCP:172.17.x.x:8554
+WSL-USER> "C:\msys64\mingw64\bin\socat.exe" TCP-LISTEN:9998,fork TCP:172.17.x.x:8554
 
 
 
