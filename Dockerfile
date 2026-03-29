@@ -1,13 +1,13 @@
 ##########################################################################
 ## NOTICE AND LICENCE
 ##########################################################################
-
+#
 # This file is provided "as is".
 # No support is provided: you try, you learn, you test but only under your own responsability.
 # More information, Read the full Licence:
 # https://github.com/r00t4M0NK/BFHBP_pbc/blob/main/EULA_Comet.txt
-
-
+#
+#
 ##########################################################################
 ## DOWNLOAD DIRECTLY
 ##########################################################################
@@ -54,6 +54,7 @@
 #podman exec -it <name> bash
 #
 #Need start and get this warning: WARN[0000] "/" is not a shared mount, this could cause issues or missing mounts with rootless containers
+#If error is persistent, add this line in .profile or anything like this (at least from a terminal shell, and you call when need: [WSL-USER> . ../.profile])
 #WSL-USER> sudo usermod --add-subuids 200000-201000 --add-subgids 200000-201000 <USER>
 #src=https://forums.gentoo.org/viewtopic-t-1146641-start-0.html
 #
@@ -63,17 +64,17 @@
 #You run the INSTANCE from the IMAGE.
 #The IMAGE is built from the Dockerfile.
 #A Pod is always created with the mind of "one-shot". That's important to keep in mind to explain any behaviour.
-
-
-
+#
+#
+#
 ##########################################################################
 ## DOCKER PART: HEAD
 ##########################################################################
-
+#
 FROM debian:12
-
+#
 LABEL org.opencontainers.image.authors="r00t4M0NK"
-
+#
 ## Connection ports for controlling the UI:
 # VNC port:$VNC_PORT
 # Change vncvnc by our own password
@@ -87,27 +88,27 @@ ENV DISPLAY=:1 \
     RDP_PORT=3390 \
     AUDIO_PORT=8554
 EXPOSE $VNC_PORT $NO_VNC_PORT $RDP_PORT $AUDIO_PORT
-
+#
 #3390 is choosen for RDP because 3389 has conflict with WSL
 #src=https://answers.microsoft.com/en-us/windows/forum/all/cannot-connect-to-xrdp-running-in-wsl-via-remote/bce76f7f-37da-44be-8117-9465290b54c8?page=2
-
+#
 #Check in Firewall (Windows) to allow this port
 #Check from Windows > Remote > Settings > Port
 #Don't have RDP active in the host machine
-
+#
 #This line could test but we keep in mind it's not same scope inside the container than here in the build file
 #echo DISPLAY: $DISPLAY VNC: $VNC_PORT NONC: $NO_VNC_PORT RDP: $RDP_PORT: $AUDIO_PORT
-
+#
 ##########################################################################
 ## VAR PART: SETTINGS
 ##########################################################################
-
+#
 # Don't forget to find-replace any value you customise
 # For examples, I use same path to group scripts and others
 #$HOME =>[impacts]=> $INST_SCRIPTS + $INST_FF + $NO_VNC_HOME + 2 lines at the end of this file (Part: DOCKER BUILD - RUN)
 #$VNC_PORT =>[impacts]=> Part "Check" (command ss with 3 first chars) + line concerning the Run  (Part: DOCKER BUILD - RUN)
 #$NO_VNC_PORT =>[impacts]=> URL on the top + line concerning the Run  (Part: DOCKER BUILD - RUN)
-
+#
 ENV HOME=/universe \
     TERM=xterm \
     MYLANG=en_US \
@@ -132,14 +133,14 @@ ENV HOME=/universe \
     VNC_PW=vncpassw0rd\
     VNC_VIEW_ONLY=false
 WORKDIR $HOME
-
+#
 #This line could test but we keep in mind it's not same scope inside the container than here in the build file
 #echo HOME: $HOME STARTUPDIR: $STARTUPDIR NO_VNC_HOME: $NO_VNC_HOME VNC_RESOLUTION: $VNC_RESOLUTION USERVNC: $USERVNC USER_PW: $USER_PW ROOT_PW: $ROOT_PW
-
+#
 ##########################################################################
 ## PART PREREQUISITE: INSTALL
 ##########################################################################
-
+#
 RUN apt-get update
 RUN apt-get -y upgrade
 RUN apt-get -y install vim sudo procps supervisor
@@ -153,7 +154,7 @@ RUN apt-get -y install novnc xrdp openvpn filezilla
 RUN apt-get -y install python3-numpy python3-websockify
 RUN apt-get -y install libnss-wrapper gettext
 RUN apt-get clean -y
-
+#
 # INFOS PACKAGINGS INSTALL
 # vim for editor when to use in terminal
 # sudo for using this in terminal
@@ -179,18 +180,18 @@ RUN apt-get clean -y
 # python3-websockify for Websockify, for VNC
 # libnss-wrapper for daemon management user (legacy from Dockerfile from ConSol)
 # gettext for text and IO (legacy from Dockerfile from ConSol)
-
+#
 #LANGAGE SETUP
 RUN apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
         && localedef -i $MYLANG -c -f UTF-8 -A /usr/share/locale/locale.alias $MYLANG.UTF-8 \
 && apt-get clean -y
 ENV LANG="$MYLANG.utf8"
-
-
+#
+#
 ##########################################################################
 ## PART 1: DOWNLOADS HERE
 ##########################################################################
-
+#
 ################################
 # A. WALLPAPERS + STARTUPDIR
 ################################
@@ -200,7 +201,7 @@ RUN mkdir $STARTUPDIR && mkdir $STARTUPDIR/wallpapers && chmod -R 755 $STARTUPDI
 #Uncomment only one line: here without Firewall (more secure to avoid "man in the middle"):
 RUN wget --timeout=5 --tries=2 -O $STARTUPDIR/wallpapers/bg_custom_wallpaper.png -c $BG_WLLP
 #RUN chmod 755 $STARTUPDIR/wallpapers/bg_custom_wallpaper.png && mv /usr/share/images/desktop-base/default /usr/share/images/desktop-base/.default && ln -s $STARTUPDIR/wallpapers/bg_custom_wallpaper.png /usr/share/images/desktop-base/default
-
+#
 ################################
 # B. BROWSER: FIREFOX
 ################################
@@ -210,7 +211,7 @@ RUN mkdir -p $INST_FF && chmod 755 $INST_FF
 #Uncomment only one line: here without Firewall (more secure to avoid "man in the middle"):
 RUN wget --timeout=5 --tries=2 -qO- $FF_URL | tar xvj --strip 1 -C $INST_FF/
 RUN mkdir -p $HOME/firefox/extensions; chmod 755 $HOME/firefox/extensions;  curl https://addons.mozilla.org/firefox/downloads/file/4343983/ghostery-10.4.3.xpi > $HOME/firefox/extensions/ghostery-10.4.3.xpi; curl https://addons.mozilla.org/firefox/downloads/file/4351045/adblock_plus-4.7.xpi > $HOME/firefox/extensions/adblock_plus-4.7.xpi
-
+#
 #Correct issue "certificate not trust":
 # In client side (as WSL), install: apt-get install ca-certificates
 # ln -sT /usr/ssl /etc/ss
@@ -218,7 +219,7 @@ RUN mkdir -p $HOME/firefox/extensions; chmod 755 $HOME/firefox/extensions;  curl
 # If not working, the bad workaround:
 # wget --timeout=5 --tries=2 --no-check-certificate -O /home/<user>/<path>/bg_custom_wallpaper.png -c https://hereitsanurltoreach.com/download/bgwallpaper.jpg
 # [See part "Issue WGET" for explanations]
-
+#
 ################################
 # C. RDP: PICS
 ################################
@@ -233,12 +234,12 @@ RUN mkdir -p $HOME/firefox/extensions; chmod 755 $HOME/firefox/extensions;  curl
 #RUN wget --timeout=5 --tries=2 --no-check-certificate -O /home/$USERVNC/login-user.bmp -c $RDP_LOGO && sleep 5 && chmod 755 /usr/share/xrdp/login-user.bmp && wget --timeout=5 --tries=2 --no-check-certificate -O $RDP_LOCAL_WLLP -c $RDP_WLLP && sleep 5 && chmod 755 $RDP_LOCAL_WLLP
 #Uncomment only one line: here without Firewall (more secure to avoid "man in the middle"):
 RUN wget --timeout=5 --tries=2 -O /usr/share/xrdp/login-user.bmp -c $RDP_LOGO && sleep 5 && chmod 755 /usr/share/xrdp/login-user.bmp && wget --timeout=5 --tries=2 --no-check-certificate -O $RDP_LOCAL_WLLP -c $RDP_WLLP && sleep 5 && chmod 755 $RDP_LOCAL_WLLP
-
-
+#
+#
 ##########################################################################
 ## PART 2: DIRS HERE
 ##########################################################################
-
+#
 #CREATE USER COMMANDS - START_STOP_STATUS - FEATURE FOR MYSELF
 #It's tools to use manually in case of
 RUN mkdir -p /home/$USERVNC && chmod 755 /home/$USERVNC
@@ -259,13 +260,13 @@ RUN echo rm -Rf /tmp/.X1-lock >> /home/$USERVNC/.vncserverstart && echo rm -Rf /
 RUN echo vncserver :1 -rfbport $VNC_PORT -localhost no >> /home/$USERVNC/.vncserverstart
 RUN chmod 755 /home/$USERVNC/.start /home/$USERVNC/.stop /home/$USERVNC/.status /home/$USERVNC/.vncserverstart
 RUN chown $USERVNC:$USERVNC /home/$USERVNC/.vnc/
-
+#
 #This tool will be used, mainly this dir
 RUN echo \#!\/bin\/sh > $STARTUPDIR/rebootvncserver.sh
 RUN echo rm -Rf /tmp/.X1-lock >> $STARTUPDIR/rebootvncserver.sh && echo rm -Rf /tmp/.X11-unix/X1 >> $STARTUPDIR/rebootvncserver.sh
 RUN echo vncserver \-kill \:1 >> $STARTUPDIR/rebootvncserver.sh && echo vncserver \:1 \-rfbport $VNC_PORT \-localhost no >> $STARTUPDIR/rebootvncserver.sh
 RUN chown $USERVNC:$USERVNC $STARTUPDIR/rebootvncserver.sh && chmod 755 $STARTUPDIR/rebootvncserver.sh
-
+#
 #STARTUP INFORMATIONS FROM MY OWN SEARCHES FROM THE WEB
 #init.d, daemon upstart, systemd => not working
 #if systemd isn't PID=1, can't work in WSL
@@ -273,32 +274,32 @@ RUN chown $USERVNC:$USERVNC $STARTUPDIR/rebootvncserver.sh && chmod 755 $STARTUP
 #To understand ENTRYPOINT, read this page internet below
 #code.visualstudio.com/remote/advancedcontainers/start-processes
 #My starter image I was used to understand fully is this member from GitHub: ConSol/docker-headless-vnc-container (my target was the debian part)
-
+#
 #SOURCES
 #src1=unix.stackexchange.com/questions/353604/debian-startup-script-doesnt-start
 #src2=hackernoon.com/how-to-run-scripts-on-boot-in-linux-using-systemd
-
-
+#
+#
 ##########################################################################
 ## PART 3: DIR STARTUP HERE
 ##########################################################################
-
+#
 #As REBOOT COMMANDS: it's tools to use manually in case of
 RUN echo \#!\/bin\/sh > /usr/local/sbin/vncserver.sh
 RUN echo rm -Rf /tmp/.X1-lock >> /usr/local/sbin/vncserver.sh && echo rm -Rf /tmp/.X11-unix/X1 >> /usr/local/sbin/vncserver.sh
 RUN echo vncserver \:1 \-rfbport $VNC_PORT \-localhost no >> /usr/local/sbin/vncserver.sh && chmod +x /usr/local/sbin/vncserver.sh
-
-
+#
+#
 ##########################################################################
 ## PART 4: SERVICES HERE
 ##########################################################################
-
+#
 #PERSONNAL SERVICE FILE
 RUN touch $STARTUPDIR/r00t4m0nk.sh
-
+#
 #TO RELOAD WALLPAPER BACKGROUND
 RUN touch $STARTUPDIR/mybackgroundwllpservice.sh && echo rm \-f \/usr\/share\/images\/desktop\-base\/default >> $STARTUPDIR/mybackgroundwllpservice.sh  && echo ln \-s \/startup\/wallpapers\/bg_custom_wallpaper\.png \/usr\/share\/images\/desktop\-base\/default >> $STARTUPDIR/mybackgroundwllpservice.sh && chmod 755 $STARTUPDIR/mybackgroundwllpservice.sh && $STARTUPDIR/mybackgroundwllpservice.sh
-
+#
 #FIREFOX PANEL
 RUN touch $STARTUPDIR/myfirefoxservice.sh && echo sleep 0 >> $STARTUPDIR/myfirefoxservice.sh && echo if \! \[ \-f "$HOME/.firefox" \]\; then >> $STARTUPDIR/myfirefoxservice.sh
 RUN echo if \[ \-f "$HOME/Desktop/firefox.desktop" \]\; then >> $STARTUPDIR/myfirefoxservice.sh
@@ -314,17 +315,17 @@ RUN echo rm \-f $HOME\/tmp\.txt 2\>\/dev\/null >> $STARTUPDIR/myfirefoxservice.s
 RUN echo "pkill \-f xfce4-panel 2>/dev/null" >>  $STARTUPDIR/myfirefoxservice.sh && echo "xfce4-panel &" >>  $STARTUPDIR/myfirefoxservice.sh && echo "$STARTUPDIR/myfirefoxsvc.sh \$1 &" >> $STARTUPDIR/myfirefoxservice.sh && echo "touch $HOME/.firefox" >> $STARTUPDIR/myfirefoxservice.sh && echo "fi" >> $STARTUPDIR/myfirefoxservice.sh && echo if \! \[ \-f "$HOME/.firefoxtmp" \]\; then >> $STARTUPDIR/myfirefoxservice.sh && echo "rm $HOME/.firefox" >> $STARTUPDIR/myfirefoxservice.sh && echo "touch $HOME/.firefoxtmp" >> $STARTUPDIR/myfirefoxservice.sh && echo "fi" >> $STARTUPDIR/myfirefoxservice.sh && chmod 755 $STARTUPDIR/myfirefoxservice.sh && $STARTUPDIR/myfirefoxservice.sh
 RUN echo $STARTUPDIR\/myfirefoxservice\.sh containered >> /home/$USERVNC/.bashrc && echo \#We start 2nd time but only this >> /home/$USERVNC/.bashrc && echo $STARTUPDIR\/myfirefoxsvc\.sh containered >> /home/$USERVNC/.bashrc && echo $STARTUPDIR\/myscreenstretched\.sh >> /home/$USERVNC/.bashrc && echo $STARTUPDIR\/myfirefoxservice\.sh >> /root/.bashrc && echo 'export USERCOMET='$USERVNC >> /home/$USERVNC/.bashrc && echo 'export USERCOMET='$USERVNC >> /root/.bashrc && echo 'export STARTUPDIR='$STARTUPDIR >> /home/$USERVNC/.bashrc && echo 'export STARTUPDIR='$STARTUPDIR >> /root/.bashrc && echo "alias ll='ls -artl'" >> /home/$USERVNC/.bashrc && echo "alias ll='ls -artl'" >> /root/.bashrc && cp /home/$USERVNC/.bashrc /home/$USERVNC/.bashrc_comet && cp /root/.bashrc /root/.bashrc_comet
 RUN echo ACTION\=\$1 > $STARTUPDIR/myfirefoxsvc.sh && echo if \! \[ \-f "$HOME/.firefoxtmp" \]\; then >> $STARTUPDIR/myfirefoxsvc.sh && echo exit >> $STARTUPDIR/myfirefoxsvc.sh && echo fi >> $STARTUPDIR/myfirefoxsvc.sh && echo if \[ \"\$ACTION\" \= \"containered\" \]\; then >> $STARTUPDIR/myfirefoxsvc.sh && echo "cp \"$HOME/Desktop/firefox.desktop\" \"\$(grep -H Exec=exo /home/$USERVNC/.config/xfce4/panel/launcher-19/\`ls /home/$USERVNC/.config/xfce4/panel/launcher-19/\` | tail -1 | cut -d: -f1)\" 2>/dev/null" >> $STARTUPDIR/myfirefoxsvc.sh && echo fi >> $STARTUPDIR/myfirefoxsvc.sh && chmod 755 $STARTUPDIR/myfirefoxsvc.sh
-
+#
 #FIREFOX ASSOCIATION
 RUN echo \[Added Associations\] > $STARTUPDIR/mymimeapps.list && chmod 755 $STARTUPDIR/mymimeapps.list && echo application\/xhtml\_xml\=firefox\.desktop\; >> $STARTUPDIR/mymimeapps.list && echo text\/html\=firefox\.desktop\; >> $STARTUPDIR/mymimeapps.list && echo text\/xml\=firefox\.desktop\; >> $STARTUPDIR/mymimeapps.list
 RUN echo x\-scheme\-handler\/ftp\=firefox\.desktop\; >> $STARTUPDIR/mymimeapps.list && echo x\-scheme\-handler\/http\=firefox\.desktop\; >> $STARTUPDIR/mymimeapps.list && echo x\-scheme\-handler\/https\=firefox\.desktop\; >> $STARTUPDIR/mymimeapps.list && echo "" >> $STARTUPDIR/mymimeapps.list
 RUN echo \[Default Applications\] >> $STARTUPDIR/mymimeapps.list && echo application\/xhtml\_xml\=firefox\.desktop\; >> $STARTUPDIR/mymimeapps.list && echo text\/html\=firefox\.desktop\; >> $STARTUPDIR/mymimeapps.list && echo text\/xml\=firefox\.desktop\; >> $STARTUPDIR/mymimeapps.list
 RUN echo x\-scheme\-handler\/ftp\=firefox\.desktop\; >> $STARTUPDIR/mymimeapps.list && echo x\-scheme\-handler\/http\=firefox\.desktop\; && echo x\-scheme\-handler\/https\=firefox\.desktop\; >> $STARTUPDIR/mymimeapps.list
 RUN echo cd $HOME\/Desktop\/ >> $STARTUPDIR/mymimeapps.list && echo dbus\-launch gio set firefox\.desktop \"metadata\:\:trusted\" yes >> $STARTUPDIR/mymimeapps.list
-
+#
 #PASSWD
 RUN touch $STARTUPDIR/mypsswdservice.sh && echo export ROOT_PW= >>  $STARTUPDIR/mypsswdservice.sh && echo export USER_PW= >>  $STARTUPDIR/mypsswdservice.sh
-
+#
 #RDP: SET SUDO RIGHTS FOR USER VNCUSER
 RUN echo touch $STARTUPDIR/myrdpservice.sh && echo sudo \/usr\/bin\/pkill xrdp >> $STARTUPDIR/myrdpservice.sh && echo sudo \/usr\/sbin\/service xrdp restart >> $STARTUPDIR/myrdpservice.sh && chmod 755 $STARTUPDIR/myrdpservice.sh
 RUN echo touch $STARTUPDIR/myrdpstartservice.sh && echo sudo \/usr\/sbin\/service xrdp start \&\& tail \-f \/dev\/null >> $STARTUPDIR/myrdpstartservice.sh && chmod 755 $STARTUPDIR/myrdpstartservice.sh
@@ -338,7 +339,7 @@ RUN echo fi >> $STARTUPDIR/myvncservice.sh
 RUN echo if \[ \`whoami\` \=\= \'$USERVNC\' \]\; then >> $STARTUPDIR/myvncservice.sh
 RUN echo     vncserver \:1 \-rfbport $VNC_PORT \-localhost no >>  $STARTUPDIR/myvncservice.sh
 RUN echo fi >> $STARTUPDIR/myvncservice.sh && echo     " " >>  $STARTUPDIR/myvncservice.sh
-
+#
 #MYNOVNCSERVICE
 RUN echo     \/usr\/share\/novnc\/utils\/novnc_proxy \-\-vnc localhost\:$VNC_PORT \-\-listen $NO_VNC_PORT \& >  $STARTUPDIR/mynovncservice.sh
 #Screen Stretched
@@ -352,18 +353,18 @@ RUN echo $STARTUPDIR\/r00t4m0nk\.sh >> $STARTUPDIR/myentrypoint.sh && echo sudo 
 RUN echo $STARTUPDIR\/myfirefoxservice\.sh > $STARTUPDIR/mydesk.sh && echo $STARTUPDIR\/myrdpservice\.sh >> $STARTUPDIR/mydesk.sh && chmod 755 $STARTUPDIR/mydesk.sh
 RUN echo     exec \"\$\@\" >>  $STARTUPDIR/myentrypoint.sh
 RUN chmod 755 $STARTUPDIR/myvncservice.sh && chmod 755 $STARTUPDIR/mynovncservice.sh && chmod 755 $STARTUPDIR/myfirefoxservice.sh && chmod 755 $STARTUPDIR/mypsswdservice.sh && chmod 755 $STARTUPDIR/myrdpservice.sh && chmod 755 $STARTUPDIR/r00t4m0nk.sh && chmod 755 $STARTUPDIR/myscreenstretched.sh && chmod 755 $STARTUPDIR/myentrypoint.sh && chown $USERVNC:$USERVNC $STARTUPDIR/myscreenstretched.sh && echo "mkdir /dev/net; mknod /dev/net/tun c 10 200; chmod 666 /dev/net/tun; echo 'nameserver 8.8.8.8' >> /etc/resolv.conf; echo 'nameserver 1.1.1.1' >> /etc/resolv.conf" >> $STARTUPDIR/myopenvpnnetwork.sh && chmod 755 $STARTUPDIR/myopenvpnnetwork.sh
-
+#
 #UPDATE ROOT USER: SET THE PASSWORD
 #Alias ll is on part 2
 RUN echo 'root:'$ROOT_PW | chpasswd
 RUN echo $USERVNC:$USER_PW | chpasswd
-
+#
 #HOME DIR FOR .VNC
 RUN mkdir $HOME/.vnc && chown -R $USERVNC:$USERVNC $HOME && chmod -R 755 $HOME
-
+#
 #CLEAN
 RUN rm -Rf /tmp/.X1-lock && rm -Rf /tmp/.X11-unix/X1
-
+#
 #AUDIO
 #Test a flow from local unix which diffuses?
 #ffplay -f alsa -i default
@@ -376,13 +377,13 @@ RUN rm -Rf /tmp/.X1-lock && rm -Rf /tmp/.X11-unix/X1
 #taskkill /f /im ffplay.exe
 #start "LISTEN AUDIO COMET" "D:\<your_path>\ffmpeg\bin\ffplay" -rtsp_transport tcp rtsp://<your_ip>:8554/live
 #
-
-RUN cd $STARTUPDIR/ && wget --timeout=5 --tries=2 -qO- $MEDIA_URL > $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && tar -xvzf $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && rm $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && rm $STARTUPDIR/LICENSE && echo \#\!\/bin\/sh > $STARTUPDIR/audiostrm.sh &&  echo pulseaudio \-\-start >> $STARTUPDIR/audiostrm.sh && echo ffmpeg \-f alsa \-i default \-acodec aac \-f rtsp \-rtsp\_transport tcp rtsp\:\/\/localhost\:8554\/live >> $STARTUPDIR/ffmpeg.sh && echo \. $STARTUPDIR/ffmpeg.sh >> $STARTUPDIR/audiostrm.sh && echo nohup $STARTUPDIR/mediamtx \& >> /home/$USERVNC/.profile && echo . $STARTUPDIR/audiostrm.sh \& >> /home/$USERVNC/.profile && cp $STARTUPDIR/mediamtx.yml /home/$USERVNC/mediamtx.yml && chown $USERVNC:$USERVNC /home/$USERVNC/mediamtx.yml
-
+#
+RUN cd $STARTUPDIR/ && wget --timeout=5 --tries=2 -qO- $MEDIA_URL > $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && tar -xvzf $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && rm $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && rm $STARTUPDIR/LICENSE && echo \#\!\/bin\/sh > $STARTUPDIR/audiostrm.sh &&  echo pulseaudio \-\-start >> $STARTUPDIR/audiostrm.sh && echo ffmpeg \-f alsa \-i default \-acodec aac \-rtsp\_transport tcp \-f rtsp \-muxdelay 0\.1 rtsp\:\/\/localhost\:8554\/live >> $STARTUPDIR/ffmpeg.sh && echo \. $STARTUPDIR/ffmpeg.sh >> $STARTUPDIR/audiostrm.sh && echo nohup $STARTUPDIR/mediamtx \& >> /home/$USERVNC/.profile && echo . $STARTUPDIR/audiostrm.sh \& >> /home/$USERVNC/.profile && cp $STARTUPDIR/mediamtx.yml /home/$USERVNC/mediamtx.yml && chown $USERVNC:$USERVNC /home/$USERVNC/mediamtx.yml
+#
 ##########################################################################
 ## PART 5: FIREFOX SETTINGS HERE
 ##########################################################################
-
+#
 #Disable AutoUpdate FF
 RUN mkdir -p $INST_FF/browser/defaults/profile && touch $INST_FF/browser/defaults/profile/user.js
 RUN echo user_pref\(\"app\.update\.auto\"\, false\)\; >> $INST_FF/browser/defaults/profile/user.js
@@ -392,7 +393,7 @@ RUN echo user_pref\(\"app\.update\.lastUpdateTime\.background\-update\-timer\"\,
 RUN echo user_pref\(\"app\.update\.lastUpdateTime\.blocklist\-background\-update\-timer\"\, 1182010203\)\; >> $INST_FF/browser/defaults/profile/user.js
 RUN echo user_pref\(\"app\.update\.lastUpdateTime\.microsummary\-generator\-update\-timer\"\, 1222586145\)\; >> $INST_FF/browser/defaults/profile/user.js
 RUN echo user_pref\(\"app\.update\.lastUpdateTime\.search-engine\-update\-timer\"\, 1182010203\)\; >> $INST_FF/browser/defaults/profile/user.js
-
+#
 #Firefox Desktop: BETTER TO COPY EXISTING TO AVOID "MAX DEPTH EXCEEDED"
 RUN mkdir -p $HOME/Desktop && cp /usr/share/applications/xfce4-web-browser.desktop $HOME/.xfce4-web-browser-cpy && cp /usr/share/applications/xfce4-web-browser.desktop $HOME/Desktop/firefox.desktop && cp /usr/share/applications/xfce4-web-browser.desktop /usr/share/applications/firefox.desktop
 #TRUST
@@ -407,19 +408,19 @@ RUN sed -i 's/org.xfce.webbrowser/\/usr\/lib\/firefox\/browser\/chrome\/icons\/d
 RUN sed -i 's/org.xfce.webbrowser/\/usr\/lib\/firefox\/browser\/chrome\/icons\/default\/default128.png/g' /usr/share/applications/firefox.desktop
 #ONLY PRIVATE FOR ME
 RUN sed -i 's/Navigateur Web/Firefox/g' $HOME/Desktop/firefox.desktop && chmod -R 755 $HOME/Desktop
-
+#
 #SET FIREFOX AS TRUST, DESKTOP & ALLOW START
 RUN cp -R $HOME/firefox /usr/lib/firefox && chmod -R 755 /usr/lib/firefox && ln -s /usr/lib/firefox/firefox /usr/bin/firefox
-
+#
 #TEST PAGE HTML (to use for checking association files or use as skeleton to download fast a target) +OPENVPN
 RUN echo '<html><head></head><body><table><tr><td><a href="https://testmypage.com">My URL</a></td></tr>' > $HOME/mytestpage.html && echo '<tr><td><a href="https://www.showmyip.com">Test on the IP address</a></td></tr>' >> $HOME/mytestpage.html && echo '<tr><td><a href="https://www.browserling.com/tools/ntlm-hash">Test a NT Hash</a></td></tr>' >> $HOME/mytestpage.html && echo '<tr><td><a href="about:blank">BLANK</a></td></tr>' >> $HOME/mytestpage.html && echo '<tr><td>&nbsp;</td></tr>' >> $HOME/mytestpage.html && echo '</body></html>' >> $HOME/mytestpage.html && chown $USERVNC:$USERVNC $HOME/mytestpage.html && echo "mkdir -p /root/.vpn; cd /root/.vpn; export VPN_PASSWORD=\$2; export CONFIG_FILE=\$1; export VPN_USER=oneuseropenvpn; bash -c \"openvpn --config '\"\$CONFIG_FILE\"' --auth-user-pass <(echo -e \"\$VPN_USER\"'\n''\"\$VPN_PASSWORD\"')\"" >> $STARTUPDIR/mystartopenvpn.sh && chmod 755 $STARTUPDIR/mystartopenvpn.sh
 # INSERT BELOW: && echo "mkdir -p /root/.vpn; cd /root/.vpn; wget -O /root/.vpn/myvpnusing.ovpn "<INSERT_URL.ovpn>";echo <USER_VPN> > /root/.vpn/auth.txt;echo <PASSWD_VPN> >> /root/.vpn/auth.txt;sed -i 's/auth-user-pass/auth-user-pass auth.txt/g' myvpnusing.ovpn;openvpn myvpnusing.ovpn" > /startup/mystartopenvpn.sh && chmod 755 $STARTUPDIR/mystartopenvpn.sh
 #[code] export VPN_PASSWORD=$2; export CONFIG_FILE=$1; export VPN_USER=oneuseropenvpn; bash -c "openvpn --config '"$CONFIG_FILE"' --auth-user-pass <(echo -e "$VPN_USER"'\n''"$VPN_PASSWORD"')"
-
+#
 #TOR
 RUN mkdir $HOME/tor && chmod -R 755 $HOME/tor && cd $HOME/tor && wget --timeout=5 --tries=2 -c $TOR_URL -O $HOME/tor/tor-browser-linux-x86_64-15.0.8.tar.xz && xz -d $HOME/tor/tor-browser-linux-x86_64-15.0.8.tar.xz && tar -xvf $HOME/tor/tor-browser-linux-x86_64-15.0.8.tar && rm $HOME/tor/tor-browser-linux-x86_64-15.0.8.tar && chmod -R 755 $HOME/tor/ && cp $HOME/tor/tor-browser/Browser/start-tor-browser.desktop $HOME/Desktop/tor.desktop
 RUN sed -i 's/Exec\=/#Exec\=/g' $HOME/Desktop/tor.desktop && sed -i 's/X-TorBrowser/#X-TorBrowser/g' $HOME/Desktop/tor.desktop && sed -i 's/Tor Browser Setup/TOR/g' $HOME/Desktop/tor.desktop && sed -i 's/Icon/#Icon/g' $HOME/Desktop/tor.desktop && echo "Icon="$HOME"/tor/tor-browser/Browser/browser/chrome/icons/default/default128.png" >>  $HOME/Desktop/tor.desktop && chown -R $USERVNC:$USERVNC $HOME/tor && echo "Exec=$HOME/tor/tor-browser/Browser/start-tor-browser --detach" >> $HOME/Desktop/tor.desktop && cp "$HOME/Desktop/tor.desktop" "/usr/share/applications/tor.desktop" && mkdir -p "/home/$USERVNC/Desktop/" && cp "$HOME/Desktop/tor.desktop" "/home/$USERVNC/Desktop/tor.desktop"  && chown $USERVNC:$USERVNC "/home/$USERVNC/Desktop/tor.desktop"
-
+#
 ##########################################################################
 ## PART 6: RDP
 ##########################################################################
@@ -442,13 +443,13 @@ RUN sed -i 's/Exec\=/#Exec\=/g' $HOME/Desktop/tor.desktop && sed -i 's/X-TorBrow
 RUN echo "sed -i 's+port=3389+port= tcp: //:'$RDP_PORT'+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_title=My Login Title+ls_title=$RDP_TITLE+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_height=430+ls_height=240+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_bg_color=dedede+ls_bg_color=e8e8e8+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_logo_filename=$+ls_logo_filename=/usr/share/xrdp/login-user.bmp+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_logo_transform=none+ls_logo_transform=scale+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_logo_width=240+ls_logo_width=64+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_logo_height=140+ls_logo_height=64+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_logo_x_pos=55+ls_logo_x_pos=150+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_logo_y_pos=50+ls_logo_y_pos=25+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_label_x_pos=30+ls_label_x_pos=20+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_input_x_pos=110+ls_input_x_pos=150+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_input_width=210+ls_input_width=170+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_input_y_pos=220+ls_input_y_pos=100+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_ok_x_pos=142+ls_btn_ok_x_pos=80+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_ok_y_pos=370+ls_btn_ok_y_pos=200+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_cancel_x_pos=237+ls_btn_cancel_x_pos=180+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_btn_cancel_y_pos=370+ls_btn_cancel_y_pos=200+g' /etc/xrdp/xrdp.ini && sed -i 's+ls_top_window_bg_color=009cb5+ls_top_window_bg_color=000000+g' /etc/xrdp/xrdp.ini && sed -i 's+blue=009cb5+#blue=009cb5+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_background_image=+ls_background_image='$RDP_LOCAL_WLLP'+g' /etc/xrdp/xrdp.ini && sed -i 's+#ls_background_transform=none+ls_background_transform=scale+g' /etc/xrdp/xrdp.ini" > $STARTUPDIR/mycometdesignRDP.sh && echo touch /root/.hushlogin  >> $STARTUPDIR/mycometdesignRDP.sh && echo "if [ -f /etc/xrdp/xrdp.ini.original ]; then" >> $STARTUPDIR/mycometdesignRDP.sh && echo "cp -f /etc/xrdp/xrdp.ini.original /etc/xrdp/xrdp.ini" >> $STARTUPDIR/mycometdesignRDP.sh && echo fi >> $STARTUPDIR/mycometdesignRDP.sh && chmod 755 $STARTUPDIR/mycometdesignRDP.sh && $STARTUPDIR/mycometdesignRDP.sh
 RUN echo \[Unit\] > /etc/systemd/system/xrdp.service && echo Description\=RDP >> /etc/systemd/system/xrdp.service && echo "" >> /etc/systemd/system/xrdp.service && echo \[Service\] >> /etc/systemd/system/xrdp.service && echo User\=root >> /etc/systemd/system/xrdp.service && echo WorkingDirectory\=\/root >> /etc/systemd/system/xrdp.service && echo ExecStart=service xrdp restart >> /etc/systemd/system/xrdp.service && echo "" >>  /etc/systemd/system/xrdp.service && echo \[Install\] >> /etc/systemd/system/xrdp.service && echo WantedBy\=multi\-user\.target >> /etc/systemd/system/xrdp.service && chmod 755 /etc/systemd/system/xrdp.service
 RUN echo \[program\:restart\-xrdp\] > /etc/supervisor/conf.d/xrdp.conf && echo command\=$STARTUPDIR\/myrdpservice\.sh >> /etc/supervisor/conf.d/xrdp.conf && chmod 755 /etc/supervisor/conf.d/xrdp.conf && touch /var/run/supervisor.sock && chmod 777 /var/run/supervisor.sock && service supervisor restart && echo service --user enable httpd.service > /etc/systemd/user/xrdp.service /etc/systemd/user && echo >> /etc/systemd/user/xrdp.service
-
+#
 ##########################################################################
 ## PART 7: SPECIAL DEBIAN - DEACTIVATE POWER MANAGEMENT
 ##########################################################################
 RUN mv /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libxfce4powermanager.so /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libxfce4powermanager.so.off && pkill -f xfce4-power-manager
-
-
+#
+#
 ##########################################################################
 ## PART 8: LAST ACTIONS ROOT
 ##########################################################################
@@ -457,9 +458,9 @@ RUN chown -R $USERVNC:$USERVNC $HOME/Desktop/firefox.desktop && chown -R $USERVN
 RUN cd $HOME/Desktop/ && dbus-launch gio set firefox.desktop "metadata::trusted" yes
 RUN sed -i 's+OnlyShowIn=XFCE;+OnlyShowIn=+g' $HOME/Desktop/firefox.desktop
 RUN echo sudo \-u $USERVNC $STARTUPDIR\/myrdpstartservice\.sh > /root/userstartxrdp.sh && chmod 755 /root/userstartxrdp.sh && . /root/userstartxrdp.sh &
-
+#
 RUN touch $STARTUPDIR/mycometdesignTerminal.sh && touch $STARTUPDIR/mycometdesignUserTerminal.sh && echo "cp /home/$user/.bashrc /home/$user/.bashrc_\`echo \$(date '+%Y%m%d_%H_%M_%S)\`" >> $STARTUPDIR/mycometdesignUserTerminal.sh && echo "cp /home/$user/bashrc_comet /home/$user/.bashrc" >> $STARTUPDIR/mycometdesignUserTerminal.sh && echo "cp /root/.bashrc /root/.bashrc_\`echo \$(date '+%Y%m%d_%H_%M_%S')\`" >> $STARTUPDIR/mycometdesignTerminal.sh && echo "cp /root/.bashrc_comet /root/.bashrc" >> $STARTUPDIR/mycometdesignTerminal.sh && echo "cp /root/.bashrc.original /root/.bashrc 2>/dev/null" >> $STARTUPDIR/mycometdesignTerminal.sh && touch ~/.hushlogin >> $STARTUPDIR/mycometdesignTerminal.sh && chmod 755 $STARTUPDIR/mycometdesignTerminal.sh && chmod 755 $STARTUPDIR/mycometdesignUserTerminal.sh && chmod 755 /home/$USERVNC/.bashrc && chmod 755 /home/$USERVNC/.bashrc_comet && chmod 755 /root/.bashrc && chmod 755 /root/.bashrc_comet && chown $USERVNC:$USERVNC /home/$USERVNC/.bashrc && chown $USERVNC:$USERVNC /home/$USERVNC/.bashrc_comet && touch ~/.hushlogin
-
+#
 ##########################################################################
 ## PART 9: SWITCH USER
 ##########################################################################
@@ -468,42 +469,42 @@ USER 1000
 RUN printf "$VNC_PW\n$VNC_PW\n\n" | vncpasswd
 # To avoid a bug with xfce4, you will need to run twice this shell to add Firefox inside the panel: $STARTUPDIR/myfirefoxsvc.sh
 RUN $STARTUPDIR/myrdpservice.sh
-
-
+#
+#
 ##########################################################################
 ## PART 10: START SERVICES & KEEP CONTAINER UP
 ##########################################################################
 ENTRYPOINT ["/startup/myentrypoint.sh"]
 CMD ["sleep", "infinity"]
-
-
+#
+#
 ##########################################################################
 ## PART 11: INFORMATIONS
 ##########################################################################
-
+#
 #INFO for DIPSLAY
 #pgrep --list-full xfdesktop
 #src=forum.xfce.org/viewtopic.php?id=15887
-
+#
 #CMD CONTROL VNC IN ORDER TO REBOOT (examples with port chosen: 5901 => change before any copy)
 #vncserver -kill :1
 #vncserver :1 -rfbport 5901 -localhost no
-
+#
 #RDP
 #pkill xrdp && service xrdp restart
-
+#
 # CHANGE WALLPAPER
 # A. Terminal, su - root => wget direct /startup/wallpapers and then step III below.
 # B. I.   Download with Firefox and URL into "Download" dir
 #    II.  Terminal under root: cd /startup/wallpapers; mv bg_custom_wallpaper.png bg_custom_wallpaper2.png; mv /[HOME]/Download/xxx-fle-xxx.png ./bg_custom_wallpaper.png
 #    III. Activate Background Refresh: cd /startup/; . ./mybackgroundwllpservice.sh
-
+#
 #CHECK
 #pgrep Xtigervnc
 #packet iproute2:
 #ss -tulpn | grep -E -i 'vnc|590'
 #src= cyberciti.biz/faq/install-and-configure-tigervnc-server-on-ubuntu-18-04
-
+#
 #ISSUES: GIO, WGET, WSL
 #If GIO doesn't work, use lib libgtk2.0-dev (for Debian)
 #src=stackoverflow.com/questions/4699910/gtk-gio-no-such-file-or-directory
@@ -545,7 +546,7 @@ CMD ["sleep", "infinity"]
 #Issue+Refresh+RDP
 #src=https://askubuntu.com/questions/1523503/x2go-remote-desktop-with-xfce-doesnt-refresh-the-screen
 #export DISPLAY=:0.0; touch /etc/X11/Xsession.d/98xfwm4-no_compositing; /usr/bin/xfconf-query -c xfwm4 -p /general/use_compositing -s false
-
+#
 #
 #TRUST FILES: XFCE4, THUNAR
 #cmd1=GIOFILE=/[HOME]/Desktop/firefox.desktop; sha256sum $GIOFILE  | cut -d' ' -f 1
@@ -568,7 +569,7 @@ CMD ["sleep", "infinity"]
 #
 #In WSL, if copy/paste is locked: superuser.com/questions/1410026/how-to-enable-ctrl-shift-v-in-windows-subsystem-for-linux-wsl-command-pr
 #IF you work behind a Firewall, it can changes authorities! And make crash your request. So, turn FRWL on (FRWL=true) in order to have a workaround.
-
+#
 #DOCKER SETTINGS
 #Don't forget to use a .wslconfig to limit DockerDesktop if you use it (memory leak)
 #src=mrakelinggar.medium.com/set-up-configs-like-memory-limits-in-docker-for-windows-and-wsl2-80689997309c
@@ -577,8 +578,8 @@ CMD ["sleep", "infinity"]
 #Keep in mind to change ports according your choice on the start (line with "run")
 #"bash" is mandatory on the end of the line for running the container (in order to connect inside the container from Docker WSL)
 #option "-d" is mandatory to have the return from the terminal and write commands (try without and you won't have a free terminal)
-
-
+#
+#
 ######################################################
 #DOCKER BUILD - RUN
 ######################################################
@@ -758,11 +759,13 @@ CMD ["sleep", "infinity"]
 #   [user] mkdir -p /home/$USER/comet/
 #   [user] cd /home/$USER/comet/; touch Dockerfile
 #   [Copy this file into and build it and run it!]
-
-
+#
+#
 #If need an help, check the Sheet "MyVNCDockerfileTips"
-
-#UPDATE SYSTEM
+#
+######################################################
+#   UPDATE SYSTEM
+######################################################
 #some updates will be needed during years, as for Kali tools
 #wget https://archive.kali.org/archive-keyring.gpg -O /usr/share/keyrings/kali-archive-keyring.gpg
 #apt update && apt full-upgrade
@@ -774,20 +777,68 @@ CMD ["sleep", "infinity"]
 #check netsh connections with ports
 #be carfeul if you have local batch script (i.e. as for me a wsl.cmd to launch wsl => rename it into launcherwsl.cmd coz wsl.cmd will be used as "wsl.exe")
 #FINAL: Powershell will display "podman image ls" and in an other hand WSL will display "podman --remote image ls" => same list (and view in Podman-Desktop)
-
-#Milestone achieved: 2026 03 27
+#
+######################################################
+#   NETWORK TIPS
+######################################################
+#In order to solve issues about network & PODMAN, use these tips (UNIX, WINDOWS, FIREWALL, ROUTE, PORT)
+#
+#CHECK PORT LISTEN (8554) under WSL
+#WSL-USER> ss -tulnp | grep 8554
+#
+#FORWARD RULE FOR PORT REROUTING (LINUX= iptables, WINDOWS= netsh)
+#sudo iptables -t nat -A PREROUTING -p tcp --dport 8554 -j DNAT --to-destination 127.0.0.1:8554
+#sudo iptables -t nat -A OUTPUT -p tcp --dport 8554 -j DNAT --to-destination 127.0.0.1:8554
+#
+#PERSISTENT RULE (install)
+#sudo apt install iptables-persistent
+#sudo netfilter-persistent save
+#
+#CHECK FIREWALL WINDOWS (POWERSHELL)
+#PS-ADMIN> Get-NetFirewallRule | Where-Object { $_.DisplayName -match "8554" }
+#PS-ADMIN> Get-NetFirewallPortFilter | Where-Object { $_.LocalPort -eq 8554 }
+#
+#IN:
+#PS-ADMIN> Get-NetFirewallRule -Direction Inbound | Where-Object { $_.DisplayName -match "8554" }
+#
+#OUT:
+#PS-ADMIN> Get-NetFirewallRule -Direction Outbound | Where-Object { $_.DisplayName -match "8554" }
+#
+#ADD RULE
+#PS-ADMIN> New-NetFirewallRule -DisplayName "RTSP 8554 OUT" -Direction Outbound -Protocol TCP -LocalPort 8554 -Action Allow
+#PS-ADMIN> New-NetFirewallRule -DisplayName "RTSP 8554 IN"  -Direction Inbound  -Protocol TCP -LocalPort 8554 -Action Allow
+#
+#CHECK ENABLE ROUTE (IPEnableRouter)
+#PS-ADMIN> reg query HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters /v IPEnableRouter
+# 0 = portproxy failed (0x0)
+# 1 = portproxy succeded
+#
+#ACTIVATE
+#PS-ADMIN> reg add HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters /v IPEnableRouter /t REG_DWORD /d 1 /f
+#Then: REBOOT /!\
+#
+#LINUX FW INFOS
+#WSL-USER> sudo firewall-cmd --list-ports
+#WSL-USER> sudo ufw status
+#
+#CHECK PODMAN ROOTLESS
+#WSL-USER> podmanr info | grep rootless
+#
+######################################################
+#   MILESTONE ACHIEVED
+######################################################
+#DATE= 2026 03 27
 #This Tool is now fully functionnal with a graphical Unix environment, including RDP/VNC/AUDIO
 #Project will improve security access: even if anything is able to destroy this Tool, you can have a fast rebuild
-
+#
 #HERE FIND FEW CHARS TO COPY WHEN NEED (some terminals doesn't allow the direct input from keyboard)
 # | \
-
+#
 # Version and Increment
 #v1.1.0
 #ic 16
-
+#
 #Thanks for authors from differents sources quoted in this document.
 #by r00t4M0NK
-
+#
 #Comet © 2026 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
-
