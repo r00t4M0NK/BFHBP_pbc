@@ -62,5 +62,5 @@ The Tool can be used in RDP (for easiest way) to use on hack-boxes (with a VPN f
 
 ################################
 
-Comet © 2024 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
+Comet © 2026 by R00t4m0nk is licensed under CC BY-SA 4.0 (+ EULA)
 [eof]
