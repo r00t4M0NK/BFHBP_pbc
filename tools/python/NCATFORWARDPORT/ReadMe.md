@@ -68,6 +68,26 @@ WSL-USER> socat TCP-LISTEN:9998,fork TCP:172.17.x.x:8554
 PS-ADMIN> wsl socat TCP-LISTEN:9998,fork TCP:172.17.x.x:8554
 WSL-USER> "C:\msys64\mingw64\bin\socat.exe" TCP-LISTEN:9998,fork TCP:172.17.x.x:8554
 
+---
+
+####################################################################################
+#                                 PKTMON
+####################################################################################
+
+PS-ADMIN> pktmon filter add -p 8550
+PS-ADMIN> pktmon start --etw -m real-time
+PS-ADMIN> pktmon stop
+PS-ADMIN> pktmon filter remove
+
+---
+
+
+
+
+
+
+
+
 
 
 
