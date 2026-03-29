@@ -887,15 +887,36 @@ CMD ["sleep", "infinity"]
 # (IN PROGRESS)
 # 1. Retrieve IP of your Podman:
 # WSL-USER> ip addr | grep eth0 | grep 172
-# 2. Create Service
-# PS-ADMIN> Set-Content -Path "C:\Windows\rtsp-forward.cmd" -Value 'start "" ncat -l 8554 --sh-exec "ncat <IP_PODMAN> 8554"'
+# 2. Create Service Program
+# Choose between 2 ways: or you can use the tool I propose, or you create from scratch or with help.
+#      A. To use the tool, have a look in tools, watch the python part and grab the windows program + file conf.
+#      Edit the conf file and set your own values.
+#      B. Use the source script or your own script and create the program.
+#      Set the program in a permanent directory (your choice).
+# 3. Or try with this script
+#      A. Create an empty file called "rtsp-forward.cmd"
+#      B. Write this line inside (and mind to change the var <IP_PODMAN>) :
+# ncat -l 8554 --sh-exec "ncat <IP_PODMAN> 8554"
+# 4. Create Service
+#PS-ADMIN> Set-Content -Path "C:\Windows\rtsp-forward.cmd" -Value 'start "" ncat -l 8554 --sh-exec "ncat <IP_PODMAN> 8554"'
+# (or)
+# => If your choice was about the "program" seen at step 3, go step 6.
+# 5. Check the content & file:
 # PS-ADMIN> Get-Content C:\Windows\rtsp-forward.cmd
-# 3. Create Windows Service
-# PS-ADMIN> sc.exe --% create RTSPForward binPath= "C:\Windows\System32\cmd.exe /c C:\Windows\rtsp-forward.cmd" start= auto
-# 4. If needed to remove service: PS-ADMIN> sc.exe delete RTSPForward
-# 5. 
-# 4. Start Service
+# 6. Create Windows Service
+# PS-ADMIN> sc.exe --% create RTSPForward binPath= "C:\Windows\rtsp-forward.cmd" start= auto
+# (or)
+# => sc.exe --% create RTSPForward binPath= "C:\Windows\rtspforward\RTSPForward.exe" start= auto
+# 7. If needed to remove service: PS-ADMIN> sc.exe delete RTSPForward
+# 8. Start Service
 # PS-ADMIN> sc.exe start RTSPForward
+# 9. At this point, you have an Error during start service!
+# As "The service did not respond to the start (...)"?
+#      A. We can't use Windows Scripts to add service easily, don't for now, don't use sc.exe but prefer to use NSSM (dl on https://nssm.cc)
+#      B. CMD-ADMIN> cd "C:\Program Files\NSSM"
+#      C. CMD-ADMIN> nssm install RTSPForward (NomDuService= RTSPForward)
+#      D. Use the graphical interface to set the program and leave default options
+#      E. CMD-ADMIN> nssm start RTSPForward
 #
 ######################################################
 #   MILESTONE ACHIEVED
@@ -909,7 +930,7 @@ CMD ["sleep", "infinity"]
 #
 # Version and Increment
 #v1.1.0
-#ic 17
+#ic 18
 #
 #Thanks for authors from differents sources quoted in this document.
 #by r00t4M0NK
