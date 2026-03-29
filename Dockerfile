@@ -783,6 +783,9 @@ CMD ["sleep", "infinity"]
 ######################################################
 #In order to solve issues about network & PODMAN, use these tips (UNIX, WINDOWS, FIREWALL, ROUTE, PORT)
 #
+# /!\ FIRST BIG RULE with netsh:
+#When you add port forwarding, the port is used by svchost! you cannot debug when it's forwarded & used by windows network service
+#
 #CHECK PORT LISTEN (8554) under WSL
 #WSL-USER> ss -tulnp | grep 8554
 #
@@ -823,6 +826,76 @@ CMD ["sleep", "infinity"]
 #
 #CHECK PODMAN ROOTLESS
 #WSL-USER> podmanr info | grep rootless
+#
+#ADD PORT EXPOSED IN WSL [ADD]
+#WSL-ROOT> vi /etc/wsl.conf
+#[network]
+#generateResolvConf = false
+#localhostForwarding = true
+#
+#Then: REBOOT WSL (PS-ADMIN> wsl --shutdown)
+#
+#FIND PROCESS
+#CMD> netstat -ano | findstr :8554
+# TCP    0.0.0.0:8554           0.0.0.0:0              LISTENING       4148
+#PS-ADMIN> Get-Process -Id 4148
+#PS-ADMIN> Get-CimInstance Win32_Service | Where-Object { $_.ProcessId -eq 4148 } | Select Name, DisplayName, State
+#FIND PORTS USED (TO USE A FREE PORT)
+#PS-USER> Get-NetTCPConnection |     Select-Object LocalPort,OwningProcess |     Sort-Object LocalPort |     ForEach-Object {         $_ | Add-Member -NotePropertyName ProcessName -NotePropertyValue (Get-Process -Id $_.OwningProcess).ProcessName -PassThru     }
+#FIND AUTO FREE PORT between 8000-9000
+#PS-USER> $used=(Get-NetTCPConnection -State Listen).LocalPort;1..65535|Where-Object{$_-notin$used -and $_-ge 8000 -and $_-le 9000}
+#
+#CHECK IF (ONLY RESERVATION PORT) OR (BINDING -of isaac- PORTS)
+#PS-ADMIN> tasklist /FI "PID eq 4148"
+#PS-ADMIN> Get-CimInstance Win32_Service | Where-Object { $_.ProcessId -eq 4148 }
+#
+#If not working: change port (40000) and clean/update netsh to change 8554-8550 into 40000
+#
+#SHOW DYNAMIC RANGE PORTS
+#PS-ADMIN> netsh int ipv4 show dynamicport tcp
+#
+#STOP/START iphlpsvc
+#PS-ADMIN> Stop-Service iphlpsvc
+#
+#ASK WINDOWS SVC TO NOT BIND A PORT (as 8550)
+#1) PS-ADMIN> netsh int ipv4 set dynamicport tcp start=49152 num=16384
+#2) PS-ADMIN> netsh int ipv4 set dynamicport udp start=49152 num=16384
+#
+#CHECK IF PORT FREE OR BIND
+#PS-ADMIN> netstat -ano | findstr :8550
+#
+#BUG MICROSOFT WINDOWS11
+#PS-ADMIN> netsh interface teredo set state disabled
+#PS-ADMIN> netsh interface 6to4 set state disabled
+#PS-ADMIN> netsh interface isatap set state disabled
+#
+#DEBUG NCAT (if needed but not work for RTSP debug)
+#INSTALL: https://nmap.org/book/inst-windows.html (example: DOWNLOAD/Microsoft Binaries/nmap-7.99-setup.exe)
+#PS-ADMIN> ncat -lvp 9998 --keep-open --exec cmd.exe
+#
+#TEST CONNECTION FROM POWERSHELL WIN TO IP_PODMAN (WSL = IP_PODMAN too)
+#WSL-USER> Test-NetConnection -ComputerName <IP_PODMAN> -Port 8554
+#
+#[VALIDATED] FINAL RESULT ABOUT SEARCHING FORWARD RTSP (only Podman):
+#(server) PS-ADMIN> ncat -l 8554 --sh-exec "ncat 172.xx.xx.xx 8554"
+#(client) ffplay -rtsp_transport tcp rtsp://<IP_SERVER>:8554/live
+#
+######################################################
+#   PODMAN FORWARD AUDIO
+######################################################
+#REM RULE FORWARDING from NETWORK OUTSIDE to THIS SERVER 192.168.x.x to PODMAN <IP_PODMAN>
+# (IN PROGRESS)
+# 1. Retrieve IP of your Podman:
+# WSL-USER> ip addr | grep eth0 | grep 172
+# 2. Create Service
+# PS-ADMIN> Set-Content -Path "C:\Windows\rtsp-forward.cmd" -Value 'start "" ncat -l 8554 --sh-exec "ncat <IP_PODMAN> 8554"'
+# PS-ADMIN> Get-Content C:\Windows\rtsp-forward.cmd
+# 3. Create Windows Service
+# PS-ADMIN> sc.exe --% create RTSPForward binPath= "C:\Windows\System32\cmd.exe /c C:\Windows\rtsp-forward.cmd" start= auto
+# 4. If needed to remove service: PS-ADMIN> sc.exe delete RTSPForward
+# 5. 
+# 4. Start Service
+# PS-ADMIN> sc.exe start RTSPForward
 #
 ######################################################
 #   MILESTONE ACHIEVED
