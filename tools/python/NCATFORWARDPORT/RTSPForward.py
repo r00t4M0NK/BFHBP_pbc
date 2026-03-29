@@ -2,14 +2,38 @@ import socket
 import threading
 import os
 
-CONFIG_FILE = "rtspforward.conf"
+CONFIG_NAME = "rtspforward.conf"
 
 def load_config():
-    config = {}
-    if not os.path.exists(CONFIG_FILE):
-        raise FileNotFoundError(f"Configuration file '{CONFIG_FILE}' not found.")
+    # First Read of File on the current dir
+    if not os.path.exists(CONFIG_NAME):
+        raise FileNotFoundError(f"Configuration file '{CONFIG_NAME}' not found in current directory.")
 
-    with open(CONFIG_FILE, "r") as f:
+    # Init reading to retrieve DIRECTORY
+    initial_config = {}
+    with open(CONFIG_NAME, "r") as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            if "=" in line:
+                key, value = line.split("=", 1)
+                initial_config[key.strip()] = value.strip()
+
+    if "DIRECTORY" not in initial_config:
+        raise ValueError("Missing DIRECTORY in configuration file.")
+
+    directory = initial_config["DIRECTORY"]
+
+    # Path built to the conf file
+    config_path = os.path.join(directory, CONFIG_NAME)
+
+    if not os.path.exists(config_path):
+        raise FileNotFoundError(f"Configuration file not found at: {config_path}")
+
+    # Full reading of conf file
+    config = {}
+    with open(config_path, "r") as f:
         for line in f:
             line = line.strip()
             if not line or line.startswith("#"):
@@ -23,11 +47,14 @@ def load_config():
         if key not in config:
             raise ValueError(f"Missing required config key: {key}")
 
-    return int(config["LISTEN_PORT"]), config["TARGET_HOST"], int(config["TARGET_PORT"])
+    return (
+        int(config["LISTEN_PORT"]),
+        config["TARGET_HOST"],
+        int(config["TARGET_PORT"])
+    )
 
 
 def forward(src, dst):
-    """Copy data src -> dst until close"""
     try:
         while True:
             data = src.recv(4096)
@@ -54,7 +81,7 @@ def handle_client(client_socket, target_host, target_port):
         t2 = threading.Thread(target=forward, args=(remote_socket, client_socket))
         t2.start()
 
-    except Exception as e:
+    except Exception:
         client_socket.close()
 
 
@@ -65,7 +92,7 @@ def main():
     server.bind(("0.0.0.0", listen_port))
     server.listen(5)
 
-    print(f"Proxy TCP actif : 0.0.0.0:{listen_port} → {target_host}:{target_port}")
+    print(f"Proxy TCP activated : 0.0.0.0:{listen_port} → {target_host}:{target_port}")
 
     while True:
         client_socket, addr = server.accept()
