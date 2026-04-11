@@ -86,8 +86,9 @@ ENV DISPLAY=:1 \
     VNC_PORT=5901 \
     NO_VNC_PORT=6901 \
     RDP_PORT=3390 \
-    AUDIO_PORT=8554
-EXPOSE $VNC_PORT $NO_VNC_PORT $RDP_PORT $AUDIO_PORT
+    AUDIO_PORT=8554 \
+    SRT_PORT=9554 \
+EXPOSE $VNC_PORT $NO_VNC_PORT $RDP_PORT $SRT_PORT
 #
 #3390 is choosen for RDP because 3389 has conflict with WSL
 #src=https://answers.microsoft.com/en-us/windows/forum/all/cannot-connect-to-xrdp-running-in-wsl-via-remote/bce76f7f-37da-44be-8117-9465290b54c8?page=2
@@ -150,7 +151,7 @@ RUN apt-get -y install ffmpeg libportaudio2
 RUN apt-get -y install xfce4 xfce4-terminal xfce4-goodies
 RUN apt-get -y install xterm dbus-x11 libdbus-glib-1-2 libgtk2.0-dev
 RUN apt-get -y install tigervnc-standalone-server
-RUN apt-get -y install novnc xrdp openvpn filezilla
+RUN apt-get -y install novnc xrdp openvpn filezilla stunnel4
 RUN apt-get -y install python3-numpy python3-websockify
 RUN apt-get -y install libnss-wrapper gettext
 RUN apt-get clean -y
@@ -176,6 +177,7 @@ RUN apt-get clean -y
 # xrdp for the remote windows access
 # openvpn for the vpn tool
 # filezilla for the GUI ftp tool
+# stunnel4 security wrapper to broadcast audio with a secured layer
 # python3-numpy for websockify (VNC)
 # python3-websockify for Websockify, for VNC
 # libnss-wrapper for daemon management user (legacy from Dockerfile from ConSol)
@@ -378,7 +380,7 @@ RUN rm -Rf /tmp/.X1-lock && rm -Rf /tmp/.X11-unix/X1
 #start "LISTEN AUDIO COMET" "D:\<your_path>\ffmpeg\bin\ffplay" -rtsp_transport tcp rtsp://<your_ip>:8554/live
 #
 #
-RUN cd $STARTUPDIR/ && wget --timeout=5 --tries=2 -qO- $MEDIA_URL > $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && tar -xvzf $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && rm $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && rm $STARTUPDIR/LICENSE && echo \#\!\/bin\/sh > $STARTUPDIR/audiostrm.sh &&  echo pulseaudio \-\-start >> $STARTUPDIR/audiostrm.sh && echo ffmpeg \-f alsa \-i default \-acodec aac \-rtsp\_transport tcp \-f rtsp \-muxdelay 0\.1 rtsp\:\/\/localhost\:8554\/live >> $STARTUPDIR/ffmpeg.sh && echo \. $STARTUPDIR/ffmpeg.sh >> $STARTUPDIR/audiostrm.sh && echo nohup $STARTUPDIR/mediamtx \& >> /home/$USERVNC/.profile && echo . $STARTUPDIR/audiostrm.sh \& >> /home/$USERVNC/.profile && cp $STARTUPDIR/mediamtx.yml /home/$USERVNC/mediamtx.yml && chown $USERVNC:$USERVNC /home/$USERVNC/mediamtx.yml
+RUN cd $STARTUPDIR/ && wget --timeout=5 --tries=2 -qO- $MEDIA_URL > $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && tar -xvzf $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && rm $STARTUPDIR/mediamtx_v1.17.0_linux_amd64.tar.gz && rm $STARTUPDIR/LICENSE && echo \#\!\/bin\/sh > $STARTUPDIR/audiostrm.sh &&  echo pulseaudio \-\-start >> $STARTUPDIR/audiostrm.sh && echo ffmpeg \-f alsa \-i default \-acodec aac \-rtsp\_transport tcp \-f rtsp \-muxdelay 0\.1 rtsp\:\/\/localhost\:8554\/live >> $STARTUPDIR/ffmpeg.sh && echo \. $STARTUPDIR/ffmpeg.sh >> $STARTUPDIR/audiostrm.sh && echo nohup $STARTUPDIR/mediamtx \& >> /home/$USERVNC/.profile && echo . $STARTUPDIR/audiostrm.sh \& >> /home/$USERVNC/.profile && cp $STARTUPDIR/mediamtx.yml /home/$USERVNC/mediamtx.yml && chown $USERVNC:$USERVNC /home/$USERVNC/mediamtx.yml && openssl req -new -x509 -days 3650 -nodes -subj "/C=WD/ST=WORLD/L=aldeamalvada/O=NA/OU=NC/CN=server.local" -out /etc/stunnel/stunnel.pem -keyout /etc/stunnel/stunnel.pem && echo "stunnel /etc/stunnel/rtsp.conf &" > $STARTUPDIR/mystunnel.sh
 #
 ##########################################################################
 ## PART 5: FIREFOX SETTINGS HERE
